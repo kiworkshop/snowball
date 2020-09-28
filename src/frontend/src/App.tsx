@@ -1,10 +1,14 @@
 import React from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Login } from './pages';
 
 function App() {
   return (
-    <div>
-      <p>snowball</p>
-    </div>
+    <BrowserRouter>
+      <Switch>
+        <Route path="/" component={Login} />
+      </Switch>
+    </BrowserRouter>
   );
 }
 
