@@ -1,0 +1,1 @@
+nohup java -jar -Dserver.port=8080 /home/ec2-user/snowball/build/libs/* > /home/ec2-user/nohup.out 2>&1 &
