@@ -71,7 +71,7 @@ task yarnBuild(type: YarnTask) {
 
 task copyWebApp(type: Copy) {
     from "src/frontend/build/"
-    into 'build/resources/main/'
+    into 'build/resources/main/static'
 }
 
 yarnBuild.dependsOn yarnInstall
