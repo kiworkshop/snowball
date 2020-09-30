@@ -1,6 +1,3 @@
-# This workflow will build a Java project with Gradle
-# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
-
 name: Snowball Deployment
 
 on:
@@ -12,45 +9,38 @@ env:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up JDK 1.11
-      uses: actions/setup-java@v1
-      with:
-        java-version: 1.11
+      - uses: actions/checkout@v2
+      - name: Set up JDK 1.11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.11
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-    - name: Build with Gradle
-      run: ./gradlew build
-    - name: Make directory for deployment
-      run: mkdir -p ${PROJECT_NAME}-deployment
-    - name: Move JAR file
-      run: cp ${PROJECT_NAME}/build/libs/*.jar ${PROJECT_NAME}-deployment/
-    - name: Move appspec.yml
-      run: cp ${PROJECT_NAME}/appspec.yml ${PROJECT_NAME}-deployment/
-    - name: Move scripts directory
-      run: cp -r ${PROJECT_NAME}/scripts ${PROJECT_NAME}-deployment/
-    - name: Make zip file
-      run: zip -r -j ${PROJECT_NAME}-deployment ${PROJECT_NAME}-deployment/*
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Build with Gradle
+        run: ./gradlew build
+      - name: Make directory for deployment
+        run: mkdir -p ${PROJECT_NAME}-deployment
+      - name: Move JAR file
+        run: cp -r build ${PROJECT_NAME}-deployment/
+      - name: Move appspec.yml
+        run: cp appspec.yml ${PROJECT_NAME}-deployment/
+      - name: Move scripts directory
+        run: cp -r scripts ${PROJECT_NAME}-deployment/scripts/
+      - name: Make zip file
+        run: zip -r ./${PROJECT_NAME}-deployment ${PROJECT_NAME}-deployment/*
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ secrets.AWS_REGION }}
-    - name: Upload to S3
-      run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
-    - name: Code Deploy
-      run: aws deploy create-deployment --application-name snowball-deploy --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name develop --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
-
-    - name: Upload to S3
-      run: aws s3 cp ${PROJECT_NAME}-deployment.zip s3://${S3_BUCKET_NAME}/${PROJECT_NAME}/${PROJECT_NAME}-${GITHUB_SHA}.zip --region ap-northeast-2
-    - name: Code Deploy
-      run: aws deploy create-deployment --application-name ${PROJECT_NAME}-deploy --deployment-group-name develop --region ap-northeast-2 --s3-location bucket=${$S3_BUCKET_NAME},bundleType=zip,key=${PROJECT_NAME}/${PROJECT_NAME}-${GITHUB_SHA}.zip
-    - name: Clear Deploy DIR
-      run: rm -rf ${PROJECT_NAME}-deployment
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Upload to S3
+        run: aws s3 cp ${PROJECT_NAME}-deployment.zip s3://${S3_BUCKET_NAME}/${PROJECT_NAME}/${PROJECT_NAME}-${GITHUB_SHA}.zip --region ap-northeast-2
+      - name: Code Deploy
+        run: aws deploy create-deployment --application-name ${PROJECT_NAME}-deploy --deployment-group-name develop --region ap-northeast-2 --s3-location bucket=${S3_BUCKET_NAME},bundleType=zip,key=${PROJECT_NAME}/${PROJECT_NAME}-${GITHUB_SHA}.zip
+      - name: Clear Deploy DIR
+        run: rm -rf ${PROJECT_NAME}-deployment
