@@ -8,6 +8,7 @@ import Container from '../../component/base/Container';
 interface Props {
   value: string;
   setValue: React.Dispatch<React.SetStateAction<string>>;
+  onSave: () => void;
 }
 
 const StyledContainer = styled(Container)`
@@ -25,7 +26,7 @@ const SaveButton = styled(Button)`
   margin-top: 30px;
 `;
 
-const Editor: React.FC<Props> = ({ value, setValue }) => {
+const Editor: React.FC<Props> = ({ value, setValue, onSave }) => {
   const toolbarOptions = [
     ['bold', 'italic', 'underline', 'strike'],
     ['blockquote', 'code-block'],
@@ -54,7 +55,9 @@ const Editor: React.FC<Props> = ({ value, setValue }) => {
         onChange={setValue}
         modules={{ toolbar: toolbarOptions }}
       />
-      <SaveButton size="large">저장하기</SaveButton>
+      <SaveButton size="large" onClick={onSave}>
+        저장하기
+      </SaveButton>
     </StyledContainer>
   );
 };
