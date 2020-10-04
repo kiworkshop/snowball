@@ -8,7 +8,7 @@ const AppWithNav = () => {
     <Router>
       <Nav />
       <Switch>
-        <Route path="/create/note" component={CreateNote} exact />
+        <Route path="/create/note/:date" component={CreateNote} exact />
       </Switch>
     </Router>
   );

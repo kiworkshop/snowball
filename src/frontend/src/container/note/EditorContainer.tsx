@@ -1,10 +1,25 @@
 import React, { useState } from 'react';
+import { addNote } from '../../lib/api/note';
 import Editor from '../../component/note/Editor';
 
-const EditorContainer = () => {
+interface Props {
+  date: string;
+}
+
+const EditorContainer: React.FC<Props> = ({ date }) => {
   const [value, setValue] = useState('');
 
-  return <Editor value={value} setValue={setValue} />;
+  const onSave = async () => {
+    const writtenData = {
+      content: value,
+      date,
+    };
+
+    const response = await addNote(writtenData);
+    console.log(response);
+  };
+
+  return <Editor value={value} setValue={setValue} onSave={onSave} />;
 };
 
 export default EditorContainer;
