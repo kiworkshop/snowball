@@ -3,6 +3,10 @@ import styled from 'styled-components';
 import { Button } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 
+interface Props {
+  onClick: () => void;
+}
+
 const LoginContainer = styled.div`
   align-items: center;
   display: flex;
@@ -38,7 +42,7 @@ const Copyright = styled.h5`
   text-align: center;
 `;
 
-const Login = () => {
+const Login: React.FC<Props> = ({ onClick }) => {
   return (
     <LoginContainer>
       <LoginInner>
@@ -51,6 +55,7 @@ const Login = () => {
           block
           icon={<UserOutlined />}
           style={{ fontSize: '1.2rem', fontWeight: 800, height: '60px' }}
+          onClick={onClick}
         >
           테스트 유저 로그인
         </Button>
