@@ -51,7 +51,7 @@ class UserControllerTest {
     @Test
     void createUserTest() throws Exception {
         //given
-        String email = "test-user@snowball.com";
+        String email = "snowman@snowball.com";
         String name = "snowman";
         int age = 100;
         String gender = "snow";
@@ -72,8 +72,9 @@ class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
         //then
-        User user = userRepository.findAll().get(0);
-        assertThat(user.getEmail()).isEqualTo(email);
+        User user = userRepository.findByEmail(email);
+        assertThat(user.getName()).isEqualTo(name);
         assertThat(user.getAge()).isEqualTo(age);
+        assertThat(user.getGender()).isEqualTo(gender);
     }
 }

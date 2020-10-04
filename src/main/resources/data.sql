@@ -1,0 +1,1 @@
+INSERT INTO user (id, age, email, gender, picture_url) VALUES (1, 0, 'test-user@snowball.com', 'snowman', '');
