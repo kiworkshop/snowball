@@ -7,17 +7,11 @@ import lombok.Getter;
 public class UserCreateResponseDto {
 
     private String email;
-    private String name;
-    private int age;
-    private String gender;
     private String pictureUrl;
 
     @Builder
-    public UserCreateResponseDto(String email, String name, int age, String gender, String pictureUrl) {
+    public UserCreateResponseDto(String email, String pictureUrl) {
         this.email = email;
-        this.name = name;
-        this.age = age;
-        this.gender = gender;
         this.pictureUrl = pictureUrl;
     }
 }
