@@ -1,6 +1,7 @@
 package org.kiworkshop.snowball.user.service;
 
 import lombok.RequiredArgsConstructor;
+import org.kiworkshop.snowball.user.controller.dto.UserCommonResponseDto;
 import org.kiworkshop.snowball.user.controller.dto.UserCreateRequestDto;
 import org.kiworkshop.snowball.user.controller.dto.UserCreateResponseDto;
 import org.kiworkshop.snowball.user.domain.User;
@@ -22,12 +23,25 @@ public class UserService {
                 .pictureUrl(userCreateRequestDto.getPictureUrl())
                 .build();
         userRepository.save(user);
-        return getUserResponseDto(user);
+        return getUserCreateResponseDto(user);
     }
 
-    private UserCreateResponseDto getUserResponseDto(User user) {
+    private UserCreateResponseDto getUserCreateResponseDto(User user) {
         return UserCreateResponseDto.builder()
                 .email(user.getEmail())
+                .pictureUrl(user.getPictureUrl())
+                .build();
+    }
+
+    public UserCommonResponseDto getUser(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("잘못된 user id입니다."));
+        return getUserCommonResponseDto(user);
+    }
+
+    private UserCommonResponseDto getUserCommonResponseDto(User user) {
+        return UserCommonResponseDto.builder()
+                .email(user.getEmail())
+                .name(user.getName())
                 .pictureUrl(user.getPictureUrl())
                 .build();
     }
