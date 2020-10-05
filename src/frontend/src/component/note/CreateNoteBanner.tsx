@@ -14,6 +14,7 @@ const CreateNoteBannerWrapper = styled(Link)`
   border-radius: 16px;
   display: flex;
   justify-content: center;
+  margin-bottom: 50px;
   padding: 20px;
   transition: 0.3s;
   width: 100%;
