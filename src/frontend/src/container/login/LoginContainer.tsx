@@ -1,11 +1,13 @@
 import React from 'react';
-import { login } from '../../lib/api/user';
+import { useHistory } from 'react-router-dom';
+// import { login } from '../../lib/api/user';
 import Login from '../../component/login/Login';
 
 const LoginContainer = () => {
-  const onClick = async () => {
-    const user = await login();
-    console.log(user);
+  const history = useHistory();
+
+  const onClick = () => {
+    history.push('/main');
   };
 
   return <Login onClick={onClick} />;
