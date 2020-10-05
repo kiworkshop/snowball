@@ -13,7 +13,7 @@ const StyledNav = styled.nav`
   width: 100%;
 `;
 
-const NavInner = styled(Container)`
+const NavInner = styled.div`
   align-items: center;
   display: flex;
   height: 100%;
@@ -25,7 +25,7 @@ const BrandTitle = styled(Link)`
   color: #141414;
   font-size: 2rem;
   font-weight: 600;
-  left: 0;
+  left: 30px;
   position: absolute;
 
   &:hover {
@@ -50,6 +50,23 @@ const NavMenu = styled(Link)`
   }
 `;
 
+const UserWrapper = styled.div`
+  align-items: center;
+  display: flex;
+  position: absolute;
+  right: 30px;
+`;
+
+const UserIcon = styled.img`
+  height: 40px;
+  margin-right: 8px;
+  width: 40px;
+`;
+
+const Username = styled.span`
+  font-size: 1.1rem;
+`;
+
 const EmptyDiv = styled.div`
   height: 80px;
 `;
@@ -65,6 +82,10 @@ const Nav = () => {
               <HomeFilled style={{ fontSize: '2rem' }} />홈
             </NavMenu>
           </NavMenusWrapper>
+          <UserWrapper>
+            <UserIcon src="https://upload.wikimedia.org/wikipedia/commons/f/f4/Font_Awesome_5_solid_user-circle.svg" />
+            <Username>눈사람</Username>
+          </UserWrapper>
         </NavInner>
       </StyledNav>
       <EmptyDiv />
