@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 interface Props {
   children: React.ReactNode;
+  [propName: string]: React.ReactNode | {};
 }
 
 const StyledContainer = styled.div`

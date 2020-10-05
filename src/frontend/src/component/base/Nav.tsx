@@ -1,8 +1,8 @@
 import { HomeFilled } from '@ant-design/icons';
 import React from 'react';
+import { FaUserCircle } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import Container from './Container';
 
 const StyledNav = styled.nav`
   box-shadow: 0 4px 2px -4px gray;
@@ -57,7 +57,7 @@ const UserWrapper = styled.div`
   right: 30px;
 `;
 
-const UserIcon = styled.img`
+const UserIcon = styled(FaUserCircle)`
   height: 40px;
   margin-right: 8px;
   width: 40px;
@@ -83,7 +83,7 @@ const Nav = () => {
             </NavMenu>
           </NavMenusWrapper>
           <UserWrapper>
-            <UserIcon src="https://upload.wikimedia.org/wikipedia/commons/f/f4/Font_Awesome_5_solid_user-circle.svg" />
+            <UserIcon />
             <Username>눈사람</Username>
           </UserWrapper>
         </NavInner>
