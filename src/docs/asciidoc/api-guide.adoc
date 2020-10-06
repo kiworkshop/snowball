@@ -1,0 +1,42 @@
+= 스노우볼 API 문서
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+:sectlinks:
+
+[[introduction]]
+== Introduction
+
+스노우볼 프로젝트 Spring Rest Docs API
+
+[[overview]]
+= Overview
+
+[[overview-http-verbs]]
+== HTTP verbs
+[cols="20%,80%"]
+|===
+| Verb | Usage
+
+| `GET`
+| Used to retrieve a resource
+
+| `POST`
+| Used to create a new resource
+
+| `PUT`
+| Used to update an existing resource, full updates only
+
+| `DELETE`
+| Used to delete an existing resource
+|===
+
+= Package: User
+
+== User
+
+=== Create a user
+
+operation::/user/create-user[snippets='http-request,request-fields,http-response,response-fields']
