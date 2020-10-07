@@ -2,9 +2,8 @@ package org.kiworkshop.snowball.user.service;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.kiworkshop.snowball.user.controller.dto.UserCommonResponseDto;
+import org.kiworkshop.snowball.user.controller.dto.UserResponseDto;
 import org.kiworkshop.snowball.user.controller.dto.UserCreateRequestDto;
-import org.kiworkshop.snowball.user.controller.dto.UserCreateResponseDto;
 import org.kiworkshop.snowball.user.domain.User;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -20,16 +19,8 @@ public class UserModelMapper {
                 .build();
     }
 
-    public static UserCreateResponseDto getUserCreateResponseDto(User user) {
-        return UserCreateResponseDto.builder()
-                .id(user.getId())
-                .name(user.getName())
-                .pictureUrl(user.getPictureUrl())
-                .build();
-    }
-
-    public static UserCommonResponseDto getUserCommonResponseDto(User user) {
-        return UserCommonResponseDto.builder()
+    public static UserResponseDto getUserCommonResponseDto(User user) {
+        return UserResponseDto.builder()
                 .id(user.getId())
                 .name(user.getName())
                 .pictureUrl(user.getPictureUrl())

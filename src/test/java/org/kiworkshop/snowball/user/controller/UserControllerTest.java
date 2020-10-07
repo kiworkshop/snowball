@@ -1,12 +1,9 @@
 package org.kiworkshop.snowball.user.controller;
 
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.kiworkshop.snowball.ControllerTest;
-import org.kiworkshop.snowball.user.controller.dto.UserCommonResponseDto;
+import org.kiworkshop.snowball.user.controller.dto.UserResponseDto;
 import org.kiworkshop.snowball.user.controller.dto.UserCreateRequestDto;
-import org.kiworkshop.snowball.user.controller.dto.UserCreateResponseDto;
-import org.kiworkshop.snowball.user.controller.dto.UserLoginRequestDto;
 import org.kiworkshop.snowball.user.service.UserService;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -50,7 +47,7 @@ class UserControllerTest extends ControllerTest {
                 .gender(gender)
                 .pictureUrl(pictureUrl)
                 .build();
-        UserCreateResponseDto responseDto = UserCreateResponseDto.builder()
+        UserResponseDto responseDto = UserResponseDto.builder()
                 .id(1L)
                 .name(name)
                 .pictureUrl(pictureUrl)
@@ -90,7 +87,7 @@ class UserControllerTest extends ControllerTest {
         Long id = 1L;
         String name = "snowman";
         String pictureUrl = URLEncoder.encode("https://example.snowman-picture.com", StandardCharsets.UTF_8);
-        UserCommonResponseDto responseDto = UserCommonResponseDto.builder()
+        UserResponseDto responseDto = UserResponseDto.builder()
                 .id(id)
                 .name(name)
                 .pictureUrl(pictureUrl)
@@ -123,7 +120,7 @@ class UserControllerTest extends ControllerTest {
         Long id = 1L;
         String name = "snowman";
         String pictureUrl = URLEncoder.encode("https://example.snowman-picture.com", StandardCharsets.UTF_8);
-        UserCommonResponseDto responseDto = UserCommonResponseDto.builder()
+        UserResponseDto responseDto = UserResponseDto.builder()
                 .id(id)
                 .name(name)
                 .pictureUrl(pictureUrl)
