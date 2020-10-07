@@ -40,3 +40,11 @@
 === Create a user
 
 operation::/user/create-user[snippets='http-request,request-fields,http-response,response-fields']
+
+=== Get a user
+
+operation::/user/get-user[snippets='http-request,path-parameters,http-response,response-fields']
+
+=== Login
+
+operation::/user/login[snippets='http-request,request-fields,http-response,response-fields']

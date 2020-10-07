@@ -25,7 +25,7 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public UserCommonResponseDto login(@RequestBody UserLoginRequestDto userLoginRequestDto) {
+    public UserCommonResponseDto login(@RequestBody(required = false) UserLoginRequestDto userLoginRequestDto) {
         return userService.login(userLoginRequestDto);
     }
 }
