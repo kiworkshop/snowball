@@ -1,15 +1,11 @@
-import axios from '../axios';
+import async from '../async';
 
 interface Form {
-  content: string;
-  date: string;
+  text: string;
+  investmentDate: string;
 }
 
 export const addNote = async (form: Form) => {
-  try {
-    const response = await axios.post('/create', form);
-    return response;
-  } catch (error) {
-    console.error(error);
-  }
+  const data = await async.POST('/notes', form);
+  return data;
 };
