@@ -15,36 +15,14 @@ public class UserService {
     private final UserRepository userRepository;
 
     public UserCreateResponseDto join(UserCreateRequestDto userCreateRequestDto) {
-        User user = User.builder()
-                .email(userCreateRequestDto.getEmail())
-                .name(userCreateRequestDto.getName())
-                .age(userCreateRequestDto.getAge())
-                .gender(userCreateRequestDto.getGender())
-                .pictureUrl(userCreateRequestDto.getPictureUrl())
-                .build();
+        User user = UserModelMapper.getUser(userCreateRequestDto);
         userRepository.save(user);
-        return getUserCreateResponseDto(user);
-    }
-
-    private UserCreateResponseDto getUserCreateResponseDto(User user) {
-        return UserCreateResponseDto.builder()
-                .id(user.getId())
-                .name(user.getName())
-                .pictureUrl(user.getPictureUrl())
-                .build();
+        return UserModelMapper.getUserCreateResponseDto(user);
     }
 
     public UserCommonResponseDto getUser(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("잘못된 user id입니다."));
-        return getUserCommonResponseDto(user);
-    }
-
-    private UserCommonResponseDto getUserCommonResponseDto(User user) {
-        return UserCommonResponseDto.builder()
-                .email(user.getEmail())
-                .name(user.getName())
-                .pictureUrl(user.getPictureUrl())
-                .build();
+        return UserModelMapper.getUserCommonResponseDto(user);
     }
 }
 
