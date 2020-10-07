@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.kiworkshop.snowball.user.controller.dto.UserCommonResponseDto;
 import org.kiworkshop.snowball.user.controller.dto.UserCreateRequestDto;
 import org.kiworkshop.snowball.user.controller.dto.UserCreateResponseDto;
+import org.kiworkshop.snowball.user.controller.dto.UserLoginRequestDto;
 import org.kiworkshop.snowball.user.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,8 +24,8 @@ public class UserController {
         return userService.getUser(id);
     }
 
-    @PostMapping("/login")
-    public UserCreateResponseDto login(@RequestBody UserCreateRequestDto userCreateRequestDto) {
-        return userService.join(userCreateRequestDto);
+    @GetMapping("/login")
+    public UserCommonResponseDto login(@RequestBody UserLoginRequestDto userLoginRequestDto) {
+        return userService.login(userLoginRequestDto);
     }
 }

@@ -30,7 +30,7 @@ public class UserModelMapper {
 
     public static UserCommonResponseDto getUserCommonResponseDto(User user) {
         return UserCommonResponseDto.builder()
-                .email(user.getEmail())
+                .id(user.getId())
                 .name(user.getName())
                 .pictureUrl(user.getPictureUrl())
                 .build();
