@@ -28,7 +28,8 @@ public class UserService {
 
     private UserCreateResponseDto getUserCreateResponseDto(User user) {
         return UserCreateResponseDto.builder()
-                .email(user.getEmail())
+                .id(user.getId())
+                .name(user.getName())
                 .pictureUrl(user.getPictureUrl())
                 .build();
     }

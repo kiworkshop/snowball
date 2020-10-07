@@ -13,7 +13,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/login")
+    @PostMapping("/users")
     public UserCreateResponseDto createUser(@RequestBody UserCreateRequestDto userCreateRequestDto) {
         return userService.join(userCreateRequestDto);
     }
@@ -21,5 +21,10 @@ public class UserController {
     @GetMapping("/users/{id}")
     public UserCommonResponseDto getUser(@PathVariable Long id) {
         return userService.getUser(id);
+    }
+
+    @PostMapping("/login")
+    public UserCreateResponseDto login(@RequestBody UserCreateRequestDto userCreateRequestDto) {
+        return userService.join(userCreateRequestDto);
     }
 }

@@ -6,12 +6,14 @@ import lombok.Getter;
 @Getter
 public class UserCreateResponseDto {
 
-    private String email;
+    private Long id;
+    private String name;
     private String pictureUrl;
 
     @Builder
-    public UserCreateResponseDto(String email, String pictureUrl) {
-        this.email = email;
+    public UserCreateResponseDto(Long id, String name, String pictureUrl) {
+        this.id = id;
+        this.name = name;
         this.pictureUrl = pictureUrl;
     }
 }
