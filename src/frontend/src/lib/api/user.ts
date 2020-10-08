@@ -1,10 +1,6 @@
-import axios from '../axios';
+import async from '../async';
 
 export const login = async () => {
-  try {
-    const user = await axios.get('/login');
-    return user;
-  } catch (error) {
-    console.error(error);
-  }
+  const data = await async.GET('/login');
+  return data;
 };

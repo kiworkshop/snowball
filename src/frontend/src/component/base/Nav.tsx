@@ -1,8 +1,16 @@
-import { HomeFilled } from '@ant-design/icons';
 import React from 'react';
+import { HomeFilled } from '@ant-design/icons';
 import { FaUserCircle } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+
+interface Props {
+  user: {
+    id: string;
+    name: string;
+    pictureUrl: string;
+  };
+}
 
 const StyledNav = styled.nav`
   box-shadow: 0 4px 2px -4px gray;
@@ -71,7 +79,7 @@ const EmptyDiv = styled.div`
   height: 80px;
 `;
 
-const Nav = () => {
+const Nav: React.FC<Props> = ({ user }) => {
   return (
     <>
       <StyledNav>
@@ -84,7 +92,7 @@ const Nav = () => {
           </NavMenusWrapper>
           <UserWrapper>
             <UserIcon />
-            <Username>눈사람</Username>
+            <Username>{user.name}</Username>
           </UserWrapper>
         </NavInner>
       </StyledNav>
