@@ -3,11 +3,11 @@ package org.kiworkshop.snowball.user.domain;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.kiworkshop.snowball.note.domain.Note;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -23,6 +23,9 @@ public class User {
     private String gender;
     private String pictureUrl;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Note> notes;
+
     @Builder
     public User(String email, String name, int age, String gender, String pictureUrl) {
         this.email = email;
@@ -30,5 +33,6 @@ public class User {
         this.age = age;
         this.gender = gender;
         this.pictureUrl = pictureUrl;
+        this.notes = new ArrayList<>();
     }
 }
