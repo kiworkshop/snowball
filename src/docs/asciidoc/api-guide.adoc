@@ -48,3 +48,19 @@ operation::/user/get-user[snippets='http-request,path-parameters,http-response,r
 === Login
 
 operation::/user/login[snippets='http-request,request-fields,http-response,response-fields']
+
+= Package: Note
+
+== Note
+
+=== Create a note
+
+operation::/note/create-note[snippets='http-request,request-fields,http-response,response-fields']
+
+=== Get notes
+
+operation::/note/get-notes[snippets='http-request,request-fields,http-response,response-fields-content']
+
+=== Get a note
+
+operation::/note/get-note[snippets='http-request,request-fields,http-response,response-fields']

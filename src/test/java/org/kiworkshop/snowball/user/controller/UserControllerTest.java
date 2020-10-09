@@ -35,6 +35,7 @@ class UserControllerTest extends ControllerTest {
     @Test
     void createUserTest() throws Exception {
         // given
+        Long id = 1L;
         String email = "snowman@snowball.com";
         String name = "snowman";
         int age = 100;
@@ -48,7 +49,7 @@ class UserControllerTest extends ControllerTest {
                 .pictureUrl(pictureUrl)
                 .build();
         UserResponseDto responseDto = UserResponseDto.builder()
-                .id(1L)
+                .id(id)
                 .name(name)
                 .pictureUrl(pictureUrl)
                 .build();
