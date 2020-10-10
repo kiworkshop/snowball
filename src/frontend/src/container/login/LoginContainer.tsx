@@ -16,13 +16,13 @@ const LoginContainer = () => {
 
     if (testUser) {
       dispatch(login(testUser));
-      store.set('user', {
+      store.set('snowball-user', {
         user: testUser,
         expired: Date.now() + 1000 * 60 * 60 * 24,
       });
     } else {
       dispatch(login({ id: 'testUser', name: '눈사람', pictureUrl: '' }));
-      store.set('user', {
+      store.set('snowball-user', {
         user: { id: 'testUser', name: '눈사람', pictureUrl: '' },
         expired: Date.now() + 1000 * 60 * 60 * 24,
       });

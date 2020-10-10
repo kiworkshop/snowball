@@ -12,7 +12,7 @@ const NavContainer = () => {
 
   const onLogout = () => {
     dispatch(logout());
-    store.remove('user');
+    store.remove('snowball-user');
   };
 
   return <Nav user={user} onLogout={onLogout} />;

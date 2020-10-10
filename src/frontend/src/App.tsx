@@ -10,7 +10,7 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const loggedInfo = store.get('user');
+    const loggedInfo = store.get('snowball-user');
 
     if (!loggedInfo) return;
     if (loggedInfo.expired < Date.now()) return;
