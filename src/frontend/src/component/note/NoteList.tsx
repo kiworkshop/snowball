@@ -5,8 +5,11 @@ import { FolderOpenOutlined, DownOutlined } from '@ant-design/icons';
 import { setDate } from '../../lib/date';
 
 interface Note {
-  content: string;
-  date: string;
+  id: string;
+  text: string;
+  investmentDate: string;
+  createdDate: string;
+  lastModifiedDate: string;
 }
 
 interface NoteListProps {
@@ -69,14 +72,14 @@ const NoteList: React.FC<NoteListProps> = ({
       bordered
       dataSource={notes}
       renderItem={(note) => (
-        <NoteWrapper onClick={() => onClickNote(note.date)}>
+        <NoteWrapper onClick={() => onClickNote(note.id)}>
           <NoteDate>
-            {setDate(note.date)} <DownOutlined />
+            {setDate(note.investmentDate)} <DownOutlined />
           </NoteDate>
           <NoteContentWrapper
-            className={selected === note.date ? 'selected' : ''}
+            className={selected === note.id ? 'selected' : ''}
           >
-            <NoteContent>{note.content}</NoteContent>
+            <NoteContent>{note.text}</NoteContent>
           </NoteContentWrapper>
         </NoteWrapper>
       )}
