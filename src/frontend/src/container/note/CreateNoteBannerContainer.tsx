@@ -4,7 +4,7 @@ import { RootState } from '../../store/modules';
 import CreateNoteBanner from '../../component/note/CreateNoteBanner';
 
 const CreateNoteBannerWrapperContainer = () => {
-  const nickname = useSelector((state: RootState) => state.user.name);
+  const nickname = useSelector((state: RootState) => state.user.loginInfo.name);
 
   return <CreateNoteBanner nickname={nickname} />;
 };

@@ -1,5 +1,9 @@
 import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { Redirect, RouteComponentProps } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/modules';
+
+import NavContainer from '../container/base/NavContainer';
 import EditorContainer from '../container/note/EditorContainer';
 
 interface MatchProps {
@@ -7,7 +11,15 @@ interface MatchProps {
 }
 
 const CreateNote: React.FC<RouteComponentProps<MatchProps>> = ({ match }) => {
-  return <EditorContainer date={match.params.date} />;
+  const logged = useSelector((state: RootState) => state.user.logged);
+
+  return (
+    <>
+      <NavContainer />
+      <EditorContainer date={match.params.date} />
+      {!logged && <Redirect to="/" />}
+    </>
+  );
 };
 
 export default CreateNote;
