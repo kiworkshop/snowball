@@ -40,6 +40,7 @@ class UserControllerTest extends ControllerTest {
         int age = 100;
         String gender = "snow";
         String pictureUrl = URLEncoder.encode("https://example.snowman-picture.com", StandardCharsets.UTF_8);
+
         UserCreateRequestDto requestDto = UserCreateRequestDto.builder()
                 .email(email)
                 .name(name)
