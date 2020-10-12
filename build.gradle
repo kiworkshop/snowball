@@ -53,13 +53,13 @@ def webappDir = "$projectDir/src/frontend"
 node {
     download = true
     version = "12.13.1"
-    npmVersion = "6.9.0"
-    nodeModulesDir = project.file("ui")
-    workDir = project.file("${project.buildDir}/nodejs")
-    npmWorkDir = project.file("${project.buildDir}/npm")
+    yarnVersion = '1.22.5'
+    nodeModulesDir = project.file("${project.projectDir}/src/frontend/node_modules")
+    workDir = project.file("${project.projectDir}/src/frontend/nodejs")
+    yarnWorkDir = project.file("${project.projectDir}/src/frontend/yarn")
 }
 
-task appNpmInstall(type: NpmTask) {
+task yarnInstall(type: YarnTask) {
     workingDir = file("${project.projectDir}/src/frontend")
     args = ["install"]
 }
@@ -70,10 +70,10 @@ task yarnBuild(type: YarnTask) {
 }
 
 task copyWebApp(type: Copy) {
-    from "src/frontend/build"
-    into 'build/resources/main/static/.'
+    from "src/frontend/build/"
+    into 'build/resources/main/static'
 }
 
-yarnBuild.dependsOn appNpmInstall
+yarnBuild.dependsOn yarnInstall
 copyWebApp.dependsOn yarnBuild
 compileJava.dependsOn copyWebApp
