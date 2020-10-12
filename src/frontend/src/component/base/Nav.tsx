@@ -1,8 +1,18 @@
-import { HomeFilled } from '@ant-design/icons';
 import React from 'react';
+import { Dropdown, Menu } from 'antd';
+import { HomeFilled } from '@ant-design/icons';
 import { FaUserCircle } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+
+interface Props {
+  user: {
+    id: string;
+    name: string;
+    pictureUrl: string;
+  };
+  onLogout: () => void;
+}
 
 const StyledNav = styled.nav`
   box-shadow: 0 4px 2px -4px gray;
@@ -52,6 +62,7 @@ const NavMenu = styled(Link)`
 
 const UserWrapper = styled.div`
   align-items: center;
+  cursor: pointer;
   display: flex;
   position: absolute;
   right: 30px;
@@ -71,21 +82,37 @@ const EmptyDiv = styled.div`
   height: 80px;
 `;
 
-const Nav = () => {
+const Nav: React.FC<Props> = ({ user, onLogout }) => {
+  const ProfileMenus = (
+    <Menu>
+      <Menu.Item key="0" onClick={onLogout}>
+        로그아웃
+      </Menu.Item>
+    </Menu>
+  );
+
   return (
     <>
       <StyledNav>
         <NavInner>
           <BrandTitle to="/main">SNOWBALL</BrandTitle>
+
           <NavMenusWrapper>
             <NavMenu to="/main">
               <HomeFilled style={{ fontSize: '2rem' }} />홈
             </NavMenu>
           </NavMenusWrapper>
-          <UserWrapper>
-            <UserIcon />
-            <Username>눈사람</Username>
-          </UserWrapper>
+
+          <Dropdown
+            overlay={ProfileMenus}
+            placement="bottomRight"
+            trigger={['click']}
+          >
+            <UserWrapper>
+              <UserIcon />
+              <Username>{user.name}</Username>
+            </UserWrapper>
+          </Dropdown>
         </NavInner>
       </StyledNav>
       <EmptyDiv />

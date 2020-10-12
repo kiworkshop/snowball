@@ -1,51 +1,87 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { getNotes } from '../../lib/api/note';
+
 import NoteList from '../../component/note/NoteList';
+
+interface Note {
+  id: string;
+  text: string;
+  investmentDate: string;
+  createdDate: string;
+  lastModifiedDate: string;
+}
 
 const notesDummy = [
   {
-    content:
+    id: '1',
+    text:
       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos provident repudiandae, architecto doloremque sunt suscipit asperiores accusamus optio fuga quam perspiciatis vero illum illo nemo consectetur dignissimos tempora reiciendis soluta?',
-    date: '20201001',
+    investmentDate: '20201001',
+    createdDate: '20201001',
+    lastModifiedDate: '20201001',
   },
   {
-    content:
+    id: '2',
+    text:
       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos provident repudiandae, architecto doloremque sunt suscipit asperiores accusamus optio fuga quam perspiciatis vero illum illo nemo consectetur dignissimos tempora reiciendis soluta?',
-    date: '20201002',
+    investmentDate: '20201002',
+    createdDate: '20201002',
+    lastModifiedDate: '20201002',
   },
   {
-    content:
+    id: '3',
+    text:
       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos provident repudiandae, architecto doloremque sunt suscipit asperiores accusamus optio fuga quam perspiciatis vero illum illo nemo consectetur dignissimos tempora reiciendis soluta?',
-    date: '20201003',
+    investmentDate: '20201003',
+    createdDate: '20201003',
+    lastModifiedDate: '20201003',
   },
   {
-    content:
+    id: '4',
+    text:
       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos provident repudiandae, architecto doloremque sunt suscipit asperiores accusamus optio fuga quam perspiciatis vero illum illo nemo consectetur dignissimos tempora reiciendis soluta?',
-    date: '20201004',
+    investmentDate: '20201004',
+    createdDate: '20201004',
+    lastModifiedDate: '20201004',
   },
   {
-    content:
+    id: '5',
+    text:
       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos provident repudiandae, architecto doloremque sunt suscipit asperiores accusamus optio fuga quam perspiciatis vero illum illo nemo consectetur dignissimos tempora reiciendis soluta?',
-    date: '20201005',
+    investmentDate: '20201005',
+    createdDate: '20201005',
+    lastModifiedDate: '20201005',
   },
 ];
 
 const NoteListContainer = () => {
   const [selected, setSelected] = useState('');
+  const [notes, setNotes] = useState<Array<Note>>([]);
 
-  const onClickNote = (date: string) => {
-    if (selected === date) {
+  const onClickNote = (id: string) => {
+    if (selected === id) {
       setSelected('');
     } else {
-      setSelected(date);
+      setSelected(id);
     }
   };
 
+  useEffect(() => {
+    async function fetchNotes() {
+      const fetchedNotes = await getNotes(1);
+
+      if (fetchedNotes) {
+        setNotes(fetchedNotes);
+      } else {
+        setNotes([...notesDummy]);
+      }
+    }
+
+    fetchNotes();
+  }, []);
+
   return (
-    <NoteList
-      notes={notesDummy}
-      selected={selected}
-      onClickNote={onClickNote}
-    />
+    <NoteList notes={notes} selected={selected} onClickNote={onClickNote} />
   );
 };
 
