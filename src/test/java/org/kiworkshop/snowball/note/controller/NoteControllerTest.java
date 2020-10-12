@@ -1,13 +1,11 @@
 package org.kiworkshop.snowball.note.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 import org.kiworkshop.snowball.ControllerTest;
 import org.kiworkshop.snowball.note.controller.dto.NoteCreateRequestDto;
 import org.kiworkshop.snowball.note.controller.dto.NoteCreateResponseDto;
 import org.kiworkshop.snowball.note.controller.dto.NotePageRequestDto;
 import org.kiworkshop.snowball.note.controller.dto.NoteResponseDto;
-import org.kiworkshop.snowball.note.domain.Note;
 import org.kiworkshop.snowball.note.service.NoteService;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -22,7 +20,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.kiworkshop.snowball.util.ApiDocumentUtils.getDocumentRequest;
 import static org.kiworkshop.snowball.util.ApiDocumentUtils.getDocumentResponse;
 import static org.mockito.ArgumentMatchers.any;
