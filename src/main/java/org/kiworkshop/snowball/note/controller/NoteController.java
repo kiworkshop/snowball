@@ -7,6 +7,7 @@ import org.kiworkshop.snowball.note.controller.dto.NotePageRequestDto;
 import org.kiworkshop.snowball.note.controller.dto.NoteResponseDto;
 import org.kiworkshop.snowball.note.service.NoteService;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -21,8 +22,8 @@ public class NoteController {
     }
 
     @GetMapping("/notes")
-    public Page<NoteResponseDto> getNotes(@RequestBody NotePageRequestDto notePageRequestDto) {
-        return noteService.getNotes(notePageRequestDto);
+    public Page<NoteResponseDto> getNotes(Pageable pageable) {
+        return noteService.getNotes(pageable);
     }
 
     @GetMapping("/notes/{id}")

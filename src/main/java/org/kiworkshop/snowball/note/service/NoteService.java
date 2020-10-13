@@ -1,6 +1,7 @@
 package org.kiworkshop.snowball.note.service;
 
 import lombok.RequiredArgsConstructor;
+import org.kiworkshop.snowball.exception.DomainServiceException;
 import org.kiworkshop.snowball.note.controller.dto.*;
 import org.kiworkshop.snowball.note.entity.Note;
 import org.kiworkshop.snowball.note.entity.NoteRepository;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,11 +26,13 @@ public class NoteService {
         return NoteAssembler.getNoteCreateResponseDto(note);
     }
 
-    public Page<NoteResponseDto> getNotes(NotePageRequestDto notePageRequestDto) {
-        return new PageImpl<>(new ArrayList<>());
+    public Page<NoteResponseDto> getNotes(Pageable pageable) {
+        Page<Note> notePage = noteRepository.findAll(pageable);
+        return notePage.map(NoteAssembler::getNoteResponseDto);
     }
 
     public NoteResponseDto getNote(Long id) {
-        return new NoteResponseDto();
+        Note note = noteRepository.findById(id).orElseThrow(() -> new DomainServiceException("노트가 존재하지 않습니다."));
+        return NoteAssembler.getNoteResponseDto(note);
     }
 }
