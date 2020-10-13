@@ -1,7 +1,35 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
+import Container from './Container';
+import CreateNoteButton from './CreateNoteButton';
 import Nav from './Nav';
+
+const TempComponent = () => {
+  return <p>snowball</p>;
+};
+
+describe('<Container />', () => {
+  it('render component', () => {
+    const { getByText } = render(
+      <Container>
+        <TempComponent />{' '}
+      </Container>
+    );
+
+    const snowball = getByText('snowball');
+    expect(snowball).toBeInTheDocument();
+  });
+});
+
+describe('<CreateNoteButton />', () => {
+  it('render component', () => {
+    const { getByText } = render(<CreateNoteButton />);
+
+    const button = getByText('투자노트 작성');
+    expect(button).toBeInTheDocument();
+  });
+});
 
 describe('<Nav />', () => {
   it('render component', () => {
