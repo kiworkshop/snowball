@@ -7,7 +7,7 @@ import { logout } from '../../store/modules/user';
 import Nav from '../../component/base/Nav';
 
 const NavContainer = () => {
-  const user = useSelector((state: RootState) => state.user.loginInfo);
+  const user = useSelector((state: RootState) => state.user.userInfo);
   const dispatch = useDispatch();
 
   const onLogout = () => {

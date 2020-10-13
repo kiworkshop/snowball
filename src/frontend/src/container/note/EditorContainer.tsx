@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { addNote } from '../../lib/api/note';
+
 import Editor from '../../component/note/Editor';
 
-interface Props {
+interface EditorContainerProps {
   date: string;
 }
 
-const EditorContainer: React.FC<Props> = ({ date }) => {
+const EditorContainer: React.FC<EditorContainerProps> = ({ date }) => {
   const [value, setValue] = useState('');
 
   const onSave = async () => {

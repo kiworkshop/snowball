@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Button } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 
-interface Props {
+interface LoginProps {
   onClick: () => void;
 }
 
@@ -42,7 +42,7 @@ const Copyright = styled.h5`
   text-align: center;
 `;
 
-const Login: React.FC<Props> = ({ onClick }) => {
+const Login: React.FC<LoginProps> = ({ onClick }) => {
   return (
     <LoginContainer>
       <LoginInner>

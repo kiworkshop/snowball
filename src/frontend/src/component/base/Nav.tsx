@@ -5,22 +5,22 @@ import { FaUserCircle } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-interface Props {
-  user: {
-    id: string;
-    name: string;
-    pictureUrl: string;
-  };
+import { UserType } from '../../type/user';
+
+interface NavProps {
+  user: UserType.UserInfo;
   onLogout: () => void;
 }
 
 const StyledNav = styled.nav`
+  background: #fff;
   box-shadow: 0 4px 2px -4px gray;
   height: 80px;
   left: 0;
   position: fixed;
   top: 0;
   width: 100%;
+  z-index: 1000;
 `;
 
 const NavInner = styled.div`
@@ -82,7 +82,7 @@ const EmptyDiv = styled.div`
   height: 80px;
 `;
 
-const Nav: React.FC<Props> = ({ user, onLogout }) => {
+const Nav: React.FC<NavProps> = ({ user, onLogout }) => {
   const ProfileMenus = (
     <Menu>
       <Menu.Item key="0" onClick={onLogout}>

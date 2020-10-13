@@ -10,12 +10,15 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const loggedInfo = store.get('snowball-user');
+    const userInfo = store.get('snowball-user');
 
-    if (!loggedInfo) return;
-    if (loggedInfo.expired < Date.now()) return;
+    if (!userInfo) return;
+    if (userInfo.expired < Date.now()) {
+      store.remove('snowball-user');
+      return;
+    }
 
-    dispatch(login(loggedInfo.user));
+    dispatch(login(userInfo.user));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
