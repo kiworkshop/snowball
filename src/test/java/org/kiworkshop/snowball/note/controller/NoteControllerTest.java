@@ -7,6 +7,7 @@ import org.kiworkshop.snowball.note.controller.dto.NoteCreateResponseDto;
 import org.kiworkshop.snowball.note.controller.dto.NotePageRequestDto;
 import org.kiworkshop.snowball.note.controller.dto.NoteResponseDto;
 import org.kiworkshop.snowball.note.service.NoteService;
+import org.kiworkshop.snowball.user.domain.User;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
@@ -45,6 +46,7 @@ class NoteControllerTest extends ControllerTest {
         NoteCreateRequestDto requestDto = NoteCreateRequestDto.builder()
                 .text("투자노트 텍스트입니다.")
                 .investmentDate(LocalDate.of(2020, 10, 8))
+                .user(new User())
                 .build();
         NoteCreateResponseDto responseDto = NoteCreateResponseDto.builder()
                 .id(1L)
@@ -63,7 +65,8 @@ class NoteControllerTest extends ControllerTest {
                         getDocumentResponse(),
                         requestFields(
                                 fieldWithPath("text").type(JsonFieldType.STRING).description("투자노트 텍스트"),
-                                fieldWithPath("investmentDate").type(JsonFieldType.STRING).description("투자한 날짜")
+                                fieldWithPath("investmentDate").type(JsonFieldType.STRING).description("투자한 날짜"),
+                                subsectionWithPath("user").type(JsonFieldType.OBJECT).description("투자노트를 작성한 유저")
                         ),
                         responseFields(
                                 fieldWithPath("id").type(JsonFieldType.NUMBER).description("투자노트 id")

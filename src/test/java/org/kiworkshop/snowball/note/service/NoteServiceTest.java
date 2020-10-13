@@ -36,7 +36,6 @@ class NoteServiceTest {
     @Test
     void createTest() {
         //given
-        User user = User.builder().build();
         given(noteRepository.save(any(Note.class))).willReturn(NoteFixture.create());
         //when
         NoteCreateResponseDto noteCreateResponseDto = dut.createNote(NoteCreateRequestDto.builder().build());
