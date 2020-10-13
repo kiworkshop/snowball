@@ -2,19 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { getNotes } from '../../lib/api/note';
 import dummyData from '../../static/dummyData';
 
-import NoteList from '../../component/note/NoteList';
+import { NoteType } from '../../type/note';
 
-interface Note {
-  id: string;
-  text: string;
-  investmentDate: string;
-  createdDate: string;
-  lastModifiedDate: string;
-}
+import NoteList from '../../component/note/NoteList';
 
 const NoteListContainer = () => {
   const [selected, setSelected] = useState('');
-  const [notes, setNotes] = useState<Array<Note>>([]);
+  const [notes, setNotes] = useState<Array<NoteType.Note>>([]);
 
   const onClickNote = (id: string) => {
     if (selected === id) {

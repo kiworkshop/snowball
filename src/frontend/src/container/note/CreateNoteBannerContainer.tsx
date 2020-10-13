@@ -1,10 +1,11 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/modules';
+
 import CreateNoteBanner from '../../component/note/CreateNoteBanner';
 
 const CreateNoteBannerWrapperContainer = () => {
-  const nickname = useSelector((state: RootState) => state.user.loginInfo.name);
+  const nickname = useSelector((state: RootState) => state.user.userInfo.name);
 
   return <CreateNoteBanner nickname={nickname} />;
 };

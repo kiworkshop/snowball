@@ -4,16 +4,10 @@ import { List } from 'antd';
 import { FolderOpenOutlined, DownOutlined } from '@ant-design/icons';
 import { setDate } from '../../lib/date';
 
-interface Note {
-  id: string;
-  text: string;
-  investmentDate: string;
-  createdDate: string;
-  lastModifiedDate: string;
-}
+import { NoteType } from '../../type/note';
 
 interface NoteListProps {
-  notes: Array<Note>;
+  notes: Array<NoteType.Note>;
   selected: string;
   onClickNote: (date: string) => void;
 }
