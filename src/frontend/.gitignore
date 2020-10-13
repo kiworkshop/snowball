@@ -135,6 +135,4 @@ modules.xml
 # Sonarlint plugin
 .idea/sonarlint
 
-*.test.tsx
-
 # End of https://www.toptal.com/developers/gitignore/api/webstorm+all,macos,react
