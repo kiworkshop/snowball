@@ -3,9 +3,11 @@ package org.kiworkshop.snowball.note.service;
 import org.assertj.core.api.BDDAssertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.kiworkshop.snowball.exception.DomainServiceException;
 import org.kiworkshop.snowball.note.controller.dto.NoteRequestDto;
 import org.kiworkshop.snowball.note.controller.dto.NoteCreateResponseDto;
 import org.kiworkshop.snowball.note.controller.dto.NoteRequestDtoFixture;
+import org.kiworkshop.snowball.note.controller.dto.NoteResponseDto;
 import org.kiworkshop.snowball.note.entity.Note;
 import org.kiworkshop.snowball.note.entity.NoteFixture;
 import org.kiworkshop.snowball.note.entity.NoteRepository;
@@ -21,9 +23,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.not;
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.InstanceOfAssertFactories.OPTIONAL;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
@@ -72,13 +74,19 @@ class NoteServiceTest {
         Long noteId = 1L;
         NoteRequestDto requestDto = NoteRequestDtoFixture.create();
         Note note = NoteFixture.create();
-        given(noteRepository.save(any())).willReturn(note);
+        given(noteRepository.findById(anyLong())).willReturn(Optional.of(note));
 
         // when
-        dut.createNote(requestDto);
         dut.updateNote(noteId, requestDto);
 
         // then
+        assertThat(note.getText()).isEqualTo(requestDto.getText());
+        assertThat(note.getInvestmentDate()).isEqualTo(requestDto.getInvestmentDate());
+    }
 
+    @Test
+    void getByIdThrowsException() {
+        //when then
+        assertThrows(DomainServiceException.class, () -> dut.getById(1L));
     }
 }

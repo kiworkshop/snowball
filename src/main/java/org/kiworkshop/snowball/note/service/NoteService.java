@@ -7,6 +7,7 @@ import org.kiworkshop.snowball.note.entity.Note;
 import org.kiworkshop.snowball.note.entity.NoteRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,13 +31,17 @@ public class NoteService {
     }
 
     public NoteResponseDto getNote(Long id) {
-        Note note = noteRepository.findById(id).orElseThrow(() -> new DomainServiceException("노트가 존재하지 않습니다."));
+        Note note = getById(id);
         return NoteAssembler.getNoteResponseDto(note);
+    }
+
+    public Note getById(Long id) {
+        return noteRepository.findById(id).orElseThrow(() -> new DomainServiceException("노트가 존재하지 않습니다."));
     }
 
     @Transactional
     public void updateNote(Long id, NoteRequestDto noteRequestDto) {
-        Note note = noteRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("잘못된 투자노트 id입니다."));
+        Note note = getById(id);
         Note noteToUpdate = NoteAssembler.getNote(noteRequestDto);
         note.update(noteToUpdate);
     }
