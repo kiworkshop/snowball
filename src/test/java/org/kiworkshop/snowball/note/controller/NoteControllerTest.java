@@ -1,13 +1,11 @@
 package org.kiworkshop.snowball.note.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.assertj.core.api.BDDAssertions;
 import org.junit.jupiter.api.Test;
 import org.kiworkshop.snowball.ControllerTest;
-import org.kiworkshop.snowball.note.controller.dto.NoteCreateRequestDto;
-import org.kiworkshop.snowball.note.controller.dto.NoteCreateResponseDto;
-import org.kiworkshop.snowball.note.controller.dto.NotePageRequestDto;
-import org.kiworkshop.snowball.note.controller.dto.NoteResponseDto;
+import org.kiworkshop.snowball.note.controller.dto.*;
 import org.kiworkshop.snowball.note.service.NoteService;
-import org.kiworkshop.snowball.user.domain.User;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
@@ -19,15 +17,17 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import static org.assertj.core.api.BDDAssertions.then;
 import static org.kiworkshop.snowball.util.ApiDocumentUtils.getDocumentRequest;
 import static org.kiworkshop.snowball.util.ApiDocumentUtils.getDocumentResponse;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.snippet.Attributes.key;
@@ -43,11 +43,7 @@ class NoteControllerTest extends ControllerTest {
     @Test
     void createNoteTest() throws Exception {
         // given
-        NoteCreateRequestDto requestDto = NoteCreateRequestDto.builder()
-                .text("투자노트 텍스트입니다.")
-                .investmentDate(LocalDate.of(2020, 10, 8))
-                .user(new User())
-                .build();
+        NoteRequestDto requestDto = NoteRequestDtoFixture.create();
         NoteCreateResponseDto responseDto = NoteCreateResponseDto.builder()
                 .id(1L)
                 .build();
@@ -162,5 +158,42 @@ class NoteControllerTest extends ControllerTest {
                         )
                 ));
 
+    }
+
+    @Test
+    void updateNoteTest() throws Exception {
+        // given
+        Long noteId = 1L;
+        NoteRequestDto requestDto = NoteRequestDtoFixture.create();
+        byte[] requestBody = objectMapper.writeValueAsBytes(requestDto);
+
+        // when
+        mvc.perform(RestDocumentationRequestBuilders.put("/notes/{id}", noteId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").doesNotExist())
+                .andDo(document("note/update-note",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        requestFields(
+                                fieldWithPath("text").type(JsonFieldType.STRING).description("투자노트 텍스트"),
+                                fieldWithPath("investmentDate").type(JsonFieldType.STRING).description("투자한 날짜"),
+                                subsectionWithPath("user").type(JsonFieldType.OBJECT).description("투자노트를 작성한 유저")
+                        ),
+                        pathParameters(parameterWithName("id").description("투자노트 id")
+                                .attributes(key("constraints").value("Not Null")))
+                        )
+                );
+
+        // then
+        verify(noteService).updateNote(eq(noteId), argThat(arg -> {
+            try {
+                return Arrays.equals(requestBody, objectMapper.writeValueAsBytes(arg));
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+            return false;
+        }));
     }
 }

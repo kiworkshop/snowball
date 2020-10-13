@@ -64,3 +64,7 @@ operation::/note/get-notes[snippets='http-request,request-fields,http-response,r
 === Get a note
 
 operation::/note/get-note[snippets='http-request,request-fields,http-response,response-fields']
+
+=== Update a note
+
+operation::/note/update-note[snippets='http-request,request-fields,http-response,response-fields']

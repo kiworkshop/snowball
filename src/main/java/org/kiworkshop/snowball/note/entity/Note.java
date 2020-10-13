@@ -41,4 +41,10 @@ public class Note {
         this.lastModifiedDate = lastModifiedDate;
         this.user = user;
     }
+
+    public void update(Note note) {
+        this.text = note.getText();
+        this.investmentDate = note.getInvestmentDate();
+        this.user = note.getUser();
+    }
 }

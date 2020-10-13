@@ -5,12 +5,10 @@ import org.kiworkshop.snowball.exception.DomainServiceException;
 import org.kiworkshop.snowball.note.controller.dto.*;
 import org.kiworkshop.snowball.note.entity.Note;
 import org.kiworkshop.snowball.note.entity.NoteRepository;
-import org.kiworkshop.snowball.user.domain.User;
-import org.kiworkshop.snowball.user.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -21,8 +19,8 @@ public class NoteService {
 
     private final NoteRepository noteRepository;
 
-    public NoteCreateResponseDto createNote(NoteCreateRequestDto noteCreateRequestDto) {
-        Note note = noteRepository.save(NoteAssembler.getNote(noteCreateRequestDto));
+    public NoteCreateResponseDto createNote(NoteRequestDto noteRequestDto) {
+        Note note = noteRepository.save(NoteAssembler.getNote(noteRequestDto));
         return NoteAssembler.getNoteCreateResponseDto(note);
     }
 
@@ -34,5 +32,12 @@ public class NoteService {
     public NoteResponseDto getNote(Long id) {
         Note note = noteRepository.findById(id).orElseThrow(() -> new DomainServiceException("노트가 존재하지 않습니다."));
         return NoteAssembler.getNoteResponseDto(note);
+    }
+
+    @Transactional
+    public void updateNote(Long id, NoteRequestDto noteRequestDto) {
+        Note note = noteRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("잘못된 투자노트 id입니다."));
+        Note noteToUpdate = NoteAssembler.getNote(noteRequestDto);
+        note.update(noteToUpdate);
     }
 }
