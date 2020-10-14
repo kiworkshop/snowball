@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.kiworkshop.snowball.user.controller.dto.UserResponseDto;
 import org.kiworkshop.snowball.user.controller.dto.UserCreateRequestDto;
 import org.kiworkshop.snowball.user.controller.dto.UserLoginRequestDto;
-import org.kiworkshop.snowball.user.domain.User;
-import org.kiworkshop.snowball.user.repository.UserRepository;
+import org.kiworkshop.snowball.user.entity.User;
+import org.kiworkshop.snowball.user.entity.UserRepository;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor

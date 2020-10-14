@@ -3,7 +3,7 @@ package org.kiworkshop.snowball.note.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.kiworkshop.snowball.user.domain.User;
+import org.kiworkshop.snowball.user.entity.User;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 

@@ -1,6 +1,6 @@
 package org.kiworkshop.snowball.note.controller.dto;
 
-import org.kiworkshop.snowball.user.domain.User;
+import org.kiworkshop.snowball.user.entity.User;
 
 import java.time.LocalDate;
 

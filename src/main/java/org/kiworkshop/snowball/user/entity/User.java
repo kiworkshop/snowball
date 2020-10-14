@@ -1,4 +1,4 @@
-package org.kiworkshop.snowball.user.domain;
+package org.kiworkshop.snowball.user.entity;
 
 import lombok.Builder;
 import lombok.Getter;
