@@ -6,6 +6,7 @@ import { login as loginAPI } from '../../lib/api/user';
 import Login from '../../component/login/Login';
 import { login } from '../../store/modules/user';
 import { message } from 'antd';
+import routes from '../../routes';
 
 const LoginContainer = () => {
   const dispatch = useDispatch();
@@ -25,7 +26,7 @@ const LoginContainer = () => {
           expired: Date.now() + 1000 * 60 * 60 * 24,
         });
 
-        history.push('/main');
+        history.push(routes.home());
       } else {
         message.info('알 수 없는 오류가 발생했습니다.');
       }
@@ -39,7 +40,7 @@ const LoginContainer = () => {
           expired: Date.now() + 1000 * 60 * 60 * 24,
         });
 
-        history.push('/main');
+        history.push(routes.home());
       } else {
         message.info('알 수 없는 오류가 발생했습니다.');
       }

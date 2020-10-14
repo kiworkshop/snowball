@@ -25,9 +25,9 @@ function App() {
   return (
     <Router>
       <Switch>
-        <Route path="/" component={Login} exact />
-        <Route path="/main" component={Main} exact />
-        <Route path="/create/note/:date" component={CreateNote} exact />
+        <Route path="/" component={Main} exact />
+        <Route path="/login" component={Login} exact />
+        <Route path="/write/note/:date" component={CreateNote} exact />
         <Route component={Page404} />
       </Switch>
     </Router>

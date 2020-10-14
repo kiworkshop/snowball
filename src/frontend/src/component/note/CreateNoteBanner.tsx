@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import moment from 'moment';
 import { FaUserCircle } from 'react-icons/fa';
+import routes from '../../routes';
 
 interface CreateNoteBannerProps {
   nickname: string;
@@ -45,7 +46,7 @@ const BannerMessage = styled.h1`
 const CreateNoteBanner: React.FC<CreateNoteBannerProps> = ({ nickname }) => {
   return (
     <CreateNoteBannerWrapper
-      to={`/create/note/${moment(Date.now()).format('YYYYMMDD')}`}
+      to={routes.note.create(moment(Date.now()).format('YYYYMMDD'))}
     >
       <UserIcon />
       <BannerMessage>

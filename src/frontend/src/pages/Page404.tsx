@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Space, Button, Typography } from 'antd';
 import { useHistory } from 'react-router-dom';
 import snowmanImage from '../static/images/snowman.svg';
+import routes from '../routes';
 
 const { Title, Paragraph } = Typography;
 
@@ -32,7 +33,7 @@ const Page404 = () => {
   const history = useHistory();
 
   const onClick = () => {
-    history.push('/');
+    history.push(routes.home());
   };
 
   return (
