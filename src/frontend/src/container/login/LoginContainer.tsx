@@ -12,7 +12,8 @@ const LoginContainer = () => {
   const history = useHistory();
 
   const onClick = async () => {
-    const testUser = await loginAPI();
+    const response = await loginAPI();
+    const testUser = response.data;
 
     if (testUser) {
       dispatch(login(testUser));

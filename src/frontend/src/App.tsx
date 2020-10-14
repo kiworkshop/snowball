@@ -4,7 +4,7 @@ import store from 'store2';
 import { useDispatch } from 'react-redux';
 import { login } from './store/modules/user';
 
-import { Login, Main, CreateNote } from './pages';
+import { Login, Main, CreateNote, Page404 } from './pages';
 
 function App() {
   const dispatch = useDispatch();
@@ -28,6 +28,7 @@ function App() {
         <Route path="/" component={Login} exact />
         <Route path="/main" component={Main} exact />
         <Route path="/create/note/:date" component={CreateNote} exact />
+        <Route component={Page404} />
       </Switch>
     </Router>
   );

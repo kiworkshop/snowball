@@ -6,4 +6,9 @@ export namespace NoteType {
     createdDate: string;
     lastModifiedDate: string;
   }
+
+  interface NoteForm {
+    text: string;
+    investmentDate: string;
+  }
 }

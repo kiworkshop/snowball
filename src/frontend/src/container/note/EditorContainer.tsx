@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import moment from 'moment';
 import { addNote } from '../../lib/api/note';
 
 import Editor from '../../component/note/Editor';
@@ -13,7 +14,7 @@ const EditorContainer: React.FC<EditorContainerProps> = ({ date }) => {
   const onSave = async () => {
     const writtenData = {
       text: value,
-      investmentDate: date,
+      investmentDate: moment(date).format('YYYY-MM-DD'),
     };
 
     const response = await addNote(writtenData);

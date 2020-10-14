@@ -20,7 +20,8 @@ const NoteListContainer = () => {
 
   useEffect(() => {
     async function fetchNotes() {
-      const fetchedNotes = await getNotes(1);
+      const response = await getNotes(1);
+      const fetchedNotes = response.data;
 
       if (fetchedNotes) {
         setNotes(fetchedNotes);
