@@ -1,5 +1,3 @@
-import async from '../async';
+import axios from '../axios';
 
-export const login = async () => {
-  return await async.GET('/login');
-};
+export const login = () => axios.get('/login');

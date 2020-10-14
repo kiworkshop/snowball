@@ -1,12 +1,6 @@
-import async from '../async';
+import axios from '../axios';
 import { NoteType } from '../../type/note';
 
-export const getNotes = async (page: number) => {
-  return await async.GET('/notes', {
-    params: { page },
-  });
-};
+export const getNotes = (page: number) => axios.get(`/notes?page=${page}`);
 
-export const addNote = async (form: NoteType.NoteForm) => {
-  return await async.POST('/notes', form);
-};
+export const addNote = (form: NoteType.NoteForm) => axios.post('/notes', form);

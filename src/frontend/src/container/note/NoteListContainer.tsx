@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { message } from 'antd';
 import { getNotes } from '../../lib/api/note';
 import dummyData from '../../static/dummyData';
 
@@ -20,13 +21,21 @@ const NoteListContainer = () => {
 
   useEffect(() => {
     async function fetchNotes() {
-      const response = await getNotes(1);
-      const fetchedNotes = response.data;
+      try {
+        const response = await getNotes(1);
 
-      if (fetchedNotes) {
-        setNotes(fetchedNotes);
-      } else {
-        setNotes([...dummyData]);
+        if (response.status === 200) {
+          setNotes(response.data);
+        } else {
+          message.info('알 수 없는 오류가 발생했습니다.');
+        }
+      } catch (e) {
+        if (e.message === 'Network Error') {
+          setNotes([...dummyData]);
+          console.log(e);
+        } else {
+          message.info('알 수 없는 오류가 발생했습니다.');
+        }
       }
     }
 
