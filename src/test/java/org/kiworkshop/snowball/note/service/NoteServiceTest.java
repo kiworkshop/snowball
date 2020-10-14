@@ -36,6 +36,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -75,6 +76,12 @@ class NoteServiceTest {
     }
 
     @Test
+    void getByIdThrowsException() {
+        //when then
+        assertThrows(DomainServiceException.class, () -> dut.getById(1L));
+    }
+
+    @Test
     void getNotes() {
         // given
         int page = 1;
@@ -87,7 +94,7 @@ class NoteServiceTest {
 
         // then
         assertThat(pageNoteResponse.getTotalElements()).isEqualTo(pageNote.getSize());
-        assertThat(pageNoteResponse.getContent().get(0).getId()).isEqualTo(1L);
+        assertThat(pageNoteResponse.getContent().get(0).getId()).isEqualTo(pageNote.getContent().get(0).getId());
         assertThat(pageNoteResponse.getContent().get(1).getId()).isEqualTo(2L);
     }
 
@@ -108,8 +115,16 @@ class NoteServiceTest {
     }
 
     @Test
-    void getByIdThrowsException() {
-        //when then
-        assertThrows(DomainServiceException.class, () -> dut.getById(1L));
+    void deleteNoteTest() {
+        // given
+        Long noteId = 1L;
+        Note note = NoteFixture.create();
+        given(noteRepository.findById(anyLong())).willReturn(Optional.of(note));
+
+        // when
+        dut.deleteNote(noteId);
+
+        // then
+        then(noteRepository).should().delete(any(Note.class));
     }
 }

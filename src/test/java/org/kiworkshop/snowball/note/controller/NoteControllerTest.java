@@ -1,7 +1,6 @@
 package org.kiworkshop.snowball.note.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.assertj.core.api.BDDAssertions;
 import org.junit.jupiter.api.Test;
 import org.kiworkshop.snowball.ControllerTest;
 import org.kiworkshop.snowball.note.controller.dto.*;
@@ -10,7 +9,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -26,6 +24,7 @@ import static org.kiworkshop.snowball.util.ApiDocumentUtils.getDocumentResponse;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -196,6 +195,30 @@ class NoteControllerTest extends ControllerTest {
             }
             return false;
         }));
-        then(noteService).should().updateNote(anyLong(),any(NoteRequestDto.class));
+        then(noteService).should().updateNote(anyLong(), any(NoteRequestDto.class));
+    }
+
+    @Test
+    void deleteNoteTest() throws Exception {
+        // given
+        Long noteId = 1L;
+        doNothing().when(noteService).deleteNote(noteId);
+
+        // when
+        mvc.perform(RestDocumentationRequestBuilders.delete("/notes/{id}", noteId)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").doesNotExist())
+                .andDo(document("note/delete-note",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        pathParameters(parameterWithName("id").description("투자노트 id")
+                                .attributes(key("constraints").value("Not Null")))
+                        )
+                );
+
+        // then
+        verify(noteService).deleteNote(anyLong());
+        then(noteService).should().deleteNote(anyLong());
     }
 }

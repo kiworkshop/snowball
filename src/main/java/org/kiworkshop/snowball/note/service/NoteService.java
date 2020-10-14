@@ -45,4 +45,9 @@ public class NoteService {
         Note noteToUpdate = NoteAssembler.getNote(noteRequestDto);
         note.update(noteToUpdate);
     }
+
+    public void deleteNote(Long id) {
+        Note note = getById(id);
+        noteRepository.delete(note);
+    }
 }
