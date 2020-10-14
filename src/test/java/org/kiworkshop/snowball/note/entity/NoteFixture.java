@@ -12,7 +12,7 @@ public class NoteFixture {
         ReflectionTestUtils.setField(note, "text", "NoteFixture");
         ReflectionTestUtils.setField(note, "investmentDate", LocalDate.MIN);
         ReflectionTestUtils.setField(note, "createdDate", LocalDateTime.MIN);
-        ReflectionTestUtils.setField(note, "lastModifiedDate", LocalDateTime.MIN);
+        ReflectionTestUtils.setField(note, "modifiedDate", LocalDateTime.MIN);
 
         return note;
     }

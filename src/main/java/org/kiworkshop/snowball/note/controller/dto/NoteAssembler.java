@@ -23,7 +23,7 @@ public class NoteAssembler {
                 .text(note.getText())
                 .investmentDate(note.getInvestmentDate())
                 .createdDate(note.getCreatedDate())
-                .lastModifiedDate(note.getLastModifiedDate())
+                .lastModifiedDate(note.getModifiedDate())
                 .build();
     }
 }
