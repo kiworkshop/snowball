@@ -40,7 +40,7 @@ class UserControllerTest extends ControllerTest {
         String name = "snowman";
         int age = 100;
         String gender = "snow";
-        String pictureUrl = URLEncoder.encode("https://example.snowman-picture.com", StandardCharsets.UTF_8);
+        String pictureUrl = "example.snowman-picture.com";
         UserCreateRequestDto requestDto = UserCreateRequestDto.builder()
                 .email(email)
                 .name(name)
@@ -87,7 +87,7 @@ class UserControllerTest extends ControllerTest {
         // given
         Long id = 1L;
         String name = "snowman";
-        String pictureUrl = URLEncoder.encode("https://example.snowman-picture.com", StandardCharsets.UTF_8);
+        String pictureUrl = "example.snowman-picture.com";
         UserResponseDto responseDto = UserResponseDto.builder()
                 .id(id)
                 .name(name)
@@ -120,7 +120,7 @@ class UserControllerTest extends ControllerTest {
         // given
         Long id = 1L;
         String name = "snowman";
-        String pictureUrl = URLEncoder.encode("https://example.snowman-picture.com", StandardCharsets.UTF_8);
+        String pictureUrl = "example.snowman-picture.com";
         UserResponseDto responseDto = UserResponseDto.builder()
                 .id(id)
                 .name(name)
