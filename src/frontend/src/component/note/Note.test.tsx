@@ -3,9 +3,12 @@ import { cleanup, render } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import moment from 'moment';
 import dummyData from '../../static/dummyData';
+import routes from '../../routes';
+
 import CreateNoteBanner from './CreateNoteBanner';
 import Editor from './Editor';
 import NoteList from './NoteList';
+import Note from './Note';
 
 afterEach(cleanup);
 
@@ -32,7 +35,8 @@ describe('<CreateNoteBanner />', () => {
 
     const today = moment(Date.now()).format('YYYYMMDD');
     const bannerLink = getByRole('link');
-    expect(bannerLink).toHaveAttribute('href', `/create/note/${today}`);
+
+    expect(bannerLink).toHaveAttribute('href', routes.note.create(today));
   });
 });
 
@@ -59,6 +63,7 @@ describe('<Editor />', () => {
 
     const noteTitle = getByText(`${today} 투자노트`);
     const saveButton = getByText('저장하기');
+
     expect(noteTitle).toBeInTheDocument();
     expect(saveButton).toBeInTheDocument();
   });
@@ -89,5 +94,18 @@ describe('<NoteList />', () => {
 
     expect(listHeader).toBeInTheDocument();
     expect(listItem).toBeInTheDocument();
+  });
+});
+
+describe('<Note />', () => {
+  it('render component', () => {
+    const note = dummyData[0];
+
+    const { getByText } = render(<Note note={note} />);
+    const noteTitle = getByText(`${note.investmentDate} 투자노트`);
+    const noteText = getByText(note.text);
+
+    expect(noteTitle).toBeInTheDocument();
+    expect(noteText).toBeInTheDocument();
   });
 });
