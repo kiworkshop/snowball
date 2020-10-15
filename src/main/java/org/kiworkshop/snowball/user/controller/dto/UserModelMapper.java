@@ -1,4 +1,4 @@
-package org.kiworkshop.snowball.user.service;
+package org.kiworkshop.snowball.user.controller.dto;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

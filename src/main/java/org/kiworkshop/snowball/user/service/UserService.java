@@ -1,6 +1,7 @@
 package org.kiworkshop.snowball.user.service;
 
 import lombok.RequiredArgsConstructor;
+import org.kiworkshop.snowball.user.controller.dto.UserModelMapper;
 import org.kiworkshop.snowball.user.controller.dto.UserResponseDto;
 import org.kiworkshop.snowball.user.controller.dto.UserCreateRequestDto;
 import org.kiworkshop.snowball.user.controller.dto.UserLoginRequestDto;
@@ -18,8 +19,8 @@ public class UserService {
 
     public UserResponseDto join(UserCreateRequestDto userCreateRequestDto) {
         User user = UserModelMapper.getUser(userCreateRequestDto);
-        userRepository.save(user);
-        return UserModelMapper.getUserCommonResponseDto(user);
+        User savedUser = userRepository.save(user);
+        return UserModelMapper.getUserCommonResponseDto(savedUser);
     }
 
     public UserResponseDto getUser(Long id) {
