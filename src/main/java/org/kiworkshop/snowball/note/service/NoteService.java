@@ -1,18 +1,14 @@
 package org.kiworkshop.snowball.note.service;
 
 import lombok.RequiredArgsConstructor;
-import org.kiworkshop.snowball.exception.DomainServiceException;
+import org.kiworkshop.snowball.common.exception.DomainServiceException;
 import org.kiworkshop.snowball.note.controller.dto.*;
 import org.kiworkshop.snowball.note.entity.Note;
 import org.kiworkshop.snowball.note.entity.NoteRepository;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

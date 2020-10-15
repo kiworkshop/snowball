@@ -3,6 +3,7 @@ package org.kiworkshop.snowball.note.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 import org.kiworkshop.snowball.ControllerTest;
+import org.kiworkshop.snowball.common.exception.DomainServiceException;
 import org.kiworkshop.snowball.note.controller.dto.*;
 import org.kiworkshop.snowball.note.service.NoteService;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -220,5 +221,16 @@ class NoteControllerTest extends ControllerTest {
         // then
         verify(noteService).deleteNote(anyLong());
         then(noteService).should().deleteNote(anyLong());
+    }
+
+    @Test
+    void getNoteNotFoundExceptionTest() throws Exception {
+        // given
+        Long noteId = 1L;
+        given(noteService.getNote(eq(noteId))).willThrow(new DomainServiceException("노트가 존재하지 않습니다."));
+
+        // when & then
+        mvc.perform(RestDocumentationRequestBuilders.get("/notes/{id}", noteId))
+                .andExpect(status().isNotFound());
     }
 }
