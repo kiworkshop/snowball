@@ -2,8 +2,10 @@ package org.kiworkshop.snowball.user.controller;
 
 import org.junit.jupiter.api.Test;
 import org.kiworkshop.snowball.ControllerTest;
+import org.kiworkshop.snowball.user.controller.dto.UserCreateRequestDtoFixture;
 import org.kiworkshop.snowball.user.controller.dto.UserResponseDto;
 import org.kiworkshop.snowball.user.controller.dto.UserCreateRequestDto;
+import org.kiworkshop.snowball.user.controller.dto.UserResponseDtoFixture;
 import org.kiworkshop.snowball.user.service.UserService;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -17,6 +19,7 @@ import java.nio.charset.StandardCharsets;
 import static org.kiworkshop.snowball.util.ApiDocumentUtils.getDocumentRequest;
 import static org.kiworkshop.snowball.util.ApiDocumentUtils.getDocumentResponse;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -35,24 +38,8 @@ class UserControllerTest extends ControllerTest {
     @Test
     void createUserTest() throws Exception {
         // given
-        Long id = 1L;
-        String email = "snowman@snowball.com";
-        String name = "snowman";
-        int age = 100;
-        String gender = "snow";
-        String pictureUrl = "example.snowman-picture.com";
-        UserCreateRequestDto requestDto = UserCreateRequestDto.builder()
-                .email(email)
-                .name(name)
-                .age(age)
-                .gender(gender)
-                .pictureUrl(pictureUrl)
-                .build();
-        UserResponseDto responseDto = UserResponseDto.builder()
-                .id(id)
-                .name(name)
-                .pictureUrl(pictureUrl)
-                .build();
+        UserCreateRequestDto requestDto = UserCreateRequestDtoFixture.create();
+        UserResponseDto responseDto = UserResponseDtoFixture.create();
 
         given(userService.join(any())).willReturn(responseDto);
 
@@ -85,19 +72,12 @@ class UserControllerTest extends ControllerTest {
     @Test
     void getUserTest() throws Exception {
         // given
-        Long id = 1L;
-        String name = "snowman";
-        String pictureUrl = "example.snowman-picture.com";
-        UserResponseDto responseDto = UserResponseDto.builder()
-                .id(id)
-                .name(name)
-                .pictureUrl(pictureUrl)
-                .build();
+        UserResponseDto responseDto = UserResponseDtoFixture.create();
 
-        given(userService.getUser(id)).willReturn(responseDto);
+        given(userService.getUser(anyLong())).willReturn(responseDto);
 
         // when & then
-        mvc.perform(RestDocumentationRequestBuilders.get("/users/{id}", id))
+        mvc.perform(RestDocumentationRequestBuilders.get("/users/{id}", responseDto.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(responseDto.getId()))
                 .andExpect(jsonPath("$.name").value(responseDto.getName()))
@@ -118,14 +98,7 @@ class UserControllerTest extends ControllerTest {
     @Test
     void loginTest() throws Exception {
         // given
-        Long id = 1L;
-        String name = "snowman";
-        String pictureUrl = "example.snowman-picture.com";
-        UserResponseDto responseDto = UserResponseDto.builder()
-                .id(id)
-                .name(name)
-                .pictureUrl(pictureUrl)
-                .build();
+        UserResponseDto responseDto = UserResponseDtoFixture.create();
 
         given(userService.login(any())).willReturn(responseDto);
 
