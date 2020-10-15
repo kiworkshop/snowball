@@ -7,7 +7,7 @@ import org.kiworkshop.snowball.user.controller.dto.UserCreateRequestDto;
 import org.kiworkshop.snowball.user.entity.User;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class UserModelMapper {
+public class UserAssembler {
 
     public static User getUser(UserCreateRequestDto userCreateRequestDto) {
         return User.builder()
