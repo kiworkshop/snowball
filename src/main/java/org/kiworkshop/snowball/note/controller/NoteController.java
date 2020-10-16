@@ -8,7 +8,10 @@ import org.kiworkshop.snowball.note.controller.dto.NoteResponseDto;
 import org.kiworkshop.snowball.note.service.NoteService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @RestController
@@ -17,7 +20,7 @@ public class NoteController {
     private final NoteService noteService;
 
     @PostMapping("/notes")
-    public NoteCreateResponseDto createNote(@RequestBody NoteRequestDto noteRequestDto) {
+    public NoteCreateResponseDto createNote(@Valid @RequestBody NoteRequestDto noteRequestDto) {
         return noteService.createNote(noteRequestDto);
     }
 
