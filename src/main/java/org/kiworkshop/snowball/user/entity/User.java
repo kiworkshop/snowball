@@ -3,6 +3,7 @@ package org.kiworkshop.snowball.user.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.kiworkshop.snowball.common.entity.BaseTimeEntity;
 import org.kiworkshop.snowball.note.entity.Note;
 
 import javax.persistence.*;
@@ -12,11 +13,8 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Entity
-public class User {
+public class User extends BaseTimeEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     private String email;
     private String name;
     private int age;
