@@ -9,10 +9,14 @@ import Editor from '../../component/note/Editor';
 
 interface EditorContainerProps {
   date: string;
+  initialValue?: string;
 }
 
-const EditorContainer: React.FC<EditorContainerProps> = ({ date }) => {
-  const [value, setValue] = useState('');
+const EditorContainer: React.FC<EditorContainerProps> = ({
+  date,
+  initialValue = '',
+}) => {
+  const [value, setValue] = useState(initialValue);
 
   const history = useHistory();
 

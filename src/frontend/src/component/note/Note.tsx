@@ -1,12 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Typography } from 'antd';
+import { Space, Typography, Button } from 'antd';
 import { NoteType } from '../../type/note';
 
 import Container from '../../component/base/Container';
 
 interface NoteProps {
   note: NoteType.Note;
+  onClickUpdateButton: (id: string) => void;
+  onClickDeleteButton: (id: string) => void;
 }
 
 const { Title } = Typography;
@@ -15,13 +17,31 @@ const NoteContainer = styled(Container)`
   padding: 50px 0;
 `;
 
-const NoteWrapper = styled.div``;
-
-const Note: React.FC<NoteProps> = ({ note }) => {
+const Note: React.FC<NoteProps> = ({
+  note,
+  onClickUpdateButton,
+  onClickDeleteButton,
+}) => {
   return (
     <NoteContainer>
-      <Title>{note.investmentDate} 투자노트</Title>
-      <NoteWrapper>{note.text}</NoteWrapper>
+      <Space
+        style={{
+          width: '100%',
+          justifyContent: 'space-between',
+          marginBottom: '10px',
+        }}
+      >
+        <Title>{note.investmentDate} 투자노트</Title>
+        <Space>
+          <Button type="text" onClick={() => onClickUpdateButton(note.id)}>
+            수정
+          </Button>
+          <Button type="text" onClick={() => onClickDeleteButton(note.id)}>
+            삭제
+          </Button>
+        </Space>
+      </Space>
+      <Space>{note.text}</Space>
     </NoteContainer>
   );
 };

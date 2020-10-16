@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { message } from 'antd';
-import { useHistory } from 'react-router-dom';
-import { getNote } from '../../lib/api/note';
-import routes from '../../routes';
+import { RouteComponentProps } from 'react-router-dom';
+import { getNote } from '../lib/api/note';
 
-import Page404 from '../../pages/Page404';
-import Note from '../../component/note/Note';
+import Page404 from './Page404';
+import NavContainer from '../container/base/NavContainer';
+import EditorContainer from '../container/note/EditorContainer';
 
-interface NoteContainerProps {
+interface MatchProps {
   id: string;
 }
 
-const NoteContainer: React.FC<NoteContainerProps> = ({ id }) => {
+const UpdateNote: React.FC<RouteComponentProps<MatchProps>> = ({ match }) => {
+  const { id } = match.params;
+
   const [note, setNote] = useState({
     id: '',
     text: '',
@@ -19,16 +21,6 @@ const NoteContainer: React.FC<NoteContainerProps> = ({ id }) => {
     createdDate: '',
     lastModifiedDate: '',
   });
-
-  const history = useHistory();
-
-  const onClickUpdateButton = (id: string) => {
-    history.push(routes.note.update(id));
-  };
-
-  const onClickDeleteButton = (id: string) => {
-    console.log(id);
-  };
 
   useEffect(() => {
     async function fetchNote() {
@@ -52,12 +44,11 @@ const NoteContainer: React.FC<NoteContainerProps> = ({ id }) => {
   }, []);
 
   return (
-    <Note
-      note={note}
-      onClickUpdateButton={onClickUpdateButton}
-      onClickDeleteButton={onClickDeleteButton}
-    />
+    <>
+      <NavContainer />
+      <EditorContainer date={note.investmentDate} initialValue={note.text} />
+    </>
   );
 };
 
-export default NoteContainer;
+export default UpdateNote;

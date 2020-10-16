@@ -7,6 +7,7 @@ import routes from '../../routes';
 
 import CreateNoteBanner from './CreateNoteBanner';
 import Editor from './Editor';
+import EditorContainer from '../../container/note/EditorContainer';
 import NoteList from './NoteList';
 import Note from './Note';
 
@@ -56,7 +57,7 @@ const EditorComponent = () => {
 };
 
 describe('<Editor />', () => {
-  it('render component', () => {
+  it('render component in create page', () => {
     const { getByText } = render(<EditorComponent />);
 
     const today = moment(Date.now()).format('YYYY-MM-DD');
@@ -67,30 +68,26 @@ describe('<Editor />', () => {
     expect(noteTitle).toBeInTheDocument();
     expect(saveButton).toBeInTheDocument();
   });
+
+  it('render component in update page', () => {
+    const { getByText } = render(
+      <EditorContainer date="20201016" initialValue="initial value" />
+    );
+
+    const noteContent = getByText('initial value');
+
+    expect(noteContent).toBeInTheDocument();
+  });
 });
-
-const NoteListComponent = () => {
-  const [selected, setSelected] = useState('');
-
-  const onClickNote = (id: string) => {
-    if (selected === id) {
-      setSelected('');
-    } else {
-      setSelected(id);
-    }
-  };
-
-  return (
-    <NoteList notes={dummyData} selected={selected} onClickNote={onClickNote} />
-  );
-};
 
 describe('<NoteList />', () => {
   it('render component', () => {
-    const { getByText } = render(<NoteListComponent />);
+    const { getByText } = render(
+      <NoteList notes={dummyData} onClick={() => console.log('click')} />
+    );
 
     const listHeader = getByText('투자노트 목록');
-    const listItem = getByText('2020-10-01 (목)');
+    const listItem = getByText('2020-10-01 (목) 투자노트');
 
     expect(listHeader).toBeInTheDocument();
     expect(listItem).toBeInTheDocument();
@@ -101,7 +98,13 @@ describe('<Note />', () => {
   it('render component', () => {
     const note = dummyData[0];
 
-    const { getByText } = render(<Note note={note} />);
+    const { getByText } = render(
+      <Note
+        note={note}
+        onClickUpdateButton={() => console.log('update')}
+        onClickDeleteButton={() => console.log('delete')}
+      />
+    );
     const noteTitle = getByText(`${note.investmentDate} 투자노트`);
     const noteText = getByText(note.text);
 

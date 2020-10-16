@@ -28,7 +28,7 @@ const LoginContainer = () => {
 
         history.push(routes.home());
       } else {
-        message.info('알 수 없는 오류가 발생했습니다.');
+        message.error('알 수 없는 오류가 발생했습니다.');
       }
     } catch (e) {
       if (e.message === 'Network Error') {
@@ -42,7 +42,7 @@ const LoginContainer = () => {
 
         history.push(routes.home());
       } else {
-        message.info('알 수 없는 오류가 발생했습니다.');
+        message.error('알 수 없는 오류가 발생했습니다.');
       }
     }
   };
