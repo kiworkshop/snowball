@@ -27,13 +27,13 @@ const EditorContainer: React.FC<EditorContainerProps> = ({ date }) => {
 
       if (response.status === 200) {
         const { id: noteId } = response.data;
-        history.push(routes.note.read(noteId));
+        history.push(routes.note.detail(noteId));
       } else {
-        message.info('알 수 없는 오류가 발생했습니다.');
+        message.error('알 수 없는 오류가 발생했습니다.');
       }
     } catch (e) {
       console.log(e);
-      message.info('알 수 없는 오류가 발생했습니다.');
+      message.error('알 수 없는 오류가 발생했습니다.');
     }
   };
 

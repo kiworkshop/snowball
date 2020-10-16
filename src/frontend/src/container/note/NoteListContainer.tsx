@@ -1,22 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { message } from 'antd';
+import { useHistory } from 'react-router-dom';
 import { getNotes } from '../../lib/api/note';
-import dummyData from '../../static/dummyData';
+import routes from '../../routes';
 
 import { NoteType } from '../../type/note';
 
 import NoteList from '../../component/note/NoteList';
 
 const NoteListContainer = () => {
-  const [selected, setSelected] = useState('');
   const [notes, setNotes] = useState<Array<NoteType.Note>>([]);
 
-  const onClickNote = (id: string) => {
-    if (selected === id) {
-      setSelected('');
-    } else {
-      setSelected(id);
-    }
+  const history = useHistory();
+  const onClick = (id: string) => {
+    history.push(routes.note.detail(id));
   };
 
   useEffect(() => {
@@ -27,24 +24,17 @@ const NoteListContainer = () => {
         if (response.status === 200) {
           setNotes(response.data);
         } else {
-          message.info('알 수 없는 오류가 발생했습니다.');
+          message.error('알 수 없는 오류가 발생했습니다.');
         }
       } catch (e) {
-        if (e.message === 'Network Error') {
-          setNotes([...dummyData]);
-          console.log(e);
-        } else {
-          message.info('알 수 없는 오류가 발생했습니다.');
-        }
+        message.error('알 수 없는 오류가 발생했습니다.');
       }
     }
 
     fetchNotes();
   }, []);
 
-  return (
-    <NoteList notes={notes} selected={selected} onClickNote={onClickNote} />
-  );
+  return <NoteList notes={notes} onClick={onClick} />;
 };
 
 export default NoteListContainer;
