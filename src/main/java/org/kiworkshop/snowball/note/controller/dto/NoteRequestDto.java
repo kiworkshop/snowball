@@ -13,10 +13,8 @@ import java.time.LocalDate;
 public class NoteRequestDto {
 
     private String text;
-
     @NotNull
     private LocalDate investmentDate;
-
     @NotNull
     private User user;
 
