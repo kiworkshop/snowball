@@ -4,27 +4,40 @@ import store from 'store2';
 import { useDispatch } from 'react-redux';
 import { login } from './store/modules/user';
 
-import { Login, Main, CreateNote } from './pages';
+import {
+  Login,
+  Main,
+  CreateNote,
+  Page404,
+  NoteDetail,
+  UpdateNote,
+} from './pages';
 
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const loggedInfo = store.get('snowball-user');
+    const userInfo = store.get('snowball-user');
 
-    if (!loggedInfo) return;
-    if (loggedInfo.expired < Date.now()) return;
+    if (!userInfo) return;
+    if (userInfo.expired < Date.now()) {
+      store.remove('snowball-user');
+      return;
+    }
 
-    dispatch(login(loggedInfo.user));
+    dispatch(login(userInfo.user));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <Router>
       <Switch>
-        <Route path="/" component={Login} exact />
-        <Route path="/main" component={Main} exact />
-        <Route path="/create/note/:date" component={CreateNote} exact />
+        <Route path="/" component={Main} exact />
+        <Route path="/login" component={Login} exact />
+        <Route path="/write/note/:date" component={CreateNote} exact />
+        <Route path="/update/note/:id" component={UpdateNote} />
+        <Route path="/note/:id" component={NoteDetail} exact />
+        <Route component={Page404} />
       </Switch>
     </Router>
   );

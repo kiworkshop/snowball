@@ -1,66 +1,35 @@
 import React from 'react';
 import styled from 'styled-components';
-import { List } from 'antd';
-import { FolderOpenOutlined, DownOutlined } from '@ant-design/icons';
+import { List, Collapse, Button, Typography } from 'antd';
+import { FolderOpenOutlined, RightOutlined } from '@ant-design/icons';
 import { setDate } from '../../lib/date';
 
-interface Note {
-  id: string;
-  text: string;
-  investmentDate: string;
-  createdDate: string;
-  lastModifiedDate: string;
-}
+import { NoteType } from '../../type/note';
 
 interface NoteListProps {
-  notes: Array<Note>;
-  selected: string;
-  onClickNote: (date: string) => void;
+  notes: Array<NoteType.Note>;
+  onClick: (id: string) => void;
 }
 
 const ListHeader = styled.strong`
   font-size: 1.1rem;
 `;
 
-const NoteWrapper = styled(List.Item)`
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  transition: 0.3s background;
+const NoteWrapper = styled(Collapse)`
+  padding-bottom: 10px;
 
-  &:hover {
-    background: #f5f5f5;
+  & + & {
+    border-top: 1px solid #f0f0f0;
   }
 `;
 
-const NoteDate = styled.div`
-  align-items: center;
-  display: flex;
-  font-size: 1rem;
-  justify-content: space-between;
-  width: 100%;
+const MoreInfoButton = styled(Button)`
+  float: right;
 `;
 
-const NoteContentWrapper = styled.div`
-  max-height: 0;
-  overflow: hidden;
+const { Panel } = Collapse;
 
-  &.selected {
-    max-height: 500px;
-    padding-top: 12px;
-    transition: 0.7s max-height ease-in-out;
-  }
-`;
-
-const NoteContent = styled.p`
-  line-height: 1.5;
-`;
-
-const NoteList: React.FC<NoteListProps> = ({
-  notes,
-  selected,
-  onClickNote,
-}) => {
+const NoteList: React.FC<NoteListProps> = ({ notes, onClick }) => {
   return (
     <List
       header={
@@ -72,15 +41,16 @@ const NoteList: React.FC<NoteListProps> = ({
       bordered
       dataSource={notes}
       renderItem={(note) => (
-        <NoteWrapper onClick={() => onClickNote(note.id)}>
-          <NoteDate>
-            {setDate(note.investmentDate)} <DownOutlined />
-          </NoteDate>
-          <NoteContentWrapper
-            className={selected === note.id ? 'selected' : ''}
+        <NoteWrapper ghost>
+          <Panel
+            key={note.id}
+            header={`${setDate(note.investmentDate)} 투자노트`}
           >
-            <NoteContent>{note.text}</NoteContent>
-          </NoteContentWrapper>
+            <Typography.Paragraph>{note.text}</Typography.Paragraph>
+            <MoreInfoButton type="text" onClick={() => onClick(note.id)}>
+              더보기 <RightOutlined />
+            </MoreInfoButton>
+          </Panel>
         </NoteWrapper>
       )}
     />

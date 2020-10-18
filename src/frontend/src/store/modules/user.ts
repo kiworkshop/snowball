@@ -1,7 +1,17 @@
+import { UserType } from '../../type/user';
+
+/*
+    Actions
+ */
+
 const LOGIN = 'user/LOGIN' as const;
 const LOGOUT = 'user/LOGOUT' as const;
 
-export const login = (user: typeof initialState.loginInfo) => ({
+/*
+    Action Creators
+ */
+
+export const login = (user: UserType.UserInfo) => ({
   type: LOGIN,
   payload: user,
 });
@@ -9,42 +19,45 @@ export const logout = () => ({ type: LOGOUT });
 
 type UserAction = ReturnType<typeof login> | ReturnType<typeof logout>;
 
-type UserState = {
-  loginInfo: {
-    id: string;
-    name: string;
-    pictureUrl: string;
-  };
-  logged: boolean;
-};
+/*
+    Initial State
+ */
 
-const initialState: UserState = {
-  loginInfo: {
+const initialState: UserType.UserState = {
+  userInfo: {
     id: '',
+    email: '',
     name: '',
+    age: null,
+    gender: '',
     pictureUrl: '',
+    notes: [],
   },
   logged: false,
 };
 
-function user(state: UserState = initialState, action: UserAction) {
+/*
+    Dispatch Function
+ */
+
+function user(state: UserType.UserState = initialState, action: UserAction) {
   switch (action.type) {
     case LOGIN:
       return {
-        loginInfo: {
-          id: action.payload.id,
-          name: action.payload.name,
-          pictureUrl: action.payload.pictureUrl,
-        },
+        userInfo: { ...action.payload },
         logged: true,
       };
 
     case LOGOUT:
       return {
-        loginInfo: {
+        userInfo: {
           id: '',
+          email: '',
           name: '',
+          age: null,
+          gender: '',
           pictureUrl: '',
+          notes: [],
         },
         logged: false,
       };

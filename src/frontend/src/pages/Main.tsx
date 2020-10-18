@@ -8,6 +8,7 @@ import CreateNoteButton from '../component/base/CreateNoteButton';
 import NavContainer from '../container/base/NavContainer';
 import CreateNoteBannerContainer from '../container/note/CreateNoteBannerContainer';
 import NoteListContainer from '../container/note/NoteListContainer';
+import routes from '../routes';
 
 const Main = () => {
   const logged = useSelector((state: RootState) => state.user.logged);
@@ -20,7 +21,7 @@ const Main = () => {
         <NoteListContainer />
         <CreateNoteButton />
       </Container>
-      {!logged && <Redirect to="/" />}
+      {!logged && <Redirect to={routes.login()} />}
     </>
   );
 };

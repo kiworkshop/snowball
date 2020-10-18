@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-interface Props {
+interface ContainerProps {
   children: React.ReactNode;
   [propName: string]: React.ReactNode | {};
 }
@@ -27,7 +27,7 @@ const StyledContainer = styled.div`
   }
 `;
 
-const Container: React.FC<Props> = ({ children, ...rest }) => {
+const Container: React.FC<ContainerProps> = ({ children, ...rest }) => {
   return <StyledContainer {...rest}>{children}</StyledContainer>;
 };
 

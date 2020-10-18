@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import moment from 'moment';
 import { Button } from 'antd';
 import { useHistory } from 'react-router-dom';
+import routes from '../../routes';
 
 const StyledButton = styled(Button)`
   bottom: 30px;
@@ -14,7 +15,7 @@ const CreateNoteButton = () => {
   const history = useHistory();
 
   const onClick = () => {
-    history.push(`/create/note/${moment(Date.now()).format('YYYYMMDD')}`);
+    history.push(routes.note.create(moment(Date.now()).format('YYYYMMDD')));
   };
 
   return (

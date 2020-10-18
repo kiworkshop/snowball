@@ -1,9 +1,10 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { RootState } from '../store/modules';
+import routes from '../routes';
 
 import LoginContainer from '../container/login/LoginContainer';
-import { Redirect } from 'react-router-dom';
 
 const Login = () => {
   const logged = useSelector((state: RootState) => state.user.logged);
@@ -11,7 +12,7 @@ const Login = () => {
   return (
     <>
       <LoginContainer />
-      {logged && <Redirect to="/main" />}
+      {logged && <Redirect to={routes.home()} />}
     </>
   );
 };

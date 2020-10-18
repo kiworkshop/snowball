@@ -1,88 +1,40 @@
 import React, { useEffect, useState } from 'react';
+import { message } from 'antd';
+import { useHistory } from 'react-router-dom';
 import { getNotes } from '../../lib/api/note';
+import routes from '../../routes';
+
+import { NoteType } from '../../type/note';
 
 import NoteList from '../../component/note/NoteList';
 
-interface Note {
-  id: string;
-  text: string;
-  investmentDate: string;
-  createdDate: string;
-  lastModifiedDate: string;
-}
-
-const notesDummy = [
-  {
-    id: '1',
-    text:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos provident repudiandae, architecto doloremque sunt suscipit asperiores accusamus optio fuga quam perspiciatis vero illum illo nemo consectetur dignissimos tempora reiciendis soluta?',
-    investmentDate: '20201001',
-    createdDate: '20201001',
-    lastModifiedDate: '20201001',
-  },
-  {
-    id: '2',
-    text:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos provident repudiandae, architecto doloremque sunt suscipit asperiores accusamus optio fuga quam perspiciatis vero illum illo nemo consectetur dignissimos tempora reiciendis soluta?',
-    investmentDate: '20201002',
-    createdDate: '20201002',
-    lastModifiedDate: '20201002',
-  },
-  {
-    id: '3',
-    text:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos provident repudiandae, architecto doloremque sunt suscipit asperiores accusamus optio fuga quam perspiciatis vero illum illo nemo consectetur dignissimos tempora reiciendis soluta?',
-    investmentDate: '20201003',
-    createdDate: '20201003',
-    lastModifiedDate: '20201003',
-  },
-  {
-    id: '4',
-    text:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos provident repudiandae, architecto doloremque sunt suscipit asperiores accusamus optio fuga quam perspiciatis vero illum illo nemo consectetur dignissimos tempora reiciendis soluta?',
-    investmentDate: '20201004',
-    createdDate: '20201004',
-    lastModifiedDate: '20201004',
-  },
-  {
-    id: '5',
-    text:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos provident repudiandae, architecto doloremque sunt suscipit asperiores accusamus optio fuga quam perspiciatis vero illum illo nemo consectetur dignissimos tempora reiciendis soluta?',
-    investmentDate: '20201005',
-    createdDate: '20201005',
-    lastModifiedDate: '20201005',
-  },
-];
-
 const NoteListContainer = () => {
-  const [selected, setSelected] = useState('');
-  const [notes, setNotes] = useState<Array<Note>>([]);
+  const [notes, setNotes] = useState<Array<NoteType.Note>>([]);
 
-  const onClickNote = (id: string) => {
-    if (selected === id) {
-      setSelected('');
-    } else {
-      setSelected(id);
-    }
+  const history = useHistory();
+  const onClick = (id: string) => {
+    history.push(routes.note.detail(id));
   };
 
   useEffect(() => {
     async function fetchNotes() {
-      const fetchedNotes = await getNotes(1);
+      try {
+        const response = await getNotes(1);
 
-      if (fetchedNotes) {
-        setNotes(fetchedNotes);
-      } else {
-        setNotes([...notesDummy]);
+        if (response.status === 200) {
+          setNotes(response.data);
+        } else {
+          message.error('알 수 없는 오류가 발생했습니다.');
+        }
+      } catch (e) {
+        message.error('알 수 없는 오류가 발생했습니다.');
       }
     }
 
     fetchNotes();
   }, []);
 
-  return (
-    <NoteList notes={notes} selected={selected} onClickNote={onClickNote} />
-  );
+  return <NoteList notes={notes} onClick={onClick} />;
 };
 
 export default NoteListContainer;

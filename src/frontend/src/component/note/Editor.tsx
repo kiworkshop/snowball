@@ -3,10 +3,12 @@ import styled from 'styled-components';
 import { Button } from 'antd';
 import moment from 'moment';
 import ReactQuill from 'react-quill';
+
 import 'react-quill/dist/quill.snow.css';
+
 import Container from '../../component/base/Container';
 
-interface Props {
+interface EditorProps {
   value: string;
   setValue: React.Dispatch<React.SetStateAction<string>>;
   noteDate: string;
@@ -14,7 +16,7 @@ interface Props {
 }
 
 const StyledContainer = styled(Container)`
-  padding-top: 50px;
+  padding: 50px 0;
 `;
 
 const NoteDate = styled.h1`
@@ -28,11 +30,15 @@ const StyledEditor = styled(ReactQuill)`
 `;
 
 const SaveButton = styled(Button)`
-  float: right;
   margin-top: 30px;
 `;
 
-const Editor: React.FC<Props> = ({ value, setValue, noteDate, onSave }) => {
+const Editor: React.FC<EditorProps> = ({
+  value,
+  setValue,
+  noteDate,
+  onSave,
+}) => {
   const toolbarOptions = [
     ['bold', 'italic', 'underline', 'strike'],
     ['blockquote', 'code-block'],

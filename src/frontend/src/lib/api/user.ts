@@ -1,6 +1,3 @@
-import async from '../async';
+import axios from '../axios';
 
-export const login = async () => {
-  const data = await async.GET('/login');
-  return data;
-};
+export const login = () => axios.get('/login');

@@ -5,6 +5,8 @@ import store from 'store2';
 import { login as loginAPI } from '../../lib/api/user';
 import Login from '../../component/login/Login';
 import { login } from '../../store/modules/user';
+import { message } from 'antd';
+import routes from '../../routes';
 
 const LoginContainer = () => {
   const dispatch = useDispatch();
@@ -12,23 +14,47 @@ const LoginContainer = () => {
   const history = useHistory();
 
   const onClick = async () => {
-    const testUser = await loginAPI();
+    try {
+      const response = await loginAPI();
 
-    if (testUser) {
-      dispatch(login(testUser));
-      store.set('snowball-user', {
-        user: testUser,
-        expired: Date.now() + 1000 * 60 * 60 * 24,
-      });
-    } else {
-      dispatch(login({ id: 'testUser', name: '눈사람', pictureUrl: '' }));
-      store.set('snowball-user', {
-        user: { id: 'testUser', name: '눈사람', pictureUrl: '' },
-        expired: Date.now() + 1000 * 60 * 60 * 24,
-      });
+      if (response.status === 200) {
+        const testUser = response.data;
+
+        dispatch(login(testUser));
+        store.set('snowball-user', {
+          user: testUser,
+          expired: Date.now() + 1000 * 60 * 60 * 24,
+        });
+
+        history.push(routes.home());
+      } else {
+        message.error('알 수 없는 오류가 발생했습니다.');
+      }
+    } catch (e) {
+      if (e.message === 'Network Error') {
+        console.log(e);
+
+        const testUser = {
+          id: 'testUser',
+          email: '',
+          name: '눈사람',
+          age: null,
+          gender: '',
+          pictureUrl: '',
+          notes: [],
+        };
+
+        dispatch(login({ ...testUser }));
+        store.set('snowball-user', {
+          user: { ...testUser },
+          expired: Date.now() + 1000 * 60 * 60 * 24,
+        });
+
+        history.push(routes.home());
+      } else {
+        message.error('알 수 없는 오류가 발생했습니다.');
+      }
     }
-
-    history.push('/main');
   };
 
   return <Login onClick={onClick} />;
