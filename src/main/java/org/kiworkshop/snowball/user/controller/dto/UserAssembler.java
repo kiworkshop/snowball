@@ -1,13 +1,13 @@
-package org.kiworkshop.snowball.user.service;
+package org.kiworkshop.snowball.user.controller.dto;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.kiworkshop.snowball.user.controller.dto.UserResponseDto;
 import org.kiworkshop.snowball.user.controller.dto.UserCreateRequestDto;
-import org.kiworkshop.snowball.user.domain.User;
+import org.kiworkshop.snowball.user.entity.User;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class UserModelMapper {
+public class UserAssembler {
 
     public static User getUser(UserCreateRequestDto userCreateRequestDto) {
         return User.builder()
