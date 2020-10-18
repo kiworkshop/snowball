@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { message } from 'antd';
-import { RouteComponentProps } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Redirect, RouteComponentProps } from 'react-router-dom';
+import { RootState } from '../store/modules';
 import { getNote } from '../lib/api/note';
+import routes from '../routes';
 
 import Page404 from './Page404';
 import NavContainer from '../container/base/NavContainer';
@@ -21,6 +24,8 @@ const UpdateNote: React.FC<RouteComponentProps<MatchProps>> = ({ match }) => {
     createdDate: '',
     lastModifiedDate: '',
   });
+
+  const logged = useSelector((state: RootState) => state.user.logged);
 
   useEffect(() => {
     async function fetchNote() {
@@ -47,6 +52,7 @@ const UpdateNote: React.FC<RouteComponentProps<MatchProps>> = ({ match }) => {
     <>
       <NavContainer />
       <EditorContainer date={note.investmentDate} initialValue={note.text} />
+      {!logged && <Redirect to={routes.login()} />}
     </>
   );
 };
