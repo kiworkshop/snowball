@@ -7,8 +7,8 @@ import Container from '../../component/base/Container';
 
 interface NoteProps {
   note: NoteType.Note;
-  onClickUpdateButton: (id: string) => void;
-  onClickDeleteButton: (id: string) => void;
+  onClickUpdateButton: () => void;
+  onClickDeleteButton: () => void;
 }
 
 const { Title } = Typography;
@@ -33,10 +33,11 @@ const Note: React.FC<NoteProps> = ({
       >
         <Title>{note.investmentDate} 투자노트</Title>
         <Space>
-          <Button type="text" onClick={() => onClickUpdateButton(note.id)}>
+          <Button type="text" onClick={onClickUpdateButton}>
             수정
           </Button>
-          <Button type="text" onClick={() => onClickDeleteButton(note.id)}>
+
+          <Button type="text" onClick={onClickDeleteButton}>
             삭제
           </Button>
         </Space>

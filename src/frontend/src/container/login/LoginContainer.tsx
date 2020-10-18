@@ -34,9 +34,19 @@ const LoginContainer = () => {
       if (e.message === 'Network Error') {
         console.log(e);
 
-        dispatch(login({ id: 'testUser', name: '눈사람', pictureUrl: '' }));
+        const testUser = {
+          id: 'testUser',
+          email: '',
+          name: '눈사람',
+          age: null,
+          gender: '',
+          pictureUrl: '',
+          notes: [],
+        };
+
+        dispatch(login({ ...testUser }));
         store.set('snowball-user', {
-          user: { id: 'testUser', name: '눈사람', pictureUrl: '' },
+          user: { ...testUser },
           expired: Date.now() + 1000 * 60 * 60 * 24,
         });
 

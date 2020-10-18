@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { message } from 'antd';
+import { message, Modal } from 'antd';
 import { useHistory } from 'react-router-dom';
-import { getNote } from '../../lib/api/note';
+import { deleteNote, getNote } from '../../lib/api/note';
 import routes from '../../routes';
 
 import Page404 from '../../pages/Page404';
@@ -22,12 +22,35 @@ const NoteContainer: React.FC<NoteContainerProps> = ({ id }) => {
 
   const history = useHistory();
 
-  const onClickUpdateButton = (id: string) => {
+  const onClickUpdateButton = () => {
     history.push(routes.note.update(id));
   };
 
-  const onClickDeleteButton = (id: string) => {
-    console.log(id);
+  // 노트 삭제 관련 로직
+  const onClickDeleteButton = () => {
+    Modal.confirm({
+      content: '정말 삭제하시겠습니까? 삭제한 이후엔 복구할 수 없습니다.',
+      async onOk() {
+        try {
+          const response = await deleteNote(id);
+
+          if (response.status === 200) {
+            history.push(routes.home());
+          } else if (response.status === 404) {
+            return <Page404 />;
+          } else {
+            message.error('알 수 없는 오류가 발생했습니다.');
+          }
+        } catch (e) {
+          console.log(e);
+          message.error('알 수 없는 오류가 발생했습니다.');
+        }
+      },
+      okText: '삭제',
+      okType: 'danger',
+      cancelText: '취소',
+      icon: <></>,
+    });
   };
 
   useEffect(() => {

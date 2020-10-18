@@ -6,3 +6,4 @@ export const getNote = (id: string) => axios.get(`/notes/${id}`);
 export const addNote = (form: NoteType.NoteForm) => axios.post('/notes', form);
 export const updateNote = (id: string, form: NoteType.NoteForm) =>
   axios.put(`/notes/${id}`, form);
+export const deleteNote = (id: string) => axios.delete(`/notes/${id}`);
