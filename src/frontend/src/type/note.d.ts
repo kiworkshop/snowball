@@ -1,3 +1,5 @@
+import { UserType } from './user';
+
 export namespace NoteType {
   interface Note {
     id: string;
@@ -10,5 +12,6 @@ export namespace NoteType {
   interface NoteForm {
     text: string;
     investmentDate: string;
+    user: UserType.UserInfo;
   }
 }

@@ -26,8 +26,12 @@ type UserAction = ReturnType<typeof login> | ReturnType<typeof logout>;
 const initialState: UserType.UserState = {
   userInfo: {
     id: '',
+    email: '',
     name: '',
+    age: null,
+    gender: '',
     pictureUrl: '',
+    notes: [],
   },
   logged: false,
 };
@@ -48,8 +52,12 @@ function user(state: UserType.UserState = initialState, action: UserAction) {
       return {
         userInfo: {
           id: '',
+          email: '',
           name: '',
+          age: null,
+          gender: '',
           pictureUrl: '',
+          notes: [],
         },
         logged: false,
       };

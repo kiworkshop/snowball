@@ -51,7 +51,11 @@ const UpdateNote: React.FC<RouteComponentProps<MatchProps>> = ({ match }) => {
   return (
     <>
       <NavContainer />
-      <EditorContainer date={note.investmentDate} initialValue={note.text} />
+      <EditorContainer
+        date={note.investmentDate}
+        initialValue={note.text}
+        id={id}
+      />
       {!logged && <Redirect to={routes.login()} />}
     </>
   );
