@@ -36,6 +36,13 @@ const NoteListContainer = () => {
         } else {
           message.info('알 수 없는 오류가 발생했습니다.');
         }
+
+      const fetchedNotes = await getNotes(1);
+
+      if (fetchedNotes) {
+        setNotes(fetchedNotes);
+      } else {
+        setNotes([...dummyData]);
       }
     }
 
