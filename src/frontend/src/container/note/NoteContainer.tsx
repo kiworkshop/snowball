@@ -49,7 +49,7 @@ const NoteContainer: React.FC<NoteContainerProps> = ({ id }) => {
     }
 
     fetchNote();
-  }, []);
+  }, [id]);
 
   return (
     <Note

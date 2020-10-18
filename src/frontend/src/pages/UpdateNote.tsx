@@ -41,7 +41,7 @@ const UpdateNote: React.FC<RouteComponentProps<MatchProps>> = ({ match }) => {
     }
 
     fetchNote();
-  }, []);
+  }, [id]);
 
   return (
     <>
