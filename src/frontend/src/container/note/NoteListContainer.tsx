@@ -22,7 +22,7 @@ const NoteListContainer = () => {
         const response = await getNotes(1);
 
         if (response.status === 200) {
-          setNotes(response.data);
+          setNotes([...response.data]);
         } else {
           message.error('알 수 없는 오류가 발생했습니다.');
         }
