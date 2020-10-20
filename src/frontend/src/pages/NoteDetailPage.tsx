@@ -8,7 +8,9 @@ interface MatchProps {
   id: string;
 }
 
-const NoteDetail: React.FC<RouteComponentProps<MatchProps>> = ({ match }) => {
+const NoteDetailPage: React.FC<RouteComponentProps<MatchProps>> = ({
+  match,
+}) => {
   return (
     <>
       <NavContainer />
@@ -17,4 +19,4 @@ const NoteDetail: React.FC<RouteComponentProps<MatchProps>> = ({ match }) => {
   );
 };
 
-export default NoteDetail;
+export default NoteDetailPage;

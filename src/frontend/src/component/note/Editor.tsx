@@ -1,43 +1,36 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Button } from 'antd';
-import moment from 'moment';
+import { Button, Alert, Typography } from 'antd';
 import ReactQuill from 'react-quill';
 
 import 'react-quill/dist/quill.snow.css';
 
-import Container from '../../component/base/Container';
-
 interface EditorProps {
   value: string;
-  setValue: React.Dispatch<React.SetStateAction<string>>;
-  noteDate: string;
+  setValue: (value: string) => void;
+  investmentDate: string;
   onSave: () => void;
+  error: string;
+  onAlertClose: () => void;
 }
 
-const StyledContainer = styled(Container)`
-  padding: 50px 0;
-`;
-
-const NoteDate = styled.h1`
-  font-size: 2rem;
-`;
-
 const StyledEditor = styled(ReactQuill)`
+  margin-bottom: 30px;
+
   .ql-editor {
     min-height: 500px;
   }
 `;
 
-const SaveButton = styled(Button)`
-  margin-top: 30px;
-`;
+const { Title } = Typography;
 
 const Editor: React.FC<EditorProps> = ({
   value,
   setValue,
-  noteDate,
+  investmentDate,
   onSave,
+  error,
+  onAlertClose,
 }) => {
   const toolbarOptions = [
     ['bold', 'italic', 'underline', 'strike'],
@@ -60,18 +53,25 @@ const Editor: React.FC<EditorProps> = ({
   ];
 
   return (
-    <StyledContainer>
-      <NoteDate>{moment(noteDate).format('YYYY-MM-DD')} 투자노트</NoteDate>
+    <>
+      <Title>{investmentDate} 투자노트</Title>
       <StyledEditor
         theme="snow"
         value={value}
         onChange={setValue}
         modules={{ toolbar: toolbarOptions }}
       />
-      <SaveButton size="large" block onClick={onSave}>
-        저장하기
-      </SaveButton>
-    </StyledContainer>
+
+      {error && (
+        <Alert message={error} type="error" closable onClose={onAlertClose} />
+      )}
+
+      {!error && (
+        <Button size="large" block onClick={onSave}>
+          저장하기
+        </Button>
+      )}
+    </>
   );
 };
 

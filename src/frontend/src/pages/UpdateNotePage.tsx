@@ -14,7 +14,9 @@ interface MatchProps {
   id: string;
 }
 
-const UpdateNote: React.FC<RouteComponentProps<MatchProps>> = ({ match }) => {
+const UpdateNotePage: React.FC<RouteComponentProps<MatchProps>> = ({
+  match,
+}) => {
   const { id } = match.params;
 
   const [note, setNote] = useState({
@@ -51,14 +53,10 @@ const UpdateNote: React.FC<RouteComponentProps<MatchProps>> = ({ match }) => {
   return (
     <>
       <NavContainer />
-      <EditorContainer
-        date={note.investmentDate}
-        initialValue={note.text}
-        id={id}
-      />
+      <EditorContainer note={note} />
       {!logged && <Redirect to={routes.login()} />}
     </>
   );
 };
 
-export default UpdateNote;
+export default UpdateNotePage;

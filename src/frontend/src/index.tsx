@@ -6,6 +6,8 @@ import rootReducer from './store/modules';
 
 import './index.css';
 import App from './App';
+import 'react-dates/initialize';
+import 'react-dates/lib/css/_datepicker.css';
 
 const store = createStore(rootReducer);
 

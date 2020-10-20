@@ -10,7 +10,7 @@ import CreateNoteBannerContainer from '../container/note/CreateNoteBannerContain
 import NoteListContainer from '../container/note/NoteListContainer';
 import routes from '../routes';
 
-const Main = () => {
+const MainPage = () => {
   const logged = useSelector((state: RootState) => state.user.logged);
 
   return (
@@ -26,4 +26,4 @@ const Main = () => {
   );
 };
 
-export default Main;
+export default MainPage;

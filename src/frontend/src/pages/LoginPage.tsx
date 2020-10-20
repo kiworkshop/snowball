@@ -6,7 +6,7 @@ import routes from '../routes';
 
 import LoginContainer from '../container/login/LoginContainer';
 
-const Login = () => {
+const LoginPage = () => {
   const logged = useSelector((state: RootState) => state.user.logged);
 
   return (
@@ -17,4 +17,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginPage;

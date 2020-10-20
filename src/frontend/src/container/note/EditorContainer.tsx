@@ -1,43 +1,36 @@
-import React, { useState } from 'react';
-import moment from 'moment';
-import { message } from 'antd';
+import React, { useCallback, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/modules';
 import { addNote, updateNote } from '../../lib/api/note';
 import routes from '../../routes';
 
+import { NoteType } from '../../type/note';
+
 import Editor from '../../component/note/Editor';
+import { changeText } from '../../store/modules/note';
 
 interface EditorContainerProps {
-  date: string;
-  initialValue?: string;
-  id?: string;
+  note?: NoteType.Note;
 }
 
-const EditorContainer: React.FC<EditorContainerProps> = ({
-  date,
-  initialValue = '',
-  id,
-}) => {
-  const [value, setValue] = useState(initialValue);
+const EditorContainer: React.FC<EditorContainerProps> = ({ note }) => {
+  const dispatch = useDispatch();
 
+  const setText = useCallback((value: string) => dispatch(changeText(value)), [
+    dispatch,
+  ]);
   const history = useHistory();
 
-  const user = useSelector((state: RootState) => state.user.userInfo);
-
-  const onSave = async () => {
+  const { noteForm } = useSelector((state: RootState) => state.note);
+  const onSave = useCallback(async () => {
     try {
-      const writtenData = {
-        text: value,
-        investmentDate: moment(date).format('YYYY-MM-DD'),
-        user,
-      };
+      const writtenData = { ...noteForm };
 
       let response;
 
-      if (id) {
-        response = await updateNote(id, writtenData);
+      if (note) {
+        response = await updateNote(note.id, writtenData);
       } else {
         response = await addNote(writtenData);
       }
@@ -46,16 +39,28 @@ const EditorContainer: React.FC<EditorContainerProps> = ({
         const { id: noteId } = response.data;
         history.push(routes.note.detail(noteId));
       } else {
-        message.error('알 수 없는 오류가 발생했습니다.');
+        setError('저장하는 도중 오류가 발생했습니다.');
       }
     } catch (e) {
       console.log(e);
-      message.error('알 수 없는 오류가 발생했습니다.');
+      setError('저장하는 도중 오류가 발생했습니다.');
     }
-  };
+  }, [note, noteForm, history]);
+
+  const [error, setError] = useState('');
+  const onAlertClose = useCallback(() => {
+    setError('');
+  }, []);
 
   return (
-    <Editor value={value} setValue={setValue} noteDate={date} onSave={onSave} />
+    <Editor
+      value={noteForm.text}
+      setValue={setText}
+      investmentDate={noteForm.investmentDate}
+      onSave={onSave}
+      error={error}
+      onAlertClose={onAlertClose}
+    />
   );
 };
 

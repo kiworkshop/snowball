@@ -34,7 +34,7 @@ function App() {
       <Switch>
         <Route path="/" component={Main} exact />
         <Route path="/login" component={Login} exact />
-        <Route path="/write/note/:date" component={CreateNote} exact />
+        <Route path="/write/note" component={CreateNote} exact />
         <Route path="/update/note/:id" component={UpdateNote} />
         <Route path="/note/:id" component={NoteDetail} exact />
         <Route component={Page404} />

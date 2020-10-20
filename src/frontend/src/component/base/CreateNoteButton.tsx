@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import moment from 'moment';
 import { Button } from 'antd';
 import { useHistory } from 'react-router-dom';
 import routes from '../../routes';
@@ -15,7 +14,7 @@ const CreateNoteButton = () => {
   const history = useHistory();
 
   const onClick = () => {
-    history.push(routes.note.create(moment(Date.now()).format('YYYYMMDD')));
+    history.push(routes.note.create());
   };
 
   return (
