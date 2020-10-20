@@ -3,6 +3,8 @@ package org.kiworkshop.snowball.note.service;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kiworkshop.snowball.common.exception.DomainServiceException;
+import org.kiworkshop.snowball.common.type.TransactionType;
+import org.kiworkshop.snowball.common.vo.StockTransaction;
 import org.kiworkshop.snowball.note.controller.dto.NoteRequestDto;
 import org.kiworkshop.snowball.note.controller.dto.NoteCreateResponseDto;
 import org.kiworkshop.snowball.note.controller.dto.NoteRequestDtoFixture;
@@ -20,6 +22,7 @@ import org.springframework.data.domain.PageRequest;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
@@ -50,6 +53,23 @@ class NoteServiceTest {
         //then
         assertThat(noteCreateResponseDto.getId()).isEqualTo(1L);
         then(noteRepository).should().save(any(Note.class));
+    }
+
+    @Test
+    void getNoteWithStockTransaction() {
+        //given
+        Note noteFixture = NoteFixture.create();
+        given(noteRepository.findById(anyLong())).willReturn(Optional.of(noteFixture));
+
+        //when
+        Note note = dut.getById(1L);
+        List<StockTransaction> stockTransactions = note.getStockTransactions();
+        //then
+        assertThat(stockTransactions.size()).isEqualTo(noteFixture.getStockTransactions().size());
+        assertThat(stockTransactions.get(0).getTransactionType())
+                .isEqualByComparingTo(noteFixture.getStockTransactions().get(0).getTransactionType());
+        assertThat(stockTransactions.get(1).getTransactionType())
+                .isEqualByComparingTo(noteFixture.getStockTransactions().get(1).getTransactionType());
     }
 
     @Test
@@ -99,6 +119,7 @@ class NoteServiceTest {
         // then
         assertThat(note.getText()).isEqualTo(requestDto.getText());
         assertThat(note.getInvestmentDate()).isEqualTo(requestDto.getInvestmentDate());
+        assertThat(note.getStockTransactions().get(0)).isEqualToComparingFieldByField(requestDto.getStockTransactions().get(0));
     }
 
     @Test

@@ -9,6 +9,7 @@ public class NoteAssembler {
                 .text(noteRequestDto.getText())
                 .user(noteRequestDto.getUser())
                 .investmentDate(noteRequestDto.getInvestmentDate())
+                .stockTransactions(noteRequestDto.getStockTransactions())
                 .build();
     }
     public static NoteCreateResponseDto getNoteCreateResponseDto(Note note) {
