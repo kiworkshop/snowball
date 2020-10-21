@@ -5,12 +5,12 @@ import { useDispatch } from 'react-redux';
 import { login } from './store/modules/user';
 
 import {
-  Login,
-  Main,
-  CreateNote,
+  LoginPage,
+  MainPage,
+  CreateNotePage,
   Page404,
-  NoteDetail,
-  UpdateNote,
+  NoteDetailPage,
+  UpdateNotePage,
 } from './pages';
 
 function App() {
@@ -32,11 +32,11 @@ function App() {
   return (
     <Router>
       <Switch>
-        <Route path="/" component={Main} exact />
-        <Route path="/login" component={Login} exact />
-        <Route path="/write/note" component={CreateNote} exact />
-        <Route path="/update/note/:id" component={UpdateNote} />
-        <Route path="/note/:id" component={NoteDetail} exact />
+        <Route path="/" component={MainPage} exact />
+        <Route path="/login" component={LoginPage} exact />
+        <Route path="/write/note" component={CreateNotePage} exact />
+        <Route path="/update/note/:id" component={UpdateNotePage} />
+        <Route path="/note/:id" component={NoteDetailPage} exact />
         <Route component={Page404} />
       </Switch>
     </Router>
