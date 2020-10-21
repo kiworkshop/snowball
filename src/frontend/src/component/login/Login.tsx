@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Button } from 'antd';
+import { Button, Spin } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 
 interface LoginProps {
+  loading: boolean;
   onClick: () => void;
 }
 
@@ -42,26 +43,28 @@ const Copyright = styled.h5`
   text-align: center;
 `;
 
-const Login: React.FC<LoginProps> = ({ onClick }) => {
+const Login: React.FC<LoginProps> = ({ onClick, loading }) => {
   return (
     <LoginContainer>
-      <LoginInner>
-        <TitleWrapper>
-          <Title>SNOWBALL</Title>
-          <SubTitle>매일매일 굴러가는 당신의 자산을 관리하세요!</SubTitle>
-        </TitleWrapper>
+      <Spin tip="로딩중..." spinning={loading}>
+        <LoginInner>
+          <TitleWrapper>
+            <Title>SNOWBALL</Title>
+            <SubTitle>매일매일 굴러가는 당신의 자산을 관리하세요!</SubTitle>
+          </TitleWrapper>
 
-        <Button
-          block
-          icon={<UserOutlined />}
-          style={{ fontSize: '1.2rem', fontWeight: 800, height: '60px' }}
-          onClick={onClick}
-        >
-          테스트 유저 로그인
-        </Button>
+          <Button
+            block
+            icon={<UserOutlined />}
+            style={{ fontSize: '1.2rem', fontWeight: 800, height: '60px' }}
+            onClick={onClick}
+          >
+            테스트 유저 로그인
+          </Button>
 
-        <Copyright>SNOWBALL &copy; 2020</Copyright>
-      </LoginInner>
+          <Copyright>SNOWBALL &copy; 2020</Copyright>
+        </LoginInner>
+      </Spin>
     </LoginContainer>
   );
 };

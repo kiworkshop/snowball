@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import store from 'store2';
 import { RootState } from '../../store/modules';
 import { logout } from '../../store/modules/user';
 
@@ -12,7 +11,6 @@ const NavContainer = () => {
 
   const onLogout = () => {
     dispatch(logout());
-    store.remove('snowball-user');
   };
 
   return <Nav user={user} onLogout={onLogout} />;

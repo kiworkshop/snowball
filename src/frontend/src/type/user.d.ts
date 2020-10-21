@@ -14,5 +14,7 @@ export namespace UserType {
   interface UserState {
     userInfo: UserInfo;
     logged: boolean;
+    loading: boolean;
+    error: string;
   }
 }
