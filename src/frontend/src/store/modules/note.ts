@@ -1,15 +1,8 @@
 import { NoteType } from '../../type/note';
-import { UserType } from '../../type/user';
 import { Action, ActionCreator } from 'redux';
 
-const LOGIN = 'note/LOGIN';
 const CHANGE_INVESTMENT_DATE = 'note/CHANGE_INVESTMENT_DATE';
 const CHANGE_TEXT = 'note/CHANGE_TEXT';
-
-interface LoginAction extends Action {
-  type: typeof LOGIN;
-  payload: UserType.UserInfo;
-}
 
 interface ChangeInvestmentDateAction extends Action {
   type: typeof CHANGE_INVESTMENT_DATE;
@@ -20,11 +13,6 @@ interface ChangeTextAction extends Action {
   type: typeof CHANGE_TEXT;
   payload: string;
 }
-
-export const login: ActionCreator<LoginAction> = (user: UserType.UserInfo) => ({
-  type: LOGIN,
-  payload: user,
-});
 
 export const changeInvestmentDate: ActionCreator<ChangeInvestmentDateAction> = (
   date: string
@@ -40,7 +28,6 @@ export const changeText: ActionCreator<ChangeTextAction> = (text: string) => ({
 
 type NoteAction =
   | ReturnType<typeof changeInvestmentDate>
-  | ReturnType<typeof login>
   | ReturnType<typeof changeText>;
 
 const initialState: NoteType.NoteState = {
@@ -68,14 +55,6 @@ const initialState: NoteType.NoteState = {
 
 function note(state: NoteType.NoteState = initialState, action: NoteAction) {
   switch (action.type) {
-    case LOGIN:
-      return {
-        ...state,
-        noteForm: {
-          ...state.noteForm,
-          user: action.payload,
-        },
-      };
     case CHANGE_INVESTMENT_DATE:
       return {
         ...state,

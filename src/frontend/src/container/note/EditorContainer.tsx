@@ -23,16 +23,17 @@ const EditorContainer: React.FC<EditorContainerProps> = ({ note }) => {
   const history = useHistory();
 
   const { noteForm } = useSelector((state: RootState) => state.note);
+  const { userInfo } = useSelector((state: RootState) => state.user);
   const onSave = useCallback(async () => {
     try {
-      const writtenData = { ...noteForm };
+      const noteData = { ...noteForm, user: userInfo };
 
       let response;
 
       if (note) {
-        response = await updateNote(note.id, writtenData);
+        response = await updateNote(note.id, noteData);
       } else {
-        response = await addNote(writtenData);
+        response = await addNote(noteData);
       }
 
       if (response.status === 200) {
@@ -45,7 +46,7 @@ const EditorContainer: React.FC<EditorContainerProps> = ({ note }) => {
       console.log(e);
       setError('저장하는 도중 오류가 발생했습니다.');
     }
-  }, [note, noteForm, history]);
+  }, [note, noteForm, history, userInfo]);
 
   const [error, setError] = useState('');
   const onAlertClose = useCallback(() => {
