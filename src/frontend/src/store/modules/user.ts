@@ -85,7 +85,7 @@ function user(state: UserType.UserState = initialState, action: UserAction) {
         ...state,
         userInfo: { ...action.payload },
         loading: false,
-        error: '',
+        logged: true,
       };
 
     case LOGIN_FAIL:
