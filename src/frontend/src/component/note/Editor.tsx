@@ -1,15 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Button, Alert, Typography } from 'antd';
+import { Button, Alert, Typography, Spin } from 'antd';
 import ReactQuill from 'react-quill';
 
 import 'react-quill/dist/quill.snow.css';
+import { NoteType } from '../../type/note';
 
 interface EditorProps {
-  value: string;
+  noteInfo: NoteType.NoteForm;
   setValue: (value: string) => void;
-  investmentDate: string;
   onSave: () => void;
+  loading: boolean;
   error: string;
   onAlertClose: () => void;
 }
@@ -25,10 +26,10 @@ const StyledEditor = styled(ReactQuill)`
 const { Title } = Typography;
 
 const Editor: React.FC<EditorProps> = ({
-  value,
+  noteInfo,
   setValue,
-  investmentDate,
   onSave,
+  loading,
   error,
   onAlertClose,
 }) => {
@@ -54,22 +55,22 @@ const Editor: React.FC<EditorProps> = ({
 
   return (
     <>
-      <Title>{investmentDate} 투자노트</Title>
+      <Title>{noteInfo.investmentDate} 투자노트</Title>
       <StyledEditor
         theme="snow"
-        value={value}
+        value={noteInfo.text}
         onChange={setValue}
         modules={{ toolbar: toolbarOptions }}
       />
 
-      {error && (
+      {error ? (
         <Alert message={error} type="error" closable onClose={onAlertClose} />
-      )}
-
-      {!error && (
-        <Button size="large" block onClick={onSave}>
-          저장하기
-        </Button>
+      ) : (
+        <Spin tip="저장중..." spinning={loading}>
+          <Button size="large" block onClick={onSave}>
+            저장하기
+          </Button>
+        </Spin>
       )}
     </>
   );

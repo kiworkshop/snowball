@@ -18,5 +18,7 @@ export namespace NoteType {
   interface NoteState {
     noteInfo: Note;
     noteForm: NoteForm;
+    loading: boolean;
+    error: string;
   }
 }

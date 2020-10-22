@@ -3,13 +3,12 @@ import store from 'store2';
 import { UserType } from '../../type/user';
 import { RootState } from './index';
 import { login as loginAPI } from '../../lib/api/user';
-
-// Actions
-const LOGIN = 'user/LOGIN' as const;
-const LOGIN_SUCCESS = 'user/LOGIN_SUCCESS' as const;
-const LOGIN_FAIL = 'user/LOGIN_FAIL' as const;
-
-const LOGOUT = 'user/LOGOUT' as const;
+import {
+  LOGIN,
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
+  LOGOUT,
+} from '../constants/userConstants';
 
 // Action Type
 type UserAction =
@@ -54,7 +53,7 @@ export const logout = (): ThunkResult<void> => (dispatch) => {
   store.remove('snowball-user');
 };
 
-// Initial State
+// Initial state
 const initialState: UserType.UserState = {
   userInfo: {
     id: '',
