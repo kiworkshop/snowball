@@ -24,6 +24,7 @@ public class User extends BaseTimeEntity {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Note> notes;
 
+
     @Builder
     public User(String email, String name, int age, String gender, String pictureUrl) {
         this.email = email;
