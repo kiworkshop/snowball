@@ -29,9 +29,9 @@ const LoginContainer = () => {
     if (process.env.NODE_ENV === 'production') {
       dispatch(login());
     } else {
-      dispatch(tempUserForDevMode);
+      dispatch(login(tempUserForDevMode));
     }
-  }, [dispatch]);
+  }, [dispatch, tempUserForDevMode]);
 
   useEffect(() => {
     if (error) {
