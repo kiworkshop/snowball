@@ -26,8 +26,7 @@ function App() {
     }
 
     dispatch(login(userInfo.user));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   return (
     <Router>
