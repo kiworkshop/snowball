@@ -20,11 +20,11 @@ const CreateNoteBannerWrapper = styled(Link)`
   width: 100%;
 
   &:hover {
-    border: 1px solid #1890ff;
+    border: 1px solid #13c2c2;
 
     svg,
     h1 {
-      color: #1890ff;
+      color: #13c2c2;
     }
   }
 `;

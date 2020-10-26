@@ -34,11 +34,13 @@ const HeaderInner = styled(Container)`
   justify-content: space-between;
 `;
 
-const NavLink = styled(Link)`
-  color: #141414;
+const BrandTitle = styled(Link)`
+  color: #13c2c2;
+  font-size: 1.6rem;
+  font-weight: bold;
 
   &:hover {
-    color: #595959;
+    color: #36cfc9;
   }
 `;
 
@@ -59,7 +61,7 @@ const Nav: React.FC<NavProps> = ({
   return (
     <StyledHeader>
       <HeaderInner>
-        <NavLink to={routes.home()}>SNOWBALL</NavLink>
+        <BrandTitle to={routes.home()}>SNOWBALL</BrandTitle>
 
         <Menu mode="horizontal" selectedKeys={selectedKeys}>
           <Menu.Item key="home" onClick={onClickNavLink(routes.home())}>
