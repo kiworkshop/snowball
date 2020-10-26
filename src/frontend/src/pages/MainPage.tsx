@@ -9,20 +9,21 @@ import CreateNoteButton from '../component/base/CreateNoteButton';
 import NavContainer from '../container/base/NavContainer';
 import CreateNoteBannerContainer from '../container/note/CreateNoteBannerContainer';
 import NoteListContainer from '../container/note/NoteListContainer';
+import Container from '../component/base/Container';
 
 const MainPage = () => {
   const logged = useSelector((state: RootState) => state.user.logged);
 
-  const { Content } = Layout;
-
   return (
-    <Layout style={{ background: '#fff' }}>
-      <NavContainer />
-      <Content>
+    <Layout style={{ background: '#fff', height: '100%', paddingTop: '64px' }}>
+      <NavContainer selectedMenu={['home']} />
+
+      <Container style={{ padding: '50px 0' }}>
         <CreateNoteBannerContainer />
         <NoteListContainer />
         <CreateNoteButton />
-      </Content>
+      </Container>
+
       {!logged && <Redirect to={routes.login()} />}
     </Layout>
   );
