@@ -1,86 +1,35 @@
 import React from 'react';
-import { Dropdown, Menu } from 'antd';
-import { HomeFilled } from '@ant-design/icons';
-import { FaUserCircle } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Layout, Dropdown, Menu, Button } from 'antd';
+import { HomeOutlined, DownOutlined } from '@ant-design/icons';
+import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
+import routes from '../../routes';
 
 import { UserType } from '../../type/user';
-import routes from '../../routes';
 
 interface NavProps {
   user: UserType.UserInfo;
   onLogout: () => void;
 }
 
-const StyledNav = styled.nav`
+const { Header } = Layout;
+
+const StyledHeader = styled(Header)`
   background: #fff;
-  box-shadow: 0 4px 2px -4px gray;
-  height: 80px;
-  left: 0;
+  box-shadow: 0 2px 8px #f0f1f2;
+  display: flex;
+  justify-content: space-between;
   position: fixed;
-  top: 0;
   width: 100%;
-  z-index: 1000;
+  z-index: 1;
 `;
 
-const NavInner = styled.div`
-  align-items: center;
-  display: flex;
-  height: 100%;
-  justify-content: center;
-  position: relative;
-`;
-
-const BrandTitle = styled(Link)`
+const NavLink = styled(Link)`
   color: #141414;
-  font-size: 2rem;
-  font-weight: 600;
-  left: 30px;
-  position: absolute;
 
   &:hover {
     color: #595959;
   }
-`;
-
-const NavMenusWrapper = styled.ul`
-  display: flex;
-  margin-bottom: 0;
-  padding-left: 0;
-`;
-
-const NavMenu = styled(Link)`
-  align-items: center;
-  color: #141414;
-  display: flex;
-  flex-direction: column;
-
-  &:hover {
-    color: #595959;
-  }
-`;
-
-const UserWrapper = styled.div`
-  align-items: center;
-  cursor: pointer;
-  display: flex;
-  position: absolute;
-  right: 30px;
-`;
-
-const UserIcon = styled(FaUserCircle)`
-  height: 40px;
-  margin-right: 8px;
-  width: 40px;
-`;
-
-const Username = styled.span`
-  font-size: 1.1rem;
-`;
-
-const EmptyDiv = styled.div`
-  height: 80px;
 `;
 
 const Nav: React.FC<NavProps> = ({ user, onLogout }) => {
@@ -92,32 +41,26 @@ const Nav: React.FC<NavProps> = ({ user, onLogout }) => {
     </Menu>
   );
 
+  const history = useHistory();
+
   return (
-    <>
-      <StyledNav>
-        <NavInner>
-          <BrandTitle to={routes.home()}>SNOWBALL</BrandTitle>
-
-          <NavMenusWrapper>
-            <NavMenu to={routes.home()}>
-              <HomeFilled style={{ fontSize: '2rem' }} />홈
-            </NavMenu>
-          </NavMenusWrapper>
-
-          <Dropdown
-            overlay={ProfileMenus}
-            placement="bottomRight"
-            trigger={['click']}
-          >
-            <UserWrapper>
-              <UserIcon />
-              <Username>{user.name}</Username>
-            </UserWrapper>
-          </Dropdown>
-        </NavInner>
-      </StyledNav>
-      <EmptyDiv />
-    </>
+    <StyledHeader>
+      <NavLink to={routes.home()}>SNOWBALL</NavLink>
+      <Menu mode="horizontal">
+        <Menu.Item
+          key="1"
+          icon={<HomeOutlined />}
+          onClick={() => history.push(routes.home())}
+        >
+          홈
+        </Menu.Item>
+        <Dropdown overlay={ProfileMenus} trigger={['click']}>
+          <Button type="text" style={{ marginBottom: '5px' }}>
+            {user.name} 님 <DownOutlined />
+          </Button>
+        </Dropdown>
+      </Menu>
+    </StyledHeader>
   );
 };
 
