@@ -1,68 +1,121 @@
-import { ThunkAction } from 'redux-thunk';
 import { History } from 'history';
-import { RootState } from './index';
-import { addNote } from '../../lib/api/note';
+import {
+  getNote as getNoteAPI,
+  addNote,
+  updateNote as updateNoteAPI,
+} from '../../lib/api/note';
 import {
   INITIALIZE_NOTE_FORM,
+  INITIALIZE_NOTE_INFO,
   CHANGE_INVESTMENT_DATE,
   CHANGE_TEXT,
   CHANGE_ERROR,
+  GET_NOTE,
+  GET_NOTE_SUCCESS,
+  GET_NOTE_FAIL,
   WRITE_NOTE,
   WRITE_NOTE_SUCCESS,
   WRITE_NOTE_FAIL,
+  UPDATE_NOTE,
+  UPDATE_NOTE_SUCCESS,
+  UPDATE_NOTE_FAIL,
 } from '../constants/noteConstants';
 import { LOGIN_SUCCESS } from '../constants/userConstants';
 
 import { NoteType } from '../../type/note';
-import { UserType } from '../../type/user';
-
-// Action Type
-type NoteAction =
-  | { type: typeof LOGIN_SUCCESS; payload: UserType.UserInfo }
-  | { type: typeof INITIALIZE_NOTE_FORM }
-  | { type: typeof CHANGE_INVESTMENT_DATE; payload: string }
-  | { type: typeof CHANGE_TEXT; payload: string }
-  | { type: typeof CHANGE_ERROR; payload: string }
-  | { type: typeof WRITE_NOTE }
-  | { type: typeof WRITE_NOTE_SUCCESS }
-  | { type: typeof WRITE_NOTE_FAIL; payload: string };
-
-type ThunkResult<R> = ThunkAction<R, RootState, undefined, NoteAction>;
 
 // Action creators
-export const initializeNoteForm = (): ThunkResult<void> => (dispatch) => {
+export const initializeNoteForm = (): NoteType.ThunkResult<void> => (
+  dispatch
+) => {
   dispatch({ type: INITIALIZE_NOTE_FORM });
 };
 
-export const changeInvestmentDate = (date: string): ThunkResult<void> => (
+export const initializeNoteInfo = (): NoteType.ThunkResult<void> => (
   dispatch
 ) => {
+  dispatch({ type: INITIALIZE_NOTE_INFO });
+};
+
+export const changeInvestmentDate = (
+  date: string
+): NoteType.ThunkResult<void> => (dispatch) => {
   dispatch({ type: CHANGE_INVESTMENT_DATE, payload: date });
 };
 
-export const changeText = (text: string): ThunkResult<void> => (dispatch) => {
+export const changeText = (text: string): NoteType.ThunkResult<void> => (
+  dispatch
+) => {
   dispatch({ type: CHANGE_TEXT, payload: text });
 };
 
-export const changeError = (error: string): ThunkResult<void> => (dispatch) => {
+export const changeError = (error: string): NoteType.ThunkResult<void> => (
+  dispatch
+) => {
   dispatch({ type: CHANGE_ERROR, payload: error });
 };
 
+export const getNote = (id: string): NoteType.ThunkResult<void> => async (
+  dispatch
+) => {
+  try {
+    dispatch({ type: GET_NOTE });
+
+    const { data: noteData } = await getNoteAPI(id);
+
+    dispatch({ type: GET_NOTE_SUCCESS, payload: noteData });
+  } catch (err) {
+    dispatch({
+      type: GET_NOTE_FAIL,
+      payload:
+        err.response && err.response.data.message
+          ? err.response.data.message
+          : err.message,
+    });
+  }
+};
+
 export const writeNote = (
-  note: NoteType.NoteForm,
+  noteFormData: NoteType.NoteForm,
   history: History
-): ThunkResult<void> => async (dispatch) => {
+): NoteType.ThunkResult<void> => async (dispatch) => {
   try {
     dispatch({ type: WRITE_NOTE });
 
     const {
       data: { id: createdNoteId },
-    } = await addNote(note);
+    } = await addNote(noteFormData);
+
     history.push(`/note/${createdNoteId}`);
+
     dispatch({ type: WRITE_NOTE_SUCCESS });
   } catch (err) {
     dispatch({
       type: WRITE_NOTE_FAIL,
+      payload:
+        err.response && err.response.data.message
+          ? err.response.data.message
+          : err.message,
+    });
+  }
+};
+
+export const updateNote = (
+  noteFormData: NoteType.NoteForm,
+  id: string,
+  history: History
+): NoteType.ThunkResult<void> => async (dispatch) => {
+  try {
+    dispatch({ type: UPDATE_NOTE });
+
+    await updateNoteAPI(id, noteFormData);
+
+    history.push(`/note/${id}`);
+
+    dispatch({ type: UPDATE_NOTE_SUCCESS });
+  } catch (err) {
+    dispatch({
+      type: UPDATE_NOTE_FAIL,
       payload:
         err.response && err.response.data.message
           ? err.response.data.message
@@ -98,7 +151,10 @@ const initialState: NoteType.NoteState = {
 };
 
 // Reducer
-function note(state: NoteType.NoteState = initialState, action: NoteAction) {
+function note(
+  state: NoteType.NoteState = initialState,
+  action: NoteType.NoteAction
+) {
   switch (action.type) {
     case LOGIN_SUCCESS:
       return {
@@ -117,6 +173,22 @@ function note(state: NoteType.NoteState = initialState, action: NoteAction) {
           text: '',
           investmentDate: '',
         },
+        loading: false,
+        error: '',
+      };
+
+    case INITIALIZE_NOTE_INFO:
+      return {
+        ...state,
+        noteInfo: {
+          id: '',
+          text: '',
+          investmentDate: '',
+          createdDate: '',
+          lastModifiedDate: '',
+        },
+        loading: false,
+        error: '',
       };
 
     case CHANGE_INVESTMENT_DATE:
@@ -143,6 +215,26 @@ function note(state: NoteType.NoteState = initialState, action: NoteAction) {
         error: action.payload,
       };
 
+    case GET_NOTE:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case GET_NOTE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        noteInfo: { ...action.payload },
+      };
+
+    case GET_NOTE_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+
     case WRITE_NOTE:
       return {
         ...state,
@@ -157,6 +249,26 @@ function note(state: NoteType.NoteState = initialState, action: NoteAction) {
       };
 
     case WRITE_NOTE_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+
+    case UPDATE_NOTE:
+      return {
+        ...state,
+        loading: true,
+        error: '',
+      };
+
+    case UPDATE_NOTE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+      };
+
+    case UPDATE_NOTE_FAIL:
       return {
         ...state,
         loading: false,
