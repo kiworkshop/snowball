@@ -5,9 +5,7 @@ import { Layout } from 'antd';
 import { RootState } from '../store/modules';
 import routes from '../routes';
 
-import CreateNoteButton from '../component/base/CreateNoteButton';
 import NavContainer from '../container/base/NavContainer';
-import CreateNoteBannerContainer from '../container/note/CreateNoteBannerContainer';
 import NoteListContainer from '../container/note/NoteListContainer';
 import Container from '../component/base/Container';
 
@@ -19,9 +17,7 @@ const MainPage = () => {
       <NavContainer selectedMenu={['home']} />
 
       <Container style={{ padding: '50px 0' }}>
-        <CreateNoteBannerContainer />
         <NoteListContainer />
-        <CreateNoteButton />
       </Container>
 
       {!logged && <Redirect to={routes.login()} />}
