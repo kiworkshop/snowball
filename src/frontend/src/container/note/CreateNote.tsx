@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { PageHeader } from 'antd';
 import {
@@ -8,14 +8,13 @@ import {
 } from '../../store/modules/note';
 
 import EditorContainer from './EditorContainer';
-import DatePicker from '../../component/note/DatePicker';
+import Calendar from '../../component/note/Calendar';
 import Container from '../../component/base/Container';
+import { RootState } from '../../store/modules';
 
 const CreateNote = () => {
   const dispatch = useDispatch();
-  const [dateSelected, setDateSelected] = useState(false);
-
-  const TODAY = moment(Date.now()).format('YYYY-MM-DD');
+  const [isDateSelected, setIsDateSelected] = useState(false);
 
   const setInvestmentDate = useCallback(
     (date: string) => {
@@ -24,35 +23,50 @@ const CreateNote = () => {
     [dispatch]
   );
 
-  const onSelectDate = useCallback(() => {
-    setDateSelected(true);
-  }, []);
+  const { investmentDate } = useSelector(
+    (state: RootState) => state.note.noteForm
+  );
+
+  const onSelectDate = useCallback(
+    (date: moment.Moment) => {
+      const selectedDate = moment(date).format('YYYY-MM-DD');
+
+      const prevYearAndMonth = investmentDate.slice(0, 7);
+      const yearAndMonthOfSelectedDate = selectedDate.slice(0, 7);
+
+      if (prevYearAndMonth === yearAndMonthOfSelectedDate) {
+        setIsDateSelected(true);
+      }
+      setInvestmentDate(selectedDate);
+    },
+    [investmentDate, setInvestmentDate]
+  );
 
   useEffect(() => {
+    const TODAY = moment(Date.now()).format('YYYY-MM-DD');
+    setInvestmentDate(TODAY);
+
     return function cleanup() {
       dispatch(initializeNoteForm());
     };
-  }, [dispatch]);
+  }, [dispatch, setInvestmentDate]);
 
   return (
     <Container style={{ padding: '50px 0' }}>
-      {dateSelected && (
+      {isDateSelected && (
         <>
           <PageHeader
             title="날짜 수정하기"
             subTitle="투자노트 작성"
-            onBack={() => setDateSelected(false)}
+            onBack={() => setIsDateSelected(false)}
             style={{ padding: '0 0 25px 0' }}
           />
           <EditorContainer />
         </>
       )}
-      {!dateSelected && (
-        <DatePicker
-          initialDate={TODAY}
-          onChange={setInvestmentDate}
-          onClick={onSelectDate}
-        />
+
+      {!isDateSelected && (
+        <Calendar onSelectDate={onSelectDate} value={moment(investmentDate)} />
       )}
     </Container>
   );

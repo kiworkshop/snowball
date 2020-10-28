@@ -6,11 +6,12 @@ import { getNote } from '../../store/modules/note';
 
 import Page404 from '../../pages/Page404';
 import Container from '../../component/base/Container';
-import DatePicker from '../../component/note/DatePicker';
+import Calendar from '../../component/note/Calendar';
 import EditorContainer from './EditorContainer';
 import ErrorPage from '../../pages/ErrorPage';
 import NavContainer from '../base/NavContainer';
 import { RootState } from '../../store/modules';
+import moment from 'moment';
 
 interface UpdateNoteProps {
   id: string;
@@ -23,7 +24,7 @@ const UpdateNote: React.FC<UpdateNoteProps> = ({ id }) => {
     (state: RootState) => state.note
   );
 
-  const [dateSelected, setDateSelected] = useState(true);
+  const [isDateSelected, setIsDateSelected] = useState(false);
 
   const setInvestmentDate = useCallback(
     (date: string) => {
@@ -32,9 +33,24 @@ const UpdateNote: React.FC<UpdateNoteProps> = ({ id }) => {
     [dispatch]
   );
 
-  const onSelectDate = useCallback(() => {
-    setDateSelected(true);
-  }, []);
+  const { investmentDate } = useSelector(
+    (state: RootState) => state.note.noteForm
+  );
+
+  const onSelectDate = useCallback(
+    (date: moment.Moment) => {
+      const selectedDate = moment(date).format('YYYY-MM-DD');
+
+      const prevYearAndMonth = investmentDate.slice(0, 7);
+      const yearAndMonthOfSelectedDate = selectedDate.slice(0, 7);
+
+      if (prevYearAndMonth === yearAndMonthOfSelectedDate) {
+        setIsDateSelected(true);
+      }
+      setInvestmentDate(selectedDate);
+    },
+    [investmentDate, setInvestmentDate]
+  );
 
   useEffect(() => {
     dispatch(getNote(id));
@@ -63,12 +79,12 @@ const UpdateNote: React.FC<UpdateNoteProps> = ({ id }) => {
           </Space>
         ) : (
           noteInfo.id &&
-          dateSelected && (
+          isDateSelected && (
             <>
               <PageHeader
                 title="날짜 수정하기"
                 subTitle="투자노트 수정"
-                onBack={() => setDateSelected(false)}
+                onBack={() => setIsDateSelected(false)}
                 style={{ padding: '0 0 25px 0' }}
               />
               <EditorContainer note={noteInfo} />
@@ -76,11 +92,11 @@ const UpdateNote: React.FC<UpdateNoteProps> = ({ id }) => {
           )
         )}
 
-        {noteInfo.id && !dateSelected && (
-          <DatePicker
-            initialDate={noteInfo.investmentDate}
-            onChange={setInvestmentDate}
-            onClick={onSelectDate}
+        {noteInfo.id && !isDateSelected && (
+          <Calendar
+            defaultDate={noteInfo.investmentDate}
+            onSelectDate={onSelectDate}
+            value={moment(investmentDate)}
           />
         )}
       </Container>
