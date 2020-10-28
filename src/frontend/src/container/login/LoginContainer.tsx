@@ -1,63 +1,53 @@
-import React from 'react';
-import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import store from 'store2';
-import { login as loginAPI } from '../../lib/api/user';
-import Login from '../../component/login/Login';
-import { login } from '../../store/modules/user';
+import React, { useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { message } from 'antd';
 import routes from '../../routes';
+import { login } from '../../store/modules/user';
+import { RootState } from '../../store/modules';
+
+import Login from '../../component/login/Login';
 
 const LoginContainer = () => {
   const dispatch = useDispatch();
 
-  const history = useHistory();
+  const { loading, error, logged } = useSelector(
+    (state: RootState) => state.user
+  );
 
-  const onClick = async () => {
-    try {
-      const response = await loginAPI();
-
-      if (response.status === 200) {
-        const testUser = response.data;
-
-        dispatch(login(testUser));
-        store.set('snowball-user', {
-          user: testUser,
-          expired: Date.now() + 1000 * 60 * 60 * 24,
-        });
-
-        history.push(routes.home());
-      } else {
-        message.error('알 수 없는 오류가 발생했습니다.');
-      }
-    } catch (e) {
-      if (e.message === 'Network Error') {
-        console.log(e);
-
-        const testUser = {
-          id: 'testUser',
-          email: '',
-          name: '눈사람',
-          age: null,
-          gender: '',
-          pictureUrl: '',
-          notes: [],
-        };
-
-        dispatch(login({ ...testUser }));
-        store.set('snowball-user', {
-          user: { ...testUser },
-          expired: Date.now() + 1000 * 60 * 60 * 24,
-        });
-
-        history.push(routes.home());
-      } else {
-        message.error('알 수 없는 오류가 발생했습니다.');
-      }
-    }
+  const tempUserForDevMode = {
+    id: '1',
+    email: 'snowball@gmail.com',
+    name: '눈사람',
+    age: 19,
+    gender: 'man',
+    pictureUrl: '',
+    notes: [],
   };
 
-  return <Login onClick={onClick} />;
+  const onClick = useCallback(() => {
+    if (process.env.NODE_ENV === 'production') {
+      dispatch(login());
+    } else {
+      dispatch(login(tempUserForDevMode));
+    }
+  }, [dispatch, tempUserForDevMode]);
+
+  useEffect(() => {
+    if (error) {
+      message.error(error);
+    }
+  }, [error]);
+
+  if (logged) {
+    return <Redirect to={routes.home()} />;
+  }
+
+  return (
+    <>
+      <Login onClick={onClick} loading={loading} />
+    </>
+  );
 };
 
 export default LoginContainer;

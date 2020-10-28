@@ -1,68 +1,59 @@
 import React from 'react';
-import styled from 'styled-components';
-import { Button } from 'antd';
+import { Layout, Typography, Button, Spin } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 
 interface LoginProps {
+  loading: boolean;
   onClick: () => void;
 }
 
-const LoginContainer = styled.div`
-  align-items: center;
-  display: flex;
-  height: 100%;
-  justify-content: center;
-  width: 100%;
-`;
+const { Content, Footer } = Layout;
+const { Title } = Typography;
 
-const LoginInner = styled.div`
-  margin: auto;
-  max-width: 600px;
-  width: 100%;
-`;
-
-const TitleWrapper = styled.div`
-  margin-bottom: 5rem;
-  text-align: center;
-`;
-
-const Title = styled.h1`
-  font-size: 6rem;
-  margin-bottom: 0;
-`;
-
-const SubTitle = styled.span`
-  color: #595959;
-  font-size: 1.2rem;
-`;
-
-const Copyright = styled.h5`
-  font-size: 1rem;
-  margin-top: 100px;
-  text-align: center;
-`;
-
-const Login: React.FC<LoginProps> = ({ onClick }) => {
+const Login: React.FC<LoginProps> = ({ onClick, loading }) => {
   return (
-    <LoginContainer>
-      <LoginInner>
-        <TitleWrapper>
-          <Title>SNOWBALL</Title>
-          <SubTitle>매일매일 굴러가는 당신의 자산을 관리하세요!</SubTitle>
-        </TitleWrapper>
+    <Layout
+      style={{
+        alignItems: 'center',
+        background: '#fff',
+        height: '100%',
+      }}
+    >
+      <Content
+        style={{
+          alignItems: 'center',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+        }}
+      >
+        <Title style={{ fontSize: '6rem', marginBottom: '16px' }}>
+          SNOWBALL
+        </Title>
 
-        <Button
-          block
-          icon={<UserOutlined />}
-          style={{ fontSize: '1.2rem', fontWeight: 800, height: '60px' }}
-          onClick={onClick}
-        >
-          테스트 유저 로그인
-        </Button>
+        <Title level={4} style={{ color: '#595959', margin: '0 0 80px 0' }}>
+          매일매일 굴러가는 당신의 자산을 관리하세요!
+        </Title>
 
-        <Copyright>SNOWBALL &copy; 2020</Copyright>
-      </LoginInner>
-    </LoginContainer>
+        <Spin tip="로딩중..." spinning={loading}>
+          <Button
+            icon={<UserOutlined />}
+            style={{
+              fontSize: '1.2rem',
+              fontWeight: 800,
+              height: '56px',
+            }}
+            onClick={onClick}
+          >
+            테스트 유저 로그인
+          </Button>
+        </Spin>
+      </Content>
+
+      <Footer style={{ background: '#fff', textAlign: 'center' }}>
+        SNOWBALL &copy; 2020
+      </Footer>
+    </Layout>
   );
 };
 

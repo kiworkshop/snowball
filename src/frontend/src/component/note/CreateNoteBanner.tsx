@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import moment from 'moment';
 import { FaUserCircle } from 'react-icons/fa';
 import routes from '../../routes';
 
@@ -21,11 +20,11 @@ const CreateNoteBannerWrapper = styled(Link)`
   width: 100%;
 
   &:hover {
-    border: 1px solid #1890ff;
+    border: 1px solid #13c2c2;
 
     svg,
     h1 {
-      color: #1890ff;
+      color: #13c2c2;
     }
   }
 `;
@@ -45,9 +44,7 @@ const BannerMessage = styled.h1`
 
 const CreateNoteBanner: React.FC<CreateNoteBannerProps> = ({ nickname }) => {
   return (
-    <CreateNoteBannerWrapper
-      to={routes.note.create(moment(Date.now()).format('YYYYMMDD'))}
-    >
+    <CreateNoteBannerWrapper to={routes.note.create()}>
       <UserIcon />
       <BannerMessage>
         {nickname}님, 오늘의 투자노트를 작성해보세요!

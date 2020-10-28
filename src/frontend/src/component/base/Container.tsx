@@ -10,6 +10,10 @@ const StyledContainer = styled.div`
   margin: 0 auto;
   width: 100%;
 
+  @media (max-width: 575px) {
+    padding: 20px !important;
+  }
+
   @media (min-width: 576px) {
     width: 540px;
   }
@@ -18,7 +22,7 @@ const StyledContainer = styled.div`
     width: 720px;
   }
 
-  @media (min-width: 992) {
+  @media (min-width: 992px) {
     width: 960px;
   }
 
