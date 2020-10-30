@@ -44,9 +44,11 @@ const NoteList: React.FC<NoteListProps> = ({ notes, onClick }) => {
         <NoteWrapper ghost>
           <Panel
             key={note.id}
-            header={`${setDate(note.investmentDate)} 투자노트`}
+            header={
+              note.investmentDate && `${setDate(note.investmentDate)} 투자노트`
+            }
           >
-            <Typography.Paragraph>{note.text}</Typography.Paragraph>
+            <Typography.Paragraph>{note.content}</Typography.Paragraph>
             <MoreInfoButton type="text" onClick={() => onClick(note.id)}>
               더보기 <RightOutlined />
             </MoreInfoButton>

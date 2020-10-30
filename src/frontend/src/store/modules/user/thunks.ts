@@ -1,16 +1,10 @@
-import { ThunkAction } from 'redux-thunk';
 import store from 'store2';
-import { RootState } from '../index';
-import { UserAction } from './types';
-import { loginAsync, logout } from './actions';
+import { UserThunkAction } from './types';
+import { loginAsync, logout, loginStoredUser } from './actions';
 import * as userAPI from '../../../lib/api/user';
+import { User } from '../../../type/user';
 
-export const loginThunk = (): ThunkAction<
-  void,
-  RootState,
-  null,
-  UserAction
-> => {
+export const loginThunk = (): UserThunkAction => {
   return async (dispatch) => {
     const { request, success, failure } = loginAsync;
     dispatch(request());
@@ -30,14 +24,17 @@ export const loginThunk = (): ThunkAction<
   };
 };
 
-export const logoutThunk = (): ThunkAction<
-  void,
-  RootState,
-  null,
-  UserAction
-> => {
+export const logoutThunk = (): UserThunkAction => {
   return (dispatch) => {
     store.remove('snowball-user');
     dispatch(logout());
+  };
+};
+
+export const loginStoredUserThunk = (
+  storedUser: User.Info
+): UserThunkAction => {
+  return (dispatch) => {
+    dispatch(loginStoredUser(storedUser));
   };
 };

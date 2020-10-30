@@ -7,7 +7,7 @@ import 'react-quill/dist/quill.snow.css';
 import { Note } from '../../type/note';
 
 interface EditorProps {
-  noteInfo: Note.NoteForm;
+  noteInfo: Note.Form;
   setValue: (value: string) => void;
   onSave: () => void;
   loading: boolean;
@@ -58,7 +58,7 @@ const Editor: React.FC<EditorProps> = ({
       <Title>{noteInfo.investmentDate} 투자노트</Title>
       <StyledEditor
         theme="snow"
-        value={noteInfo.text}
+        value={noteInfo.content}
         onChange={setValue}
         modules={{ toolbar: toolbarOptions }}
       />

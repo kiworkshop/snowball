@@ -11,7 +11,7 @@ interface NavContainerProps {
 }
 
 const NavContainer: React.FC<NavContainerProps> = ({ selectedMenu }) => {
-  const user = useSelector((state: RootState) => state.user.userInfo);
+  const user = useSelector((state: RootState) => state.user.profile);
   const dispatch = useDispatch();
 
   const onLogout = () => {
