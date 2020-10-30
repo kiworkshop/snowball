@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { message } from 'antd';
 import routes from '../../routes';
-import { login } from '../../store/modules/user';
+import { loginThunk } from '../../store/modules/user';
 import { RootState } from '../../store/modules';
 
 import Login from '../../component/login/Login';
@@ -27,9 +27,9 @@ const LoginContainer = () => {
 
   const onClick = useCallback(() => {
     if (process.env.NODE_ENV === 'production') {
-      dispatch(login());
+      dispatch(loginThunk());
     } else {
-      dispatch(login(tempUserForDevMode));
+      dispatch(loginThunk(tempUserForDevMode));
     }
   }, [dispatch, tempUserForDevMode]);
 

@@ -10,12 +10,12 @@ import {
 } from '../../store/modules/note';
 
 import { RootState } from '../../store/modules';
-import { NoteType } from '../../type/note';
+import { Note } from '../../type/note';
 
 import Editor from '../../component/note/Editor';
 
 interface EditorContainerProps {
-  note?: NoteType.Note;
+  note?: Note.Note;
 }
 
 const EditorContainer: React.FC<EditorContainerProps> = ({ note }) => {

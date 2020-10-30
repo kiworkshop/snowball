@@ -4,10 +4,10 @@ import { Button, Alert, Typography, Spin } from 'antd';
 import ReactQuill from 'react-quill';
 
 import 'react-quill/dist/quill.snow.css';
-import { NoteType } from '../../type/note';
+import { Note } from '../../type/note';
 
 interface EditorProps {
-  noteInfo: NoteType.NoteForm;
+  noteInfo: Note.NoteForm;
   setValue: (value: string) => void;
   onSave: () => void;
   loading: boolean;

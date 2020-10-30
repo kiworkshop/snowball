@@ -4,10 +4,10 @@ import { List, Collapse, Button, Typography } from 'antd';
 import { FolderOpenOutlined, RightOutlined } from '@ant-design/icons';
 import { setDate } from '../../lib/date';
 
-import { NoteType } from '../../type/note';
+import { Note } from '../../type/note';
 
 interface NoteListProps {
-  notes: Array<NoteType.Note>;
+  notes: Array<Note.Note>;
   onClick: (id: string) => void;
 }
 

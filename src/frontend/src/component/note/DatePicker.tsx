@@ -3,10 +3,10 @@ import { Button, DatePicker as Picker, Space, Typography } from 'antd';
 import moment from 'moment';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
-import { changeInvestmentDate } from '../../store/modules/note';
+import { setForm } from '../../store/modules/note';
 
 interface DatePickerProps {
-  initialDate: string;
+  initialDate: moment.Moment;
   onChange: (date: string) => void;
   onClick: () => void;
 }
@@ -31,8 +31,8 @@ const DatePicker: React.FC<DatePickerProps> = ({
   const dispatch = useDispatch();
 
   const setInvestmentDate = useCallback(
-    (date: string) => {
-      dispatch(changeInvestmentDate(date));
+    (date: moment.Moment) => {
+      dispatch(setForm({ investmentDate: date }));
     },
     [dispatch]
   );

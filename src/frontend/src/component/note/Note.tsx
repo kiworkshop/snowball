@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Space, Typography, Button } from 'antd';
-import { NoteType } from '../../type/note';
+import { Note as NoteType } from '../../type/note';
 
 import Container from '../../component/base/Container';
 
@@ -42,7 +42,7 @@ const Note: React.FC<NoteProps> = ({
           </Button>
         </Space>
       </Space>
-      <Space>{note.text}</Space>
+      <Space>{note.content}</Space>
     </NoteContainer>
   );
 };

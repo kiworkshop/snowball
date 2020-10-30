@@ -4,12 +4,12 @@ import { useHistory } from 'react-router-dom';
 import { getNotes } from '../../lib/api/note';
 import routes from '../../routes';
 
-import { NoteType } from '../../type/note';
+import { Note } from '../../type/note';
 
 import NoteList from '../../component/note/NoteList';
 
 const NoteListContainer = () => {
-  const [notes, setNotes] = useState<Array<NoteType.Note>>([]);
+  const [notes, setNotes] = useState<Array<Note.Note>>([]);
 
   const history = useHistory();
   const onClick = (id: string) => {
