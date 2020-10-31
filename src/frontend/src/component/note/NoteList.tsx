@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { List, Collapse, Button, Typography } from 'antd';
+import { List, Collapse, Button, Typography, Spin } from 'antd';
 import { FolderOpenOutlined, RightOutlined } from '@ant-design/icons';
 import { setDate } from '../../lib/date';
 
@@ -8,7 +8,9 @@ import { Note } from '../../type/note';
 
 interface NoteListProps {
   notes: Array<Note.Note>;
-  onClick: (id: string) => void;
+  onClickMoreInfoButton: (id: string) => () => void;
+  loading: boolean;
+  error: Error | null;
 }
 
 const ListHeader = styled.strong`
@@ -29,33 +31,44 @@ const MoreInfoButton = styled(Button)`
 
 const { Panel } = Collapse;
 
-const NoteList: React.FC<NoteListProps> = ({ notes, onClick }) => {
+const NoteList: React.FC<NoteListProps> = ({
+  notes,
+  onClickMoreInfoButton,
+  loading,
+  error,
+}) => {
   return (
-    <List
-      header={
-        <ListHeader>
-          <FolderOpenOutlined style={{ marginRight: '8px' }} />
-          투자노트 목록
-        </ListHeader>
-      }
-      bordered
-      dataSource={notes}
-      renderItem={(note) => (
-        <NoteWrapper ghost>
-          <Panel
-            key={note.id}
-            header={
-              note.investmentDate && `${setDate(note.investmentDate)} 투자노트`
-            }
-          >
-            <Typography.Paragraph>{note.content}</Typography.Paragraph>
-            <MoreInfoButton type="text" onClick={() => onClick(note.id)}>
-              더보기 <RightOutlined />
-            </MoreInfoButton>
-          </Panel>
-        </NoteWrapper>
-      )}
-    />
+    <Spin tip="로딩중..." spinning={loading}>
+      <List
+        header={
+          <ListHeader>
+            <FolderOpenOutlined style={{ marginRight: '8px' }} />
+            투자노트 목록
+          </ListHeader>
+        }
+        bordered
+        dataSource={notes || []}
+        renderItem={(note) => (
+          <NoteWrapper ghost>
+            <Panel
+              key={note.id}
+              header={
+                note.investmentDate &&
+                `${setDate(note.investmentDate)} 투자노트`
+              }
+            >
+              <Typography.Paragraph>{note.content}</Typography.Paragraph>
+              <MoreInfoButton
+                type="text"
+                onClick={onClickMoreInfoButton(note.id)}
+              >
+                더보기 <RightOutlined />
+              </MoreInfoButton>
+            </Panel>
+          </NoteWrapper>
+        )}
+      />
+    </Spin>
   );
 };
 

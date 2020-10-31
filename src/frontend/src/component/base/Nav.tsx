@@ -25,7 +25,7 @@ const StyledHeader = styled(Header)`
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 1;
+  z-index: 2;
 `;
 
 const HeaderInner = styled(Container)`
@@ -66,6 +66,13 @@ const Nav: React.FC<NavProps> = ({
         <Menu mode="horizontal" selectedKeys={selectedKeys}>
           <Menu.Item key="home" onClick={onClickNavLink(routes.home())}>
             홈
+          </Menu.Item>
+
+          <Menu.Item
+            key="createNote"
+            onClick={onClickNavLink(routes.note.create())}
+          >
+            투자노트 작성
           </Menu.Item>
 
           <Menu.Item key="portfolio" onClick={onClickNavLink(routes.home())}>

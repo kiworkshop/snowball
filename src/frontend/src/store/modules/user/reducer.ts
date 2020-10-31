@@ -1,6 +1,9 @@
 import { createReducer } from 'typesafe-actions';
 import { UserAction, UserState } from './types';
 import {
+  GET_NOTES_OF_USER_FAILURE,
+  GET_NOTES_OF_USER_REQUEST,
+  GET_NOTES_OF_USER_SUCCESS,
   LOGIN_FAILURE,
   LOGIN_REQUEST,
   LOGIN_STORED_USER,
@@ -19,15 +22,15 @@ const initialState: UserState = {
   },
   isLoggedIn: false,
   notes: [],
-  loading: false,
-  error: null,
+  loading: {},
+  error: {},
 };
 
 const user = createReducer<UserState, UserAction>(initialState, {
   [LOGIN_REQUEST]: (state) => ({
     ...state,
-    loading: true,
-    error: null,
+    loading: { ...state.loading, login: true },
+    error: { ...state.error, login: null },
   }),
   [LOGIN_SUCCESS]: (state, action) => ({
     ...state,
@@ -41,13 +44,13 @@ const user = createReducer<UserState, UserAction>(initialState, {
     },
     notes: action.payload.notes,
     isLoggedIn: true,
-    loading: false,
-    error: null,
+    loading: { ...state.loading, login: false },
+    error: { ...state.error, login: null },
   }),
   [LOGIN_FAILURE]: (state, action) => ({
     ...state,
-    loading: false,
-    error: action.payload,
+    loading: { ...state.loading, login: false },
+    error: { ...state.error, login: action.payload },
   }),
   [LOGOUT]: (state) => ({
     ...state,
@@ -73,6 +76,22 @@ const user = createReducer<UserState, UserAction>(initialState, {
     },
     notes: action.payload.notes,
     isLoggedIn: true,
+  }),
+  [GET_NOTES_OF_USER_REQUEST]: (state) => ({
+    ...state,
+    loading: { ...state.loading, getNotesOfUser: true },
+    error: { ...state.error, getNotesOfUser: null },
+  }),
+  [GET_NOTES_OF_USER_SUCCESS]: (state, action) => ({
+    ...state,
+    notes: [...action.payload],
+    loading: { ...state.loading, getNotesOfUser: false },
+    error: { ...state.error, getNotesOfUser: null },
+  }),
+  [GET_NOTES_OF_USER_FAILURE]: (state, action) => ({
+    ...state,
+    loading: { ...state.loading, getNotesOfUser: false },
+    error: { ...state.error, getNotesOfUser: action.payload },
   }),
 });
 

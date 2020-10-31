@@ -10,8 +10,12 @@ export type UserState = {
   profile: User.Profile;
   isLoggedIn: User.IsLoggedIn;
   notes: User.Notes;
-  loading: boolean;
-  error: Error | null;
+  loading: {
+    [action: string]: boolean;
+  };
+  error: {
+    [action: string]: Error | null;
+  };
 };
 
 export type UserThunkAction = ThunkAction<void, RootState, null, UserAction>;

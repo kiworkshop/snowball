@@ -1,8 +1,8 @@
 import axios from '../axios';
 import { Note } from '../../type/note';
 
-export const getNotes = (page: number) =>
-  axios.get<Array<Note.APIResponse>>(`/notes?page=${page}`);
+export const getNotes = (size: number, page: number) =>
+  axios.get<Array<Note.APIResponse>>(`/notes?size=${size}&page=${page}`);
 
 export const getNote = (id: string) =>
   axios.get<Note.APIResponse>(`/notes/${id}`);

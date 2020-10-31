@@ -10,9 +10,11 @@ import Login from '../../component/login/Login';
 const LoginContainer = () => {
   const dispatch = useDispatch();
 
-  const { loading, error, isLoggedIn } = useSelector(
-    (state: RootState) => state.user
-  );
+  const {
+    loading: { login: loading },
+    error: { login: error },
+    isLoggedIn,
+  } = useSelector((state: RootState) => state.user);
 
   const tempUserForDevMode = {
     id: '1',

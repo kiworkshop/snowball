@@ -1,40 +1,44 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { message } from 'antd';
 import { useHistory } from 'react-router-dom';
-import { getNotes } from '../../lib/api/note';
 import routes from '../../routes';
 
-import { Note } from '../../type/note';
-
 import NoteList from '../../component/note/NoteList';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store/modules';
+import { getNotesOfUserThunk } from '../../store/modules/user';
 
 const NoteListContainer = () => {
-  const [notes, setNotes] = useState<Array<Note.Note>>([]);
-
   const history = useHistory();
-  const onClick = (id: string) => {
-    history.push(routes.note.detail(id));
+  const dispatch = useDispatch();
+
+  const {
+    notes,
+    loading: { getNotesOfUser: loading },
+    error: { getNotesOfUser: error },
+  } = useSelector((state: RootState) => state.user);
+
+  const getNotesOfUser = useCallback(
+    () => dispatch(getNotesOfUserThunk(1, 1)),
+    [dispatch]
+  );
+
+  const onClickMoreInfoButton = (noteId: string) => {
+    return () => history.push(routes.note.detail(noteId));
   };
 
   useEffect(() => {
-    async function fetchNotes() {
-      try {
-        const response = await getNotes(1);
-
-        if (response.status === 200) {
-          setNotes([...response.data]);
-        } else {
-          message.error('알 수 없는 오류가 발생했습니다.');
-        }
-      } catch (e) {
-        message.error('알 수 없는 오류가 발생했습니다.');
-      }
-    }
-
-    fetchNotes();
+    getNotesOfUser();
   }, []);
 
-  return <NoteList notes={notes} onClick={onClick} />;
+  return (
+    <NoteList
+      notes={notes}
+      onClickMoreInfoButton={onClickMoreInfoButton}
+      loading={loading}
+      error={error}
+    />
+  );
 };
 
 export default NoteListContainer;

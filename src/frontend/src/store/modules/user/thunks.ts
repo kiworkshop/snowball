@@ -1,7 +1,9 @@
 import store from 'store2';
+import moment from 'moment';
 import { UserThunkAction } from './types';
-import { loginAsync, logout, loginStoredUser } from './actions';
+import { loginAsync, logout, loginStoredUser, getNotesAsync } from './actions';
 import * as userAPI from '../../../lib/api/user';
+import * as noteAPI from '../../../lib/api/note';
 import { User } from '../../../type/user';
 
 export const loginThunk = (): UserThunkAction => {
@@ -36,5 +38,28 @@ export const loginStoredUserThunk = (
 ): UserThunkAction => {
   return (dispatch) => {
     dispatch(loginStoredUser(storedUser));
+  };
+};
+
+export const getNotesOfUserThunk = (
+  size: number,
+  page: number
+): UserThunkAction => {
+  return async (dispatch) => {
+    const { request, success, failure } = getNotesAsync;
+    dispatch(request());
+    try {
+      const response = await noteAPI.getNotes(size, page);
+      const processedNotes = await response.data.map((note) => ({
+        id: note.id,
+        content: note.text,
+        investmentDate: moment(note.investmentDate),
+        createdDate: moment(note.createdDate),
+        lastModifiedDate: moment(note.lastModifiedDate),
+      }));
+      dispatch(success(processedNotes));
+    } catch (err) {
+      dispatch(failure(err));
+    }
   };
 };
