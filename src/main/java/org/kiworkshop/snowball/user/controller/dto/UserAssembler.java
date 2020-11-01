@@ -13,8 +13,6 @@ public class UserAssembler {
         return User.builder()
                 .email(userCreateRequestDto.getEmail())
                 .name(userCreateRequestDto.getName())
-                .age(userCreateRequestDto.getAge())
-                .gender(userCreateRequestDto.getGender())
                 .pictureUrl(userCreateRequestDto.getPictureUrl())
                 .build();
     }

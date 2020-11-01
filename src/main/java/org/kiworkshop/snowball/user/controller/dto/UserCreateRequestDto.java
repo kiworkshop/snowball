@@ -16,16 +16,12 @@ public class UserCreateRequestDto {
     private String email;
     @NotEmpty
     private String name;
-    private int age;
-    private String gender;
     private String pictureUrl;
 
     @Builder
-    public UserCreateRequestDto(String email, String name, int age, String gender, String pictureUrl) {
+    public UserCreateRequestDto(String email, String name, String pictureUrl) {
         this.email = email;
         this.name = name;
-        this.age = age;
-        this.gender = gender;
         this.pictureUrl = pictureUrl;
     }
 }

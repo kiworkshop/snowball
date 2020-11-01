@@ -10,8 +10,6 @@ public class UserFixture {
         ReflectionTestUtils.setField(user, "id", 1L);
         ReflectionTestUtils.setField(user, "email", "snowman");
         ReflectionTestUtils.setField(user, "name", "snowman");
-        ReflectionTestUtils.setField(user, "age", 100);
-        ReflectionTestUtils.setField(user, "gender", "snow");
         ReflectionTestUtils.setField(user, "pictureUrl", "example.snowman-picture.com");
         return user;
     }
