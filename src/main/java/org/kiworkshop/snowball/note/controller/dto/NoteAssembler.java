@@ -6,7 +6,8 @@ public class NoteAssembler {
 
     public static Note getNote(NoteRequestDto noteRequestDto){
         return Note.builder()
-                .text(noteRequestDto.getText())
+                .title(noteRequestDto.getTitle())
+                .content(noteRequestDto.getContent())
                 .user(noteRequestDto.getUser())
                 .investmentDate(noteRequestDto.getInvestmentDate())
                 .stockTransactions(noteRequestDto.getStockTransactions())
@@ -21,10 +22,12 @@ public class NoteAssembler {
     public static NoteResponseDto getNoteResponseDto(Note note) {
         return NoteResponseDto.builder()
                 .id(note.getId())
-                .text(note.getText())
+                .title(note.getTitle())
+                .content(note.getContent())
                 .investmentDate(note.getInvestmentDate())
+                .stockTransactions(note.getStockTransactions())
                 .createdDate(note.getCreatedDate())
-                .lastModifiedDate(note.getModifiedDate())
+                .modifiedDate(note.getModifiedDate())
                 .build();
     }
 }

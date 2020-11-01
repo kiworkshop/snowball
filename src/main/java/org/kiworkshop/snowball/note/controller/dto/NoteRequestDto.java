@@ -3,9 +3,10 @@ package org.kiworkshop.snowball.note.controller.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.kiworkshop.snowball.common.vo.StockTransaction;
+import org.kiworkshop.snowball.stocktransaction.entity.StockTransaction;
 import org.kiworkshop.snowball.user.entity.User;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
@@ -14,7 +15,9 @@ import java.util.List;
 @Getter
 public class NoteRequestDto {
 
-    private String text;
+    @NotEmpty
+    private String title;
+    private String content;
     @NotNull
     private LocalDate investmentDate;
     @NotNull
@@ -22,8 +25,9 @@ public class NoteRequestDto {
     private List<StockTransaction> stockTransactions;
 
     @Builder
-    public NoteRequestDto(String text, LocalDate investmentDate, User user, List<StockTransaction> stockTransactions) {
-        this.text = text;
+    public NoteRequestDto(String title, String content, LocalDate investmentDate, User user, List<StockTransaction> stockTransactions) {
+        this.title = title;
+        this.content = content;
         this.investmentDate = investmentDate;
         this.user = user;
         this.stockTransactions = stockTransactions;

@@ -2,7 +2,7 @@ package org.kiworkshop.snowball.note.entity;
 
 import org.junit.jupiter.api.Test;
 import org.kiworkshop.snowball.IntegrationTest;
-import org.kiworkshop.snowball.common.vo.StockTransactionFixture;
+import org.kiworkshop.snowball.stocktransaction.entity.StockTransactionFixture;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
@@ -20,7 +20,7 @@ class NoteRepositoryTest extends IntegrationTest {
     void save_note_with_stock_transaction() {
         //given
         Note note = Note.builder()
-                .text("test")
+                .content("test")
                 .stockTransactions(StockTransactionFixture.createList())
                 .investmentDate(LocalDate.now())
                 .build();
@@ -29,7 +29,7 @@ class NoteRepositoryTest extends IntegrationTest {
         Note saved = dut.save(note);
 
         //then
-        assertThat(note.getText()).isEqualTo(saved.getText());
+        assertThat(note.getContent()).isEqualTo(saved.getContent());
         assertThat(note.getInvestmentDate()).isEqualTo(saved.getInvestmentDate());
         assertThat(note.getStockTransactions().get(0)).isEqualToComparingFieldByField(saved.getStockTransactions().get(0));
         assertNotNull(saved.getCreatedDate());
