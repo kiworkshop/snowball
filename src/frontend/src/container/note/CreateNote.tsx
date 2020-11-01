@@ -2,7 +2,11 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { PageHeader } from 'antd';
-import { setFormThunk, initializeFormThunk } from '../../store/modules/note';
+import {
+  setFormThunk,
+  initializeFormThunk,
+  createNoteThunk,
+} from '../../store/modules/note';
 
 import EditorContainer from './EditorContainer';
 import Calendar from '../../component/note/Calendar';
@@ -13,14 +17,19 @@ const CreateNote = () => {
   const dispatch = useDispatch();
   const [isDateSelected, setIsDateSelected] = useState(false);
 
+  const {
+    form,
+    form: { investmentDate },
+    loading: { createNote: loading },
+    error: { createNote: error },
+  } = useSelector((state: RootState) => state.note);
+
   const setInvestmentDate = useCallback(
     (date: moment.Moment) => {
       dispatch(setFormThunk({ investmentDate: date }));
     },
     [dispatch]
   );
-
-  const { investmentDate } = useSelector((state: RootState) => state.note.form);
 
   const onSelectDate = useCallback(
     (date: moment.Moment) => {
@@ -38,6 +47,10 @@ const CreateNote = () => {
     },
     [investmentDate, setInvestmentDate]
   );
+
+  const onSave = useCallback(() => {
+    dispatch(createNoteThunk(form));
+  }, [dispatch]);
 
   useEffect(() => {
     const TODAY = moment(Date.now());
@@ -58,7 +71,7 @@ const CreateNote = () => {
             onBack={() => setIsDateSelected(false)}
             style={{ padding: '0 0 25px 0' }}
           />
-          <EditorContainer />
+          <EditorContainer loading={loading} error={error} onSave={onSave} />
         </>
       )}
 

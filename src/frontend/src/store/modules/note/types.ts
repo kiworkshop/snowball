@@ -4,6 +4,7 @@ import moment from 'moment';
 import * as actions from './actions';
 import { Note } from '../../../type/note';
 import { RootState } from '../index';
+import { History } from 'history';
 
 export type NoteAction = ActionType<typeof actions>;
 
@@ -18,4 +19,9 @@ export type NoteState = {
   error: { [action: string]: Error | null };
 };
 
-export type NoteThunkAction = ThunkAction<void, RootState, null, NoteAction>;
+export type NoteThunkAction = ThunkAction<
+  void,
+  RootState,
+  { history: History<unknown> },
+  NoteAction
+>;

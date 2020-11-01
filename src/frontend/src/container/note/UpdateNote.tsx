@@ -87,7 +87,7 @@ const UpdateNote: React.FC<UpdateNoteProps> = ({ id }) => {
                 onBack={() => setIsDateSelected(false)}
                 style={{ padding: '0 0 25px 0' }}
               />
-              <EditorContainer note={noteInfo} />
+              <EditorContainer initialNote={noteInfo} />
             </>
           )
         )}

@@ -27,7 +27,7 @@ export namespace Note {
   }
 
   interface ChangedPartOfForm {
-    text?: string;
+    content?: string;
     investmentDate?: moment.Moment | null;
   }
 }

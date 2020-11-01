@@ -19,8 +19,8 @@ const EditorComponent = () => {
 
   return (
     <Editor
-      noteInfo={value}
-      setValue={setValue}
+      formData={value}
+      setContent={setValue}
       noteDate={today}
       onSave={onSave}
     />

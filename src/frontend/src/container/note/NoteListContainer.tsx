@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect } from 'react';
-import { message } from 'antd';
 import { useHistory } from 'react-router-dom';
 import routes from '../../routes';
 

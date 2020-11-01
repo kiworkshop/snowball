@@ -36,7 +36,7 @@ export const createNoteAsync = createAsyncAction(
   CREATE_NOTE_REQUEST,
   CREATE_NOTE_SUCCESS,
   CREATE_NOTE_FAILURE
-)<undefined, Note.APIResponseOnlyWithId, AxiosError>();
+)<undefined, undefined, AxiosError>();
 
 export const updateNoteAsync = createAsyncAction(
   UPDATE_NOTE_REQUEST,

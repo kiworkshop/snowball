@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { List, Collapse, Button, Typography, Spin } from 'antd';
+import { List, Collapse, Button, Typography, Spin, message } from 'antd';
 import { FolderOpenOutlined, RightOutlined } from '@ant-design/icons';
 import { setDate } from '../../lib/date';
 
@@ -37,6 +37,10 @@ const NoteList: React.FC<NoteListProps> = ({
   loading,
   error,
 }) => {
+  if (error) {
+    message.error(error);
+  }
+
   return (
     <Spin tip="로딩중..." spinning={loading}>
       <List

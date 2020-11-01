@@ -44,12 +44,13 @@ export const getNoteThunk = (noteId: string): NoteThunkAction => {
 };
 
 export const createNoteThunk = (noteForm: Note.Form): NoteThunkAction => {
-  return async (dispatch) => {
+  return async (dispatch, _, { history }) => {
     const { request, success, failure } = createNoteAsync;
     dispatch(request());
     try {
       const response = await noteAPI.createNote(noteForm);
-      dispatch(success(response.data));
+      dispatch(success());
+      history.push(`/note/${response.data.id}`);
     } catch (err) {
       dispatch(failure(err));
     }
