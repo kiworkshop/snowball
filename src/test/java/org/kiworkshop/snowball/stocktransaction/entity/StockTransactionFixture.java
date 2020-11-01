@@ -1,23 +1,24 @@
-package org.kiworkshop.snowball.common.vo;
+package org.kiworkshop.snowball.stocktransaction.entity;
 
 import org.kiworkshop.snowball.common.type.TransactionType;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class StockTransactionFixture {
 
-    private static int id;
+    private static long id = 0;
 
     public static StockTransaction create(TransactionType type){
         id++;
-        return StockTransaction.builder()
-                .itemCode(String.valueOf(id))
-                .itemName("kiworkshop")
+        StockTransaction stockTransaction = StockTransaction.builder()
                 .quantity(1L)
                 .tradedPrice(1000L)
                 .transactionType(type)
                 .build();
+        ReflectionTestUtils.setField(stockTransaction, "id", id);
+        return stockTransaction;
     }
     public static List<StockTransaction> createList(){
         List<StockTransaction> stockTransactions = new ArrayList<>();
