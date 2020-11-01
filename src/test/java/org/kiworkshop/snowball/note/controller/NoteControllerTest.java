@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 import org.kiworkshop.snowball.ControllerTest;
 import org.kiworkshop.snowball.common.exception.DomainServiceException;
+import org.kiworkshop.snowball.stocktransaction.entity.StockTransactionFixture;
 import org.kiworkshop.snowball.note.controller.dto.*;
 import org.kiworkshop.snowball.note.service.NoteService;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -61,9 +62,11 @@ class NoteControllerTest extends ControllerTest {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         requestFields(
-                                fieldWithPath("text").type(JsonFieldType.STRING).description("투자노트 텍스트"),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("투자노트 제목"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("투자노트 텍스트"),
                                 fieldWithPath("investmentDate").type(JsonFieldType.STRING).description("투자한 날짜"),
-                                subsectionWithPath("user").type(JsonFieldType.OBJECT).description("투자노트를 작성한 유저")
+                                subsectionWithPath("user").type(JsonFieldType.OBJECT).description("투자노트 작성자"),
+                                subsectionWithPath("stockTransactions").type(JsonFieldType.ARRAY).description("주식 거래내역 목록")
                         ),
                         responseFields(
                                 fieldWithPath("id").type(JsonFieldType.NUMBER).description("투자노트 id")
@@ -81,18 +84,22 @@ class NoteControllerTest extends ControllerTest {
 
         NoteResponseDto noteResponseDto1 = NoteResponseDto.builder()
                 .id(1L)
-                .text("첫번째 투자노트 텍스트입니다.")
+                .title("첫번째 투자노트 제목입니다.")
+                .content("첫번째 투자노트 텍스트입니다.")
                 .investmentDate(LocalDate.of(2020, 10, 8))
+                .stockTransactions(StockTransactionFixture.createList())
                 .createdDate(LocalDateTime.now())
-                .lastModifiedDate(LocalDateTime.now())
+                .modifiedDate(LocalDateTime.now())
                 .build();
 
         NoteResponseDto noteResponseDto2 = NoteResponseDto.builder()
                 .id(2L)
-                .text("두번째 투자노트 텍스트입니다.")
+                .title("두번째 투자노트 제목입니다.")
+                .content("두번째 투자노트 텍스트입니다.")
                 .investmentDate(LocalDate.of(2020, 10, 9))
+                .stockTransactions(StockTransactionFixture.createList())
                 .createdDate(LocalDateTime.now())
-                .lastModifiedDate(LocalDateTime.now())
+                .modifiedDate(LocalDateTime.now())
                 .build();
 
         List<NoteResponseDto> noteResponseDtoList = new ArrayList<>();
@@ -117,10 +124,12 @@ class NoteControllerTest extends ControllerTest {
                         ),
                         responseFields(beneathPath("content[]").withSubsectionId("content"),
                                 fieldWithPath("id").type(JsonFieldType.NUMBER).description("투자노트 id"),
-                                fieldWithPath("text").type(JsonFieldType.STRING).description("투자노트 텍스트"),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("투자노트 제목"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("투자노트 텍스트"),
                                 fieldWithPath("investmentDate").type(JsonFieldType.STRING).description("투자한 날짜"),
                                 fieldWithPath("createdDate").type(JsonFieldType.STRING).description("투자노트가 생성된 날짜"),
-                                fieldWithPath("lastModifiedDate").type(JsonFieldType.STRING).description("투자노트가 수정된 날짜")
+                                fieldWithPath("modifiedDate").type(JsonFieldType.STRING).description("투자노트가 수정된 날짜"),
+                                subsectionWithPath("stockTransactions").type(JsonFieldType.ARRAY).description("주식 거래내역 목록")
                         )
                 ));
     }
@@ -131,10 +140,12 @@ class NoteControllerTest extends ControllerTest {
         Long id = 1L;
         NoteResponseDto responseDto = NoteResponseDto.builder()
                 .id(id)
-                .text("투자노트 텍스트입니다.")
+                .title("투자노트 제목입니다.")
+                .content("투자노트 텍스트입니다.")
                 .investmentDate(LocalDate.of(2020, 10, 10))
                 .createdDate(LocalDateTime.now())
-                .lastModifiedDate(LocalDateTime.now())
+                .modifiedDate(LocalDateTime.now())
+                .stockTransactions(StockTransactionFixture.createList())
                 .build();
 
         given(noteService.getNote(1L)).willReturn(responseDto);
@@ -143,7 +154,8 @@ class NoteControllerTest extends ControllerTest {
         mvc.perform(RestDocumentationRequestBuilders.get("/notes/{id}", id))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(responseDto.getId()))
-                .andExpect(jsonPath("$.text").value(responseDto.getText()))
+                .andExpect(jsonPath("$.title").value(responseDto.getTitle()))
+                .andExpect(jsonPath("$.content").value(responseDto.getContent()))
                 .andExpect(jsonPath("$.investmentDate").value(responseDto.getInvestmentDate().toString()))
                 .andDo(document("note/get-note",
                         getDocumentRequest(),
@@ -152,10 +164,12 @@ class NoteControllerTest extends ControllerTest {
                                 .attributes(key("constraints").value("Not Null"))),
                         responseFields(
                                 fieldWithPath("id").type(JsonFieldType.NUMBER).description("투자노트 id"),
-                                fieldWithPath("text").type(JsonFieldType.STRING).description("투자노트 텍스트"),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("투자노트 제목"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("투자노트 텍스트"),
                                 fieldWithPath("investmentDate").type(JsonFieldType.STRING).description("투자한 날짜"),
                                 fieldWithPath("createdDate").type(JsonFieldType.STRING).description("투자노트가 생성된 날짜"),
-                                fieldWithPath("lastModifiedDate").type(JsonFieldType.STRING).description("투자노트가 수정된 날짜")
+                                fieldWithPath("modifiedDate").type(JsonFieldType.STRING).description("투자노트가 수정된 날짜"),
+                                subsectionWithPath("stockTransactions").type(JsonFieldType.ARRAY).description("주식 거래내역 목록")
                         )
                 ));
 
@@ -178,9 +192,11 @@ class NoteControllerTest extends ControllerTest {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         requestFields(
-                                fieldWithPath("text").type(JsonFieldType.STRING).description("투자노트 텍스트"),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("투자노트 제목"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("투자노트 텍스트"),
                                 fieldWithPath("investmentDate").type(JsonFieldType.STRING).description("투자한 날짜"),
-                                subsectionWithPath("user").type(JsonFieldType.OBJECT).description("투자노트를 작성한 유저")
+                                subsectionWithPath("user").type(JsonFieldType.OBJECT).description("투자노트 작성자"),
+                                subsectionWithPath("stockTransactions").type(JsonFieldType.ARRAY).description("주식 거래내역 목록")
                         ),
                         pathParameters(parameterWithName("id").description("투자노트 id")
                                 .attributes(key("constraints").value("Not Null")))

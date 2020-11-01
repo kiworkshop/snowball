@@ -3,16 +3,15 @@ package org.kiworkshop.snowball.note.service;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kiworkshop.snowball.common.exception.DomainServiceException;
-import org.kiworkshop.snowball.common.type.TransactionType;
-import org.kiworkshop.snowball.common.vo.StockTransaction;
-import org.kiworkshop.snowball.note.controller.dto.NoteRequestDto;
 import org.kiworkshop.snowball.note.controller.dto.NoteCreateResponseDto;
+import org.kiworkshop.snowball.note.controller.dto.NoteRequestDto;
 import org.kiworkshop.snowball.note.controller.dto.NoteRequestDtoFixture;
 import org.kiworkshop.snowball.note.controller.dto.NoteResponseDto;
 import org.kiworkshop.snowball.note.entity.Note;
 import org.kiworkshop.snowball.note.entity.NoteFixture;
 import org.kiworkshop.snowball.note.entity.NoteRepository;
 import org.kiworkshop.snowball.note.entity.PageNoteFixture;
+import org.kiworkshop.snowball.stocktransaction.entity.StockTransaction;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -25,15 +24,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.BDDAssertions.thenThrownBy;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class NoteServiceTest {
@@ -83,8 +79,13 @@ class NoteServiceTest {
         assertThat(responseDto.getId()).isEqualTo(note.getId());
         assertThat(responseDto.getCreatedDate()).isBefore(LocalDateTime.now());
         assertThat(responseDto.getInvestmentDate()).isBefore(LocalDate.now());
-        assertThat(responseDto.getLastModifiedDate()).isBefore(LocalDateTime.now());
-        assertThat(responseDto.getText()).isEqualTo(note.getText());
+        assertThat(responseDto.getModifiedDate()).isBefore(LocalDateTime.now());
+        assertThat(responseDto.getContent()).isEqualTo(note.getContent());
+        assertThat(responseDto.getStockTransactions().size()).isEqualTo(note.getStockTransactions().size());
+        assertThat(responseDto.getStockTransactions().get(0))
+                .isEqualToComparingFieldByField(note.getStockTransactions().get(0));
+        assertThat(responseDto.getStockTransactions().get(1))
+                .isEqualToComparingFieldByField(note.getStockTransactions().get(1));
         then(noteRepository).should().findById(anyLong());
     }
 
@@ -103,6 +104,10 @@ class NoteServiceTest {
         assertThat(pageNoteResponse.getTotalElements()).isEqualTo(pageNote.getSize());
         assertThat(pageNoteResponse.getContent().get(0).getId()).isEqualTo(pageNote.getContent().get(0).getId());
         assertThat(pageNoteResponse.getContent().get(1).getId()).isEqualTo(2L);
+        assertThat(pageNoteResponse.getContent().get(0))
+                .isEqualToComparingFieldByField(pageNote.getContent().get(0));
+        assertThat(pageNoteResponse.getContent().get(1))
+                .isEqualToComparingFieldByField(pageNote.getContent().get(1));
     }
 
     @Test
@@ -117,7 +122,7 @@ class NoteServiceTest {
         dut.updateNote(noteId, requestDto);
 
         // then
-        assertThat(note.getText()).isEqualTo(requestDto.getText());
+        assertThat(note.getContent()).isEqualTo(requestDto.getContent());
         assertThat(note.getInvestmentDate()).isEqualTo(requestDto.getInvestmentDate());
         assertThat(note.getStockTransactions().get(0)).isEqualToComparingFieldByField(requestDto.getStockTransactions().get(0));
     }
