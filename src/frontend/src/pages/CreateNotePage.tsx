@@ -9,13 +9,13 @@ import CreateNote from '../container/note/CreateNote';
 import Container from '../component/base/Container';
 
 const CreateNotePage = () => {
-  const logged = useSelector((state: RootState) => state.user.logged);
+  const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
 
   return (
     <Container style={{ padding: '50px 0' }}>
       <NavContainer selectedMenu={['createNote']} />
       <CreateNote />
-      {!logged && <Redirect to={routes.login()} />}
+      {!isLoggedIn && <Redirect to={routes.login()} />}
     </Container>
   );
 };
