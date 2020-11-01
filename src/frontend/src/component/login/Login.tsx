@@ -44,7 +44,7 @@ const Login: React.FC<LoginProps> = ({
           매일매일 굴러가는 당신의 자산을 관리하세요!
         </Title>
 
-        <Spin tip="로딩중..." spinning={loading}>
+        <Spin tip="로딩중..." spinning={!!loading}>
           <Button
             icon={<UserOutlined />}
             style={{
