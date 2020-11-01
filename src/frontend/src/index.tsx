@@ -8,10 +8,11 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import store from 'store2';
 import { createBrowserHistory } from 'history';
 import rootReducer from './store/modules';
-import { loginStoredUserThunk } from './store/modules/user';
 
 import './index.less';
 import App from './App';
+import { User } from './type/user';
+import { loginStoredUser } from './store/modules/user';
 
 const customHistory = createBrowserHistory();
 
@@ -22,11 +23,22 @@ const reduxStore = createStore(
   )
 );
 
-const storedUser = store.get('snowball-user');
-if (storedUser) {
-  const dispatch = useDispatch();
-  dispatch(loginStoredUserThunk(storedUser));
+function loadUser() {
+  try {
+    const storedUser = store.get('snowball-user');
+    if (!storedUser) return;
+    if (storedUser.expired < Date.now()) {
+      store.remove('snowball-user');
+      return;
+    }
+
+    reduxStore.dispatch(loginStoredUser(storedUser.info));
+  } catch (err) {
+    console.log('localstorage is not working');
+  }
 }
+
+loadUser();
 
 ReactDOM.render(
   <Router history={customHistory}>

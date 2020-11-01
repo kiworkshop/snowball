@@ -37,6 +37,12 @@ export const loginStoredUserThunk = (
   storedUser: User.Info
 ): UserThunkAction => {
   return (dispatch) => {
+    const MILLISECONDS_OF_DAY = 1000 * 60 * 60 * 24;
+    store.set('snowball-user', {
+      info: { ...storedUser },
+      expired: Date.now() + MILLISECONDS_OF_DAY,
+    });
+
     dispatch(loginStoredUser(storedUser));
   };
 };
