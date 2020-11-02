@@ -51,9 +51,11 @@ const Editor: React.FC<EditorProps> = ({
     ['clean'],
   ];
 
+  const investmentDate = formData.investmentDate?.format('YYYY-MM-DD');
+
   return (
     <>
-      <Title>{formData.investmentDate} 투자노트</Title>
+      <Title>{investmentDate} 투자노트</Title>
       <StyledEditor
         theme="snow"
         value={formData.content}
@@ -61,13 +63,20 @@ const Editor: React.FC<EditorProps> = ({
         modules={{ toolbar: toolbarOptions }}
       />
 
-      {error && <Alert message={error} type="error" closable />}
-
       <Spin tip="저장중..." spinning={loading}>
         <Button size="large" block onClick={onSave}>
           저장하기
         </Button>
       </Spin>
+
+      {error && (
+        <Alert
+          message="노트를 작성하는 도중 오류가 발생했습니다."
+          type="error"
+          closable
+          style={{ position: 'relative', top: '-40px' }}
+        />
+      )}
     </>
   );
 };

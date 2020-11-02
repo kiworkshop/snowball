@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { PageHeader } from 'antd';
@@ -32,9 +32,7 @@ const CreateNote = () => {
   );
 
   const onSelectDate = useCallback(
-    (date: moment.Moment) => {
-      const selectedDate = moment(date);
-
+    (selectedDate: moment.Moment) => {
       const prevYearAndMonth = investmentDate
         ? investmentDate.format('YYYY-MM')
         : null;
@@ -52,14 +50,15 @@ const CreateNote = () => {
     dispatch(createNoteThunk(form));
   }, [dispatch, form]);
 
+  const TODAY = useMemo(() => moment(Date.now()), []);
+
   useEffect(() => {
-    const TODAY = moment(Date.now());
     setInvestmentDate(TODAY);
 
     return function cleanup() {
       dispatch(initializeFormThunk());
     };
-  }, [dispatch, setInvestmentDate]);
+  }, [dispatch, setInvestmentDate, TODAY]);
 
   return (
     <Container style={{ padding: '50px 0' }}>
@@ -71,12 +70,19 @@ const CreateNote = () => {
             onBack={() => setIsDateSelected(false)}
             style={{ padding: '0 0 25px 0' }}
           />
-          <EditorContainer loading={loading} error={error} onSave={onSave} />
+          <EditorContainer
+            loading={loading ? true : false}
+            error={error}
+            onSave={onSave}
+          />
         </>
       )}
 
       {!isDateSelected && (
-        <Calendar onSelectDate={onSelectDate} value={moment(investmentDate)} />
+        <Calendar
+          onSelectDate={onSelectDate}
+          currentDate={investmentDate ? investmentDate : TODAY}
+        />
       )}
     </Container>
   );

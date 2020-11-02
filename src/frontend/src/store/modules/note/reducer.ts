@@ -63,6 +63,10 @@ const note = createReducer<NoteState, NoteAction>(initialState, {
       ...state.loading,
       getNote: true,
     },
+    error: {
+      ...state.error,
+      getNote: null,
+    },
   }),
   [GET_NOTE_SUCCESS]: (state, action) => ({
     ...state,
@@ -76,6 +80,10 @@ const note = createReducer<NoteState, NoteAction>(initialState, {
     loading: {
       ...state.loading,
       getNote: false,
+    },
+    error: {
+      ...state.error,
+      getNote: null,
     },
   }),
   [GET_NOTE_FAILURE]: (state, action) => ({
@@ -95,12 +103,20 @@ const note = createReducer<NoteState, NoteAction>(initialState, {
       ...state.loading,
       createNote: true,
     },
+    error: {
+      ...state.error,
+      createNote: null,
+    },
   }),
   [CREATE_NOTE_SUCCESS]: (state, action) => ({
     ...state,
     loading: {
       ...state.loading,
       createNote: false,
+    },
+    error: {
+      ...state.error,
+      createNote: null,
     },
   }),
   [CREATE_NOTE_FAILURE]: (state, action) => ({
@@ -120,12 +136,20 @@ const note = createReducer<NoteState, NoteAction>(initialState, {
       ...state.loading,
       updateNote: true,
     },
+    error: {
+      ...state.error,
+      updateNote: null,
+    },
   }),
   [UPDATE_NOTE_SUCCESS]: (state) => ({
     ...state,
     loading: {
       ...state.loading,
       updateNote: false,
+    },
+    error: {
+      ...state.error,
+      updateNote: null,
     },
   }),
   [UPDATE_NOTE_FAILURE]: (state, action) => ({
