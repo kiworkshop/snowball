@@ -7,7 +7,6 @@ import {
   CreateNotePage,
   Page404,
   NoteDetailPage,
-  UpdateNotePage,
 } from './pages';
 
 function App() {
@@ -17,7 +16,6 @@ function App() {
         <Route path="/" component={MainPage} exact />
         <Route path="/login" component={LoginPage} exact />
         <Route path="/create/note" component={CreateNotePage} exact />
-        <Route path="/update/note/:id" component={UpdateNotePage} />
         <Route path="/note/:id" component={NoteDetailPage} exact />
         <Route component={Page404} />
       </Switch>

@@ -28,7 +28,7 @@ const NoteListContainer = () => {
 
   useEffect(() => {
     getNotesOfUser();
-  }, []);
+  }, [getNotesOfUser]);
 
   return (
     <NoteList

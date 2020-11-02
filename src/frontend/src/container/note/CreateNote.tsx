@@ -50,7 +50,7 @@ const CreateNote = () => {
 
   const onSave = useCallback(() => {
     dispatch(createNoteThunk(form));
-  }, [dispatch]);
+  }, [dispatch, form]);
 
   useEffect(() => {
     const TODAY = moment(Date.now());

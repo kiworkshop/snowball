@@ -9,11 +9,13 @@ import { History } from 'history';
 export type NoteAction = ActionType<typeof actions>;
 
 export type NoteState = {
-  id: string;
-  content: string;
-  investmentDate: moment.Moment | null;
-  createdDate: moment.Moment | null;
-  lastModifiedDate: moment.Moment | null;
+  note: {
+    id: string;
+    content: string;
+    investmentDate: moment.Moment | null;
+    createdDate: moment.Moment | null;
+    lastModifiedDate: moment.Moment | null;
+  };
   form: Note.Form;
   loading: { [action: string]: boolean };
   error: { [action: string]: Error | null };

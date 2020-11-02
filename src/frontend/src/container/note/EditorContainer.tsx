@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import moment from 'moment';
 import { RootState } from '../../store/modules';
 
 import Editor from '../../component/note/Editor';
@@ -21,12 +20,6 @@ const EditorContainer: React.FC<EditorContainerProps> = ({
 
   const setContent = useCallback(
     (content: string) => dispatch(setFormThunk({ content })),
-    [dispatch]
-  );
-
-  const setInvestmentDate = useCallback(
-    (investmentDate: moment.Moment | null) =>
-      dispatch(setFormThunk({ investmentDate })),
     [dispatch]
   );
 

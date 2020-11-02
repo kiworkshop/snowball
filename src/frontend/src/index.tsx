@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router } from 'react-router-dom';
-import { Provider, useDispatch } from 'react-redux';
+import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
@@ -11,7 +11,6 @@ import rootReducer from './store/modules';
 
 import './index.less';
 import App from './App';
-import { User } from './type/user';
 import { loginStoredUser } from './store/modules/user';
 
 const customHistory = createBrowserHistory();

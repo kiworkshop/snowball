@@ -17,11 +17,13 @@ import {
 } from './actions';
 
 const initialState: NoteState = {
-  id: '',
-  content: '',
-  investmentDate: null,
-  createdDate: null,
-  lastModifiedDate: null,
+  note: {
+    id: '',
+    content: '',
+    investmentDate: null,
+    createdDate: null,
+    lastModifiedDate: null,
+  },
   form: {
     content: '',
     investmentDate: null,
@@ -40,11 +42,13 @@ const note = createReducer<NoteState, NoteAction>(initialState, {
   }),
   [INITIALIZE_NOTE]: (state) => ({
     ...state,
-    id: '',
-    content: '',
-    investmentDate: null,
-    createdDate: null,
-    lastModifiedDate: null,
+    note: {
+      id: '',
+      content: '',
+      investmentDate: null,
+      createdDate: null,
+      lastModifiedDate: null,
+    },
   }),
   [SET_FORM]: (state, action) => ({
     ...state,
@@ -57,81 +61,82 @@ const note = createReducer<NoteState, NoteAction>(initialState, {
     ...state,
     loading: {
       ...state.loading,
-      [GET_NOTE_REQUEST]: true,
+      getNote: true,
     },
   }),
   [GET_NOTE_SUCCESS]: (state, action) => ({
     ...state,
-    id: action.payload.id,
-    content: action.payload.text,
-    investmentDate: moment(action.payload.investmentDate),
-    createdDate: moment(action.payload.createdDate),
-    lastModifiedDate: moment(action.payload.lastModifiedDate),
+    note: {
+      id: action.payload.id,
+      content: action.payload.text,
+      investmentDate: moment(action.payload.investmentDate),
+      createdDate: moment(action.payload.createdDate),
+      lastModifiedDate: moment(action.payload.lastModifiedDate),
+    },
     loading: {
       ...state.loading,
-      [GET_NOTE_REQUEST]: false,
+      getNote: false,
     },
   }),
   [GET_NOTE_FAILURE]: (state, action) => ({
     ...state,
     loading: {
       ...state.loading,
-      [GET_NOTE_REQUEST]: false,
+      getNote: false,
     },
     error: {
       ...state.error,
-      [GET_NOTE_REQUEST]: action.payload,
+      getNote: action.payload,
     },
   }),
   [CREATE_NOTE_REQUEST]: (state) => ({
     ...state,
     loading: {
       ...state.loading,
-      [CREATE_NOTE_REQUEST]: true,
+      createNote: true,
     },
   }),
   [CREATE_NOTE_SUCCESS]: (state, action) => ({
     ...state,
-    id: action.payload.id,
     loading: {
       ...state.loading,
-      [CREATE_NOTE_REQUEST]: false,
+      createNote: false,
     },
   }),
   [CREATE_NOTE_FAILURE]: (state, action) => ({
     ...state,
     loading: {
       ...state.loading,
-      [CREATE_NOTE_REQUEST]: false,
+      createNote: false,
     },
     error: {
       ...state.error,
-      [CREATE_NOTE_REQUEST]: action.payload,
+      createNote: action.payload,
     },
   }),
   [UPDATE_NOTE_REQUEST]: (state) => ({
     ...state,
     loading: {
       ...state.loading,
-      [UPDATE_NOTE_REQUEST]: true,
+      updateNote: true,
     },
   }),
   [UPDATE_NOTE_SUCCESS]: (state) => ({
     ...state,
     loading: {
       ...state.loading,
-      [CREATE_NOTE_REQUEST]: false,
+      updateNote: false,
     },
   }),
   [UPDATE_NOTE_FAILURE]: (state, action) => ({
     ...state,
     loading: {
       ...state.loading,
-      [UPDATE_NOTE_REQUEST]: false,
+      updateNote: false,
     },
     error: {
       ...state.error,
-      [UPDATE_NOTE_REQUEST]: action.payload,
+      updateNote: action.payload,
     },
   }),
 });
