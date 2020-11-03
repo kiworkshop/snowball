@@ -23,6 +23,7 @@ public class StockTransaction extends BaseTimeEntity {
     private StockDetail stockDetail;
     @ManyToOne
     private Note note;
+
     private Long quantity;
     private Long tradedPrice;
     private TransactionType transactionType;
@@ -35,5 +36,13 @@ public class StockTransaction extends BaseTimeEntity {
         this.quantity = quantity;
         this.tradedPrice = tradedPrice;
         this.transactionType = transactionType;
+    }
+
+    public void update(StockTransaction stockTransaction) {
+        this.stockDetail = stockTransaction.getStockDetail();
+        this.note = stockTransaction.getNote();
+        this.quantity = stockTransaction.getQuantity();
+        this.tradedPrice = stockTransaction.getTradedPrice();
+        this.transactionType = stockTransaction.getTransactionType();
     }
 }

@@ -13,8 +13,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 
@@ -37,5 +40,20 @@ class StockTransactionServiceTest {
         //then
         assertThat(stockTransactionCreateResponseDto.getId()).isEqualTo(1L);
         then(stockTransactionRepository).should().save(any());
+    }
+
+    @Test
+    void updateStockTransaction () {
+        // given
+        StockTransaction stockTransaction = StockTransactionFixture.create(TransactionType.BUY);
+        StockTransactionRequestDto requestDto = StockTransactionRequestDtoFixture.create();
+        given(stockTransactionRepository.findById(anyLong())).willReturn(Optional.of(stockTransaction));
+
+        // when
+        dut.update(stockTransaction.getId(), requestDto);
+
+        // then
+        assertThat(stockTransaction.getQuantity()).isEqualTo(requestDto.getQuantity());
+        assertThat(stockTransaction.getTransactionType()).isEqualTo(requestDto.getTransactionType());
     }
 }
