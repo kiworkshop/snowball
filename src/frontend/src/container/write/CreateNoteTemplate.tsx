@@ -9,11 +9,11 @@ import {
 } from '../../store/modules/note';
 
 import EditorContainer from './EditorContainer';
-import Calendar from '../../component/note/Calendar';
+import Calendar from '../../component/write/Calendar';
 import Container from '../../component/base/Container';
 import { RootState } from '../../store/modules';
 
-const CreateNote = () => {
+const CreateNoteTemplate = () => {
   const dispatch = useDispatch();
   const [isDateSelected, setIsDateSelected] = useState(false);
 
@@ -88,4 +88,4 @@ const CreateNote = () => {
   );
 };
 
-export default CreateNote;
+export default CreateNoteTemplate;

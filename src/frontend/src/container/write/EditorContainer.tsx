@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/modules';
 
-import Editor from '../../component/note/Editor';
+import Editor from '../../component/write/Editor';
 import { setFormThunk } from '../../store/modules/note';
 
 interface EditorContainerProps {

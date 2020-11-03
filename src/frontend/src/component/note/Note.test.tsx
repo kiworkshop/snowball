@@ -5,8 +5,8 @@ import moment from 'moment';
 import dummyData from '../../static/dummyData';
 import routes from '../../routes';
 
-import Editor from './Editor';
-import EditorContainer from '../../container/note/EditorContainer';
+import Editor from '../write/Editor';
+import EditorContainer from '../../container/write/EditorContainer';
 import NoteList from './NoteList';
 import Note from './Note';
 
