@@ -20,6 +20,10 @@ export const UPDATE_NOTE_REQUEST = 'note/UPDATE_NOTE_REQUEST' as const;
 export const UPDATE_NOTE_SUCCESS = 'note/UPDATE_NOTE_SUCCESS' as const;
 export const UPDATE_NOTE_FAILURE = 'note/UPDATE_NOTE_FAILURE' as const;
 
+export const DELETE_NOTE_REQUEST = 'note/DELETE_NOTE_REQUEST' as const;
+export const DELETE_NOTE_SUCCESS = 'note/DELETE_NOTE_SUCCESS' as const;
+export const DELETE_NOTE_FAILURE = 'note/DELETE_NOTE_FAILURE' as const;
+
 /* ACTION TYPE */
 export const initializeForm = () => action(INITIALIZE_FORM);
 export const initializeNote = () => action(INITIALIZE_NOTE);
@@ -42,4 +46,10 @@ export const updateNoteAsync = createAsyncAction(
   UPDATE_NOTE_REQUEST,
   UPDATE_NOTE_SUCCESS,
   UPDATE_NOTE_FAILURE
+)<undefined, undefined, AxiosError>();
+
+export const deleteNoteAsync = createAsyncAction(
+  DELETE_NOTE_REQUEST,
+  DELETE_NOTE_SUCCESS,
+  DELETE_NOTE_FAILURE
 )<undefined, undefined, AxiosError>();

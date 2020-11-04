@@ -1,10 +1,11 @@
 import {
-  createNoteAsync,
-  getNoteAsync,
   initializeForm,
   initializeNote,
   setForm,
+  getNoteAsync,
+  createNoteAsync,
   updateNoteAsync,
+  deleteNoteAsync,
 } from './actions';
 import { NoteThunkAction } from './types';
 import { Note } from '../../../type/note';
@@ -66,6 +67,19 @@ export const updateNoteThunk = (
     dispatch(request());
     try {
       await noteAPI.updateNote(noteId, noteForm);
+      dispatch(success());
+    } catch (err) {
+      dispatch(failure(err));
+    }
+  };
+};
+
+export const deleteNoteThunk = (noteId: string): NoteThunkAction => {
+  return async (dispatch) => {
+    const { request, success, failure } = deleteNoteAsync;
+    dispatch(request());
+    try {
+      await noteAPI.deleteNote(noteId);
       dispatch(success());
     } catch (err) {
       dispatch(failure(err));

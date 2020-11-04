@@ -14,6 +14,9 @@ import {
   UPDATE_NOTE_REQUEST,
   UPDATE_NOTE_SUCCESS,
   UPDATE_NOTE_FAILURE,
+  DELETE_NOTE_REQUEST,
+  DELETE_NOTE_SUCCESS,
+  DELETE_NOTE_FAILURE,
 } from './actions';
 
 const initialState: NoteState = {
@@ -161,6 +164,39 @@ const note = createReducer<NoteState, NoteAction>(initialState, {
     error: {
       ...state.error,
       updateNote: action.payload,
+    },
+  }),
+  [DELETE_NOTE_REQUEST]: (state) => ({
+    ...state,
+    loading: {
+      ...state.loading,
+      deleteNote: true,
+    },
+    error: {
+      ...state.error,
+      deleteNote: null,
+    },
+  }),
+  [DELETE_NOTE_SUCCESS]: (state) => ({
+    ...state,
+    loading: {
+      ...state.loading,
+      deleteNote: false,
+    },
+    error: {
+      ...state.error,
+      deleteNote: null,
+    },
+  }),
+  [DELETE_NOTE_FAILURE]: (state, action) => ({
+    ...state,
+    loading: {
+      ...state.loading,
+      deleteNote: false,
+    },
+    error: {
+      ...state.error,
+      deleteNote: action.payload,
     },
   }),
 });
