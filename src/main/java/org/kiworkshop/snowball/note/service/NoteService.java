@@ -2,9 +2,15 @@ package org.kiworkshop.snowball.note.service;
 
 import lombok.RequiredArgsConstructor;
 import org.kiworkshop.snowball.common.exception.DomainServiceException;
-import org.kiworkshop.snowball.note.controller.dto.*;
+import org.kiworkshop.snowball.note.controller.dto.NoteAssembler;
+import org.kiworkshop.snowball.note.controller.dto.NoteCreateResponseDto;
+import org.kiworkshop.snowball.note.controller.dto.NoteRequestDto;
+import org.kiworkshop.snowball.note.controller.dto.NoteResponseDto;
 import org.kiworkshop.snowball.note.entity.Note;
 import org.kiworkshop.snowball.note.entity.NoteRepository;
+import org.kiworkshop.snowball.stocktransaction.dto.StockTransactionAssembler;
+import org.kiworkshop.snowball.stocktransaction.entity.StockTransactionRepository;
+import org.kiworkshop.snowball.stocktransaction.service.StockTransactionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,9 +21,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class NoteService {
 
     private final NoteRepository noteRepository;
+    private final StockTransactionRepository stockTransactionRepository;
 
     public NoteCreateResponseDto createNote(NoteRequestDto noteRequestDto) {
         Note note = noteRepository.save(NoteAssembler.getNote(noteRequestDto));
+        stockTransactionRepository.saveAll(note.getStockTransactions());
         return NoteAssembler.getNoteCreateResponseDto(note);
     }
 
@@ -43,7 +51,6 @@ public class NoteService {
     }
 
     public void deleteNote(Long id) {
-        Note note = getById(id);
-        noteRepository.delete(note);
+        noteRepository.deleteById(id);
     }
 }

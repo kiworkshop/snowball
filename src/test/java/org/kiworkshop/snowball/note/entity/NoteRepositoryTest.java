@@ -15,7 +15,6 @@ class NoteRepositoryTest extends IntegrationTest {
     @Autowired
     private NoteRepository dut;
 
-
     @Test
     void save_note_with_stock_transaction() {
         //given

@@ -12,6 +12,8 @@ import org.kiworkshop.snowball.note.entity.NoteFixture;
 import org.kiworkshop.snowball.note.entity.NoteRepository;
 import org.kiworkshop.snowball.note.entity.PageNoteFixture;
 import org.kiworkshop.snowball.stocktransaction.entity.StockTransaction;
+import org.kiworkshop.snowball.stocktransaction.entity.StockTransactionFixture;
+import org.kiworkshop.snowball.stocktransaction.entity.StockTransactionRepository;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -30,13 +32,15 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class NoteServiceTest {
 
     @Mock
     private NoteRepository noteRepository;
-
+    @Mock
+    private StockTransactionRepository stockTransactionRepository;
     @InjectMocks
     private NoteService dut;
 
@@ -44,6 +48,7 @@ class NoteServiceTest {
     void createTest() {
         //given
         given(noteRepository.save(any(Note.class))).willReturn(NoteFixture.create());
+        given(stockTransactionRepository.saveAll(any())).willReturn(StockTransactionFixture.createList());
         //when
         NoteCreateResponseDto noteCreateResponseDto = dut.createNote(NoteRequestDto.builder().build());
         //then
@@ -129,16 +134,14 @@ class NoteServiceTest {
 
     @Test
     void deleteNoteTest() {
-        // given
         Long noteId = 1L;
-        Note note = NoteFixture.create();
-        given(noteRepository.findById(anyLong())).willReturn(Optional.of(note));
 
         // when
         dut.deleteNote(noteId);
 
         // then
-        then(noteRepository).should().delete(any(Note.class));
+        then(noteRepository).should().deleteById(anyLong());
+        verify(noteRepository).deleteById(anyLong());
     }
 
     @Test
