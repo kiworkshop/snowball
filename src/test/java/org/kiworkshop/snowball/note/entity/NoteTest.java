@@ -24,8 +24,8 @@ class NoteTest {
     @Test
     public void BaseTimeEntityTest(){
         //given
-        User user = User.builder().age(20).email("test@kiworkshop.com").build();
-        Note note = Note.builder().investmentDate(LocalDate.now()).user(user).text("test").build();
+        User user = User.builder().email("test@kiworkshop.com").build();
+        Note note = Note.builder().investmentDate(LocalDate.now()).user(user).content("test").build();
         userRepository.save(user);
         noteRepository.save(note);
 
@@ -42,12 +42,12 @@ class NoteTest {
     @Transactional
     public void BaseTimeEntityUpdateTest(){
         //given
-        User user = User.builder().age(20).email("test@kiworkshop.com").build();
-        Note note = Note.builder().investmentDate(LocalDate.now()).user(user).text("test").build();
+        User user = User.builder().email("test@kiworkshop.com").build();
+        Note note = Note.builder().investmentDate(LocalDate.now()).user(user).content("test").build();
         userRepository.save(user);
         noteRepository.save(note);
         List<Note> notes = noteRepository.findAll();
-        notes.get(0).update(Note.builder().investmentDate(LocalDate.now()).user(user).text("testUpdate").build());
+        notes.get(0).update(Note.builder().investmentDate(LocalDate.now()).user(user).content("testUpdate").build());
         //when
         List<Note> notes2 = noteRepository.findAll();
 
