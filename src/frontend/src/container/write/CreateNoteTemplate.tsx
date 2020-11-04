@@ -7,11 +7,11 @@ import {
   initializeFormThunk,
   createNoteThunk,
 } from '../../store/modules/note';
-
-import EditorContainer from './EditorContainer';
-import Calendar from '../../component/write/Calendar';
-import Container from '../../component/base/Container';
 import { RootState } from '../../store/modules';
+
+import Container from '../../component/base/Container';
+import EditorContainer from './EditorContainer';
+import CalendarContainer from './CalendarContainer';
 
 const CreateNoteTemplate = () => {
   const dispatch = useDispatch();
@@ -19,32 +19,9 @@ const CreateNoteTemplate = () => {
 
   const {
     form,
-    form: { investmentDate },
     loading: { createNote: loading },
     error: { createNote: error },
   } = useSelector((state: RootState) => state.note);
-
-  const setInvestmentDate = useCallback(
-    (date: moment.Moment) => {
-      dispatch(setFormThunk({ investmentDate: date }));
-    },
-    [dispatch]
-  );
-
-  const onSelectDate = useCallback(
-    (selectedDate: moment.Moment) => {
-      const prevYearAndMonth = investmentDate
-        ? investmentDate.format('YYYY-MM')
-        : null;
-      const yearAndMonthOfSelectedDate = selectedDate.format('YYYY-MM');
-
-      if (prevYearAndMonth === yearAndMonthOfSelectedDate) {
-        setIsDateSelected(true);
-      }
-      setInvestmentDate(selectedDate);
-    },
-    [investmentDate, setInvestmentDate]
-  );
 
   const onSave = useCallback(() => {
     dispatch(createNoteThunk(form));
@@ -53,12 +30,12 @@ const CreateNoteTemplate = () => {
   const TODAY = useMemo(() => moment(Date.now()), []);
 
   useEffect(() => {
-    setInvestmentDate(TODAY);
+    dispatch(setFormThunk({ investmentDate: TODAY }));
 
     return function cleanup() {
       dispatch(initializeFormThunk());
     };
-  }, [dispatch, setInvestmentDate, TODAY]);
+  }, [dispatch, TODAY]);
 
   return (
     <Container style={{ padding: '50px 0' }}>
@@ -70,19 +47,12 @@ const CreateNoteTemplate = () => {
             onBack={() => setIsDateSelected(false)}
             style={{ padding: '0 0 25px 0' }}
           />
-          <EditorContainer
-            loading={loading ? true : false}
-            error={error}
-            onSave={onSave}
-          />
+          <EditorContainer loading={!!loading} error={error} onSave={onSave} />
         </>
       )}
 
       {!isDateSelected && (
-        <Calendar
-          onSelectDate={onSelectDate}
-          currentDate={investmentDate ? investmentDate : TODAY}
-        />
+        <CalendarContainer setIsDateSelected={setIsDateSelected} />
       )}
     </Container>
   );
