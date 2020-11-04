@@ -16,4 +16,13 @@ public class NoteRequestDtoFixture {
                 .stockTransactions(StockTransactionFixture.createList())
                 .build();
     }
+    public static NoteRequestDto create(User user) {
+        return NoteRequestDto.builder()
+                .title("투자노트 제목입니다.")
+                .content("투자노트 텍스트입니다.")
+                .investmentDate(LocalDate.now())
+                .user(user)
+                .stockTransactions(StockTransactionFixture.createList())
+                .build();
+    }
 }
