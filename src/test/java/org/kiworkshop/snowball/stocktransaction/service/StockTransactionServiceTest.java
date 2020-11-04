@@ -13,10 +13,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class StockTransactionServiceTest {
@@ -27,7 +31,19 @@ class StockTransactionServiceTest {
     private StockTransactionService dut;
 
     @Test
-    void create() {
+    void getStockTransaction() {
+        //given
+        StockTransaction ret = StockTransactionFixture.create(TransactionType.BUY);
+        given(stockTransactionRepository.findById(anyLong())).willReturn(Optional.of(ret));
+        //when
+        StockTransaction stockTransaction = dut.get(1L);
+        //then
+        assertThat(stockTransaction).isEqualToComparingFieldByField(ret);
+        then(stockTransactionRepository).should().findById(anyLong());
+    }
+
+    @Test
+    void createStockTransaction() {
         //given
         StockTransactionRequestDto stockTransactionRequestDto = StockTransactionRequestDtoFixture.create();
         StockTransaction stockTransaction = StockTransactionFixture.create(TransactionType.BUY);
@@ -35,7 +51,31 @@ class StockTransactionServiceTest {
         //when
         StockTransactionCreateResponseDto stockTransactionCreateResponseDto = dut.create(stockTransactionRequestDto);
         //then
-        assertThat(stockTransactionCreateResponseDto.getId()).isEqualTo(1L);
+        assertThat(stockTransactionCreateResponseDto.getId()).isEqualTo(stockTransaction.getId());
         then(stockTransactionRepository).should().save(any());
+    }
+
+    @Test
+    void updateStockTransaction () {
+        // given
+        StockTransaction stockTransaction = StockTransactionFixture.create(TransactionType.BUY);
+        StockTransactionRequestDto requestDto = StockTransactionRequestDtoFixture.create();
+        given(stockTransactionRepository.findById(anyLong())).willReturn(Optional.of(stockTransaction));
+
+        // when
+        dut.update(stockTransaction.getId(), requestDto);
+
+        // then
+        assertThat(stockTransaction.getQuantity()).isEqualTo(requestDto.getQuantity());
+        assertThat(stockTransaction.getTransactionType()).isEqualTo(requestDto.getTransactionType());
+    }
+
+    @Test
+    void deleteStockTransaction() {
+        //when
+        dut.delete(1L);
+        //then
+        then(stockTransactionRepository).should().deleteById(anyLong());
+        verify(stockTransactionRepository).deleteById(anyLong());
     }
 }
