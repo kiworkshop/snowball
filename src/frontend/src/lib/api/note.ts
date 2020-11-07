@@ -1,14 +1,15 @@
 import axios from '../axios';
 import { Note } from '../../type/note';
+import { NoteAPIResponse } from '../../type/api';
 
 export const getNotes = (size: number, page: number) =>
-  axios.get<Array<Note.APIResponse>>(`/notes?size=${size}&page=${page}`);
+  axios.get<NoteAPIResponse.Notes>(`/notes?size=${size}&page=${page}`);
 
 export const getNote = (id: string) =>
-  axios.get<Note.APIResponse>(`/notes/${id}`);
+  axios.get<NoteAPIResponse.Note>(`/notes/${id}`);
 
 export const createNote = (form: Note.Form) =>
-  axios.post<Note.APIResponseOnlyWithId>('/notes', {
+  axios.post<NoteAPIResponse.OnlyWithId>('/notes', {
     text: form.content,
     investmentDate: form.investmentDate,
   });

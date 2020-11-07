@@ -1,6 +1,7 @@
 import { action, createAsyncAction } from 'typesafe-actions';
 import { AxiosError } from 'axios';
 import { Note } from '../../../type/note';
+import { NoteAPIResponse } from '../../../type/api';
 
 /* ACTION CONSTANT */
 export const INITIALIZE_FORM = 'note/INITIALIZE_FORM' as const;
@@ -34,7 +35,7 @@ export const getNoteAsync = createAsyncAction(
   GET_NOTE_REQUEST,
   GET_NOTE_SUCCESS,
   GET_NOTE_FAILURE
-)<undefined, Note.APIResponse, AxiosError>();
+)<undefined, NoteAPIResponse.Note, AxiosError>();
 
 export const createNoteAsync = createAsyncAction(
   CREATE_NOTE_REQUEST,

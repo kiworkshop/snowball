@@ -56,12 +56,16 @@ export const getNotesOfUserThunk = (
     dispatch(request());
     try {
       const response = await noteAPI.getNotes(size, page);
-      const processedNotes = await response.data.map((note) => ({
-        id: note.id,
-        content: note.text,
+      const processedNotes = response.data.content.map((note) => ({
+        ...note,
         investmentDate: moment(note.investmentDate),
         createdDate: moment(note.createdDate),
         lastModifiedDate: moment(note.lastModifiedDate),
+        stockTransactions: note.stockTransactions.map((stockTransaction) => ({
+          ...stockTransaction,
+          createdDate: moment(stockTransaction.createdDate),
+          modifiedDate: moment(stockTransaction.modifiedDate),
+        })),
       }));
       dispatch(success(processedNotes));
     } catch (err) {

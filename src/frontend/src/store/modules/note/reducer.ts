@@ -22,14 +22,18 @@ import {
 const initialState: NoteState = {
   note: {
     id: '',
+    title: '',
     content: '',
     investmentDate: null,
     createdDate: null,
     lastModifiedDate: null,
+    stockTransactions: [],
   },
   form: {
+    title: '',
     content: '',
     investmentDate: null,
+    stockTransactions: [],
   },
   loading: {},
   error: {},
@@ -39,18 +43,22 @@ const note = createReducer<NoteState, NoteAction>(initialState, {
   [INITIALIZE_FORM]: (state) => ({
     ...state,
     form: {
+      title: '',
       content: '',
       investmentDate: null,
+      stockTransactions: [],
     },
   }),
   [INITIALIZE_NOTE]: (state) => ({
     ...state,
     note: {
       id: '',
+      title: '',
       content: '',
       investmentDate: null,
       createdDate: null,
       lastModifiedDate: null,
+      stockTransactions: [],
     },
   }),
   [SET_FORM]: (state, action) => ({
@@ -74,11 +82,17 @@ const note = createReducer<NoteState, NoteAction>(initialState, {
   [GET_NOTE_SUCCESS]: (state, action) => ({
     ...state,
     note: {
-      id: action.payload.id,
-      content: action.payload.text,
+      ...action.payload,
       investmentDate: moment(action.payload.investmentDate),
       createdDate: moment(action.payload.createdDate),
       lastModifiedDate: moment(action.payload.lastModifiedDate),
+      stockTransactions: action.payload.stockTransactions.map(
+        (stockTransaction) => ({
+          ...stockTransaction,
+          createdDate: moment(stockTransaction.createdDate),
+          modifiedDate: moment(stockTransaction.modifiedDate),
+        })
+      ),
     },
     loading: {
       ...state.loading,

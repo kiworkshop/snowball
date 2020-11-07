@@ -39,37 +39,35 @@ const NoteList: React.FC<NoteListProps> = ({
 }) => {
   return (
     <Spin tip="로딩중..." spinning={loading}>
-      {notes && (
-        <List
-          header={
-            <ListHeader>
-              <FolderOpenOutlined style={{ marginRight: '8px' }} />
-              투자노트 목록
-            </ListHeader>
-          }
-          bordered
-          dataSource={notes}
-          renderItem={(note) => (
-            <NoteWrapper ghost>
-              <Panel
-                key={note.id}
-                header={
-                  note.investmentDate &&
-                  `${setDate(note.investmentDate)} 투자노트`
-                }
+      <List
+        header={
+          <ListHeader>
+            <FolderOpenOutlined style={{ marginRight: '8px' }} />
+            투자노트 목록
+          </ListHeader>
+        }
+        bordered
+        dataSource={notes}
+        renderItem={(note) => (
+          <NoteWrapper ghost>
+            <Panel
+              key={note.id}
+              header={
+                note.investmentDate &&
+                `${setDate(note.investmentDate)} 투자노트`
+              }
+            >
+              <Typography.Paragraph>{note.content}</Typography.Paragraph>
+              <MoreInfoButton
+                type="text"
+                onClick={onClickMoreInfoButton(note.id)}
               >
-                <Typography.Paragraph>{note.content}</Typography.Paragraph>
-                <MoreInfoButton
-                  type="text"
-                  onClick={onClickMoreInfoButton(note.id)}
-                >
-                  더보기 <RightOutlined />
-                </MoreInfoButton>
-              </Panel>
-            </NoteWrapper>
-          )}
-        />
-      )}
+                더보기 <RightOutlined />
+              </MoreInfoButton>
+            </Panel>
+          </NoteWrapper>
+        )}
+      />
 
       {error && (
         <Alert

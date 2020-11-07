@@ -1,15 +1,21 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import styled from 'styled-components';
-import { Button, Alert, Typography, Spin } from 'antd';
+import { Button, Alert, Spin, Input, Row, Col, Form, Space } from 'antd';
 import ReactQuill from 'react-quill';
+import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 
 import 'react-quill/dist/quill.snow.css';
 import { Note } from '../../type/note';
+import StockTransactionInput from './StockTransactionInput';
 
 interface EditorProps {
   formData: Note.Form;
   setContent: (content: string) => void;
   onSave: () => void;
+  onClickStockTransactionButton: (type: 'BUY' | 'SELL') => () => void;
+  onChangeStockTransaction: (
+    index: number
+  ) => (e: ChangeEvent<HTMLInputElement>) => void;
   loading: boolean;
   error: Error | null;
 }
@@ -22,12 +28,18 @@ const StyledEditor = styled(ReactQuill)`
   }
 `;
 
-const { Title } = Typography;
+const TitleInput = styled(Input)`
+  font-size: 38px;
+  font-weight: bold;
+  padding: 20px 0;
+`;
 
 const Editor: React.FC<EditorProps> = ({
   formData,
   setContent,
   onSave,
+  onClickStockTransactionButton,
+  onChangeStockTransaction,
   loading,
   error,
 }) => {
@@ -55,7 +67,38 @@ const Editor: React.FC<EditorProps> = ({
 
   return (
     <>
-      <Title>{investmentDate} 투자노트</Title>
+      <TitleInput
+        type="text"
+        bordered={false}
+        placeholder={`${investmentDate} 투자노트`}
+      />
+
+      <Row style={{ marginBottom: '20px' }}>
+        <Col span={24} md={12}>
+          <Button onClick={onClickStockTransactionButton('BUY')}>
+            <PlusOutlined />
+            매수
+          </Button>
+
+          {formData.stockTransactions.map(
+            (stockTransaction, index) =>
+              stockTransaction.transactionType === 'BUY' && (
+                <StockTransactionInput
+                  state={stockTransaction}
+                  onChange={onChangeStockTransaction(index)}
+                  onDelete={() => console.log('deleted')}
+                />
+              )
+          )}
+        </Col>
+        <Col span={24} md={12}>
+          <Button onClick={onClickStockTransactionButton('SELL')}>
+            <PlusOutlined />
+            매도
+          </Button>
+        </Col>
+      </Row>
+
       <StyledEditor
         theme="snow"
         value={formData.content}

@@ -43,9 +43,9 @@ const CreateNoteTemplate = () => {
         <>
           <PageHeader
             title="날짜 수정하기"
-            subTitle="투자노트 작성"
+            subTitle={form.investmentDate?.format('YYYY-MM-DD')}
             onBack={() => setIsDateSelected(false)}
-            style={{ padding: '0 0 25px 0' }}
+            style={{ padding: 0 }}
           />
           <EditorContainer loading={!!loading} error={error} onSave={onSave} />
         </>
