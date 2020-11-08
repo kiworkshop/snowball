@@ -1,7 +1,7 @@
 package org.kiworkshop.snowball.stocktransaction.dto;
 
 import org.kiworkshop.snowball.common.type.TransactionType;
-import org.kiworkshop.snowball.common.vo.StockDetail;
+import org.kiworkshop.snowball.stockdetail.entity.StockDetail;
 import org.kiworkshop.snowball.note.entity.NoteFixture;
 import org.kiworkshop.snowball.user.Entity.UserFixture;
 
