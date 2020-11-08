@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.kiworkshop.snowball.common.type.TransactionType;
-import org.kiworkshop.snowball.common.vo.StockDetail;
+import org.kiworkshop.snowball.stockdetail.entity.StockDetail;
 import org.kiworkshop.snowball.note.entity.Note;
 import org.kiworkshop.snowball.user.entity.User;
 

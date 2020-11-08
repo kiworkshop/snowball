@@ -4,9 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 import org.kiworkshop.snowball.ControllerTest;
 import org.kiworkshop.snowball.common.exception.DomainServiceException;
-import org.kiworkshop.snowball.stocktransaction.entity.StockTransactionFixture;
-import org.kiworkshop.snowball.note.controller.dto.*;
+import org.kiworkshop.snowball.note.controller.dto.NoteCreateResponseDto;
+import org.kiworkshop.snowball.note.controller.dto.NoteRequestDto;
+import org.kiworkshop.snowball.note.controller.dto.NoteRequestDtoFixture;
+import org.kiworkshop.snowball.note.controller.dto.NoteResponseDto;
 import org.kiworkshop.snowball.note.service.NoteService;
+import org.kiworkshop.snowball.stocktransaction.entity.StockTransactionFixture;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
@@ -30,8 +33,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.restdocs.snippet.Attributes.key;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -66,7 +68,11 @@ class NoteControllerTest extends ControllerTest {
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("투자노트 텍스트"),
                                 fieldWithPath("investmentDate").type(JsonFieldType.STRING).description("투자한 날짜"),
                                 subsectionWithPath("user").type(JsonFieldType.OBJECT).description("투자노트 작성자"),
-                                subsectionWithPath("stockTransactions").type(JsonFieldType.ARRAY).description("주식 거래내역 목록")
+                                subsectionWithPath("stockTransactions").type(JsonFieldType.ARRAY).description("주식 거래내역 목록"),
+                                subsectionWithPath("stockTransactions[].id").type(JsonFieldType.NUMBER).description("주식 거래내역 id"),
+                                subsectionWithPath("stockTransactions[].quantity").type(JsonFieldType.NUMBER).description("주식 거래내역 수량"),
+                                subsectionWithPath("stockTransactions[].tradedPrice").type(JsonFieldType.NUMBER).description("주식 거래내역 매매가격"),
+                                subsectionWithPath("stockTransactions[].transactionType").type(JsonFieldType.STRING).description("주식 거래내역 종류")
                         ),
                         responseFields(
                                 fieldWithPath("id").type(JsonFieldType.NUMBER).description("투자노트 id")
@@ -77,11 +83,6 @@ class NoteControllerTest extends ControllerTest {
     @Test
     void getNotesTest() throws Exception {
         // given
-        NotePageRequestDto notePageRequestDto = NotePageRequestDto.builder()
-                .size(2)
-                .page(1)
-                .build();
-
         NoteResponseDto noteResponseDto1 = NoteResponseDto.builder()
                 .id(1L)
                 .title("첫번째 투자노트 제목입니다.")
@@ -112,15 +113,16 @@ class NoteControllerTest extends ControllerTest {
 
         // when & then
         mvc.perform(RestDocumentationRequestBuilders.get("/notes")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(notePageRequestDto)))
+                .param("page", "1")
+                .param("size", "10")
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("note/get-notes",
                         getDocumentRequest(),
                         getDocumentResponse(),
-                        requestFields(
-                                fieldWithPath("size").type(JsonFieldType.NUMBER).description("페이지 당 투자노트 개수"),
-                                fieldWithPath("page").type(JsonFieldType.NUMBER).description("페이지 수")
+                        requestParameters(
+                                parameterWithName("page").description("페이지"),
+                                parameterWithName("size").description("페이지당 노트 개수")
                         ),
                         responseFields(beneathPath("content[]").withSubsectionId("content"),
                                 fieldWithPath("id").type(JsonFieldType.NUMBER).description("투자노트 id"),
@@ -129,7 +131,11 @@ class NoteControllerTest extends ControllerTest {
                                 fieldWithPath("investmentDate").type(JsonFieldType.STRING).description("투자한 날짜"),
                                 fieldWithPath("createdDate").type(JsonFieldType.STRING).description("투자노트가 생성된 날짜"),
                                 fieldWithPath("modifiedDate").type(JsonFieldType.STRING).description("투자노트가 수정된 날짜"),
-                                subsectionWithPath("stockTransactions").type(JsonFieldType.ARRAY).description("주식 거래내역 목록")
+                                subsectionWithPath("stockTransactions").type(JsonFieldType.ARRAY).description("주식 거래내역 목록"),
+                                subsectionWithPath("stockTransactions[].id").type(JsonFieldType.NUMBER).description("주식 거래내역 id"),
+                                subsectionWithPath("stockTransactions[].quantity").type(JsonFieldType.NUMBER).description("주식 거래내역 수량"),
+                                subsectionWithPath("stockTransactions[].tradedPrice").type(JsonFieldType.NUMBER).description("주식 거래내역 매매가격"),
+                                subsectionWithPath("stockTransactions[].transactionType").type(JsonFieldType.STRING).description("주식 거래내역 종류")
                         )
                 ));
     }
@@ -169,7 +175,11 @@ class NoteControllerTest extends ControllerTest {
                                 fieldWithPath("investmentDate").type(JsonFieldType.STRING).description("투자한 날짜"),
                                 fieldWithPath("createdDate").type(JsonFieldType.STRING).description("투자노트가 생성된 날짜"),
                                 fieldWithPath("modifiedDate").type(JsonFieldType.STRING).description("투자노트가 수정된 날짜"),
-                                subsectionWithPath("stockTransactions").type(JsonFieldType.ARRAY).description("주식 거래내역 목록")
+                                subsectionWithPath("stockTransactions").type(JsonFieldType.ARRAY).description("주식 거래내역 목록"),
+                                subsectionWithPath("stockTransactions[].id").type(JsonFieldType.NUMBER).description("주식 거래내역 id"),
+                                subsectionWithPath("stockTransactions[].quantity").type(JsonFieldType.NUMBER).description("주식 거래내역 수량"),
+                                subsectionWithPath("stockTransactions[].tradedPrice").type(JsonFieldType.NUMBER).description("주식 거래내역 매매가격"),
+                                subsectionWithPath("stockTransactions[].transactionType").type(JsonFieldType.STRING).description("주식 거래내역 종류")
                         )
                 ));
 
@@ -196,7 +206,11 @@ class NoteControllerTest extends ControllerTest {
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("투자노트 텍스트"),
                                 fieldWithPath("investmentDate").type(JsonFieldType.STRING).description("투자한 날짜"),
                                 subsectionWithPath("user").type(JsonFieldType.OBJECT).description("투자노트 작성자"),
-                                subsectionWithPath("stockTransactions").type(JsonFieldType.ARRAY).description("주식 거래내역 목록")
+                                subsectionWithPath("stockTransactions").type(JsonFieldType.ARRAY).description("주식 거래내역 목록"),
+                                subsectionWithPath("stockTransactions[].id").type(JsonFieldType.NUMBER).description("주식 거래내역 id"),
+                                subsectionWithPath("stockTransactions[].quantity").type(JsonFieldType.NUMBER).description("주식 거래내역 수량"),
+                                subsectionWithPath("stockTransactions[].tradedPrice").type(JsonFieldType.NUMBER).description("주식 거래내역 매매가격"),
+                                subsectionWithPath("stockTransactions[].transactionType").type(JsonFieldType.STRING).description("주식 거래내역 종류")
                         ),
                         pathParameters(parameterWithName("id").description("투자노트 id")
                                 .attributes(key("constraints").value("Not Null")))

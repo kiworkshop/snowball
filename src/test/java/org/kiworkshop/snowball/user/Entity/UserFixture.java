@@ -3,14 +3,19 @@ package org.kiworkshop.snowball.user.Entity;
 import org.kiworkshop.snowball.user.entity.User;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.time.LocalDateTime;
+
 public class UserFixture {
 
     public static User create() {
-        User user = User.builder().build();
+        User user = User.builder()
+                .email("snowman")
+                .name("snowman")
+                .pictureUrl("example.snowman-picture.com")
+                .build();
         ReflectionTestUtils.setField(user, "id", 1L);
-        ReflectionTestUtils.setField(user, "email", "snowman");
-        ReflectionTestUtils.setField(user, "name", "snowman");
-        ReflectionTestUtils.setField(user, "pictureUrl", "example.snowman-picture.com");
+        ReflectionTestUtils.setField(user, "createdDate", LocalDateTime.now());
+        ReflectionTestUtils.setField(user, "modifiedDate", LocalDateTime.now());
         return user;
     }
 }
