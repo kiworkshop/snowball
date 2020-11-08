@@ -26,12 +26,10 @@ export namespace Note {
   }
 
   interface StockTransactionOfForm {
+    companyName: string;
     transactionType: 'BUY' | 'SELL';
     quantity: number;
     tradedPrice: number;
-    stockDetail: {
-      companyName: string;
-    };
   }
 
   interface Form {
