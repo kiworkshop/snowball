@@ -8,8 +8,6 @@ public class UserCreateRequestDtoFixture {
         UserCreateRequestDto requestDto = UserCreateRequestDto.builder().build();
         ReflectionTestUtils.setField(requestDto,"email", "snowman@snowball.com");
         ReflectionTestUtils.setField(requestDto,"name", "snowman");
-        ReflectionTestUtils.setField(requestDto,"age",100);
-        ReflectionTestUtils.setField(requestDto,"gender","snow");
         ReflectionTestUtils.setField(requestDto,"pictureUrl", "example.snowman-picture.com");
         return requestDto;
     }

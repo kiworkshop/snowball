@@ -8,6 +8,8 @@ import org.kiworkshop.snowball.note.controller.dto.NoteResponseDto;
 import org.kiworkshop.snowball.note.service.NoteService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +27,8 @@ public class NoteController {
     }
 
     @GetMapping("/notes")
-    public Page<NoteResponseDto> getNotes(Pageable pageable) {
+    public Page<NoteResponseDto> getNotes(
+            @PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
         return noteService.getNotes(pageable);
     }
 
