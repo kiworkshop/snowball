@@ -8,13 +8,14 @@ import org.kiworkshop.snowball.note.controller.dto.NoteRequestDto;
 import org.kiworkshop.snowball.note.controller.dto.NoteResponseDto;
 import org.kiworkshop.snowball.note.entity.Note;
 import org.kiworkshop.snowball.note.entity.NoteRepository;
-import org.kiworkshop.snowball.stocktransaction.dto.StockTransactionAssembler;
+import org.kiworkshop.snowball.stocktransaction.entity.StockTransaction;
 import org.kiworkshop.snowball.stocktransaction.entity.StockTransactionRepository;
-import org.kiworkshop.snowball.stocktransaction.service.StockTransactionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,9 +24,13 @@ public class NoteService {
     private final NoteRepository noteRepository;
     private final StockTransactionRepository stockTransactionRepository;
 
+    @Transactional
     public NoteCreateResponseDto createNote(NoteRequestDto noteRequestDto) {
         Note note = noteRepository.save(NoteAssembler.getNote(noteRequestDto));
-        stockTransactionRepository.saveAll(note.getStockTransactions());
+
+        List<StockTransaction> stockTransactions = stockTransactionRepository.saveAll(note.getStockTransactions());
+        stockTransactions.forEach(stockTransaction -> stockTransaction.addNote(note));
+
         return NoteAssembler.getNoteCreateResponseDto(note);
     }
 
