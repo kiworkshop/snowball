@@ -45,4 +45,8 @@ public class StockTransaction extends BaseTimeEntity {
         this.tradedPrice = stockTransaction.getTradedPrice();
         this.transactionType = stockTransaction.getTransactionType();
     }
+
+    public void addNote(Note note) {
+        this.note = note;
+    }
 }

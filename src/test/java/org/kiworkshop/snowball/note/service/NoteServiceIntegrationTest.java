@@ -44,5 +44,6 @@ public class NoteServiceIntegrationTest extends IntegrationTest {
         assertThat(stockTransactionRepository.findAll().get(0).getQuantity()).isEqualTo(noteRequestDto.getStockTransactions().get(0).getQuantity());
         assertThat(stockTransactionRepository.findAll().get(0).getTradedPrice()).isEqualTo(noteRequestDto.getStockTransactions().get(0).getTradedPrice());
         assertThat(stockTransactionRepository.findAll().get(0).getTransactionType()).isEqualTo(noteRequestDto.getStockTransactions().get(0).getTransactionType());
+        assertThat(stockTransactionRepository.findAll().get(0).getNote()).isNotNull();
     }
 }
