@@ -20,7 +20,7 @@ const EditorComponent = () => {
   return (
     <Editor
       formData={value}
-      setContent={setValue}
+      onChange={setValue}
       noteDate={today}
       onSave={onSave}
     />

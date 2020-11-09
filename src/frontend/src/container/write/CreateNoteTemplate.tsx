@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
-import { PageHeader } from 'antd';
+import { Input, PageHeader } from 'antd';
 import {
   setFormThunk,
   initializeFormThunk,
@@ -12,6 +12,7 @@ import { RootState } from '../../store/modules';
 import Container from '../../component/base/Container';
 import EditorContainer from './EditorContainer';
 import CalendarContainer from './CalendarContainer';
+import StockTransactionFormContainer from './StockTransactionFormContainer';
 
 const CreateNoteTemplate = () => {
   const dispatch = useDispatch();
@@ -23,11 +24,14 @@ const CreateNoteTemplate = () => {
     error: { createNote: error },
   } = useSelector((state: RootState) => state.note);
 
+  const onClickBackButton = () => setIsDateSelected(false);
+
   const onSave = useCallback(() => {
     dispatch(createNoteThunk(form));
   }, [dispatch, form]);
 
   const TODAY = useMemo(() => moment(Date.now()), []);
+  const investmentDate = form.investmentDate?.format('YYYY-MM-DD');
 
   useEffect(() => {
     dispatch(setFormThunk({ investmentDate: TODAY }));
@@ -43,10 +47,20 @@ const CreateNoteTemplate = () => {
         <>
           <PageHeader
             title="날짜 수정하기"
-            subTitle={form.investmentDate?.format('YYYY-MM-DD')}
-            onBack={() => setIsDateSelected(false)}
+            subTitle={investmentDate}
+            onBack={onClickBackButton}
             style={{ padding: 0 }}
           />
+
+          <Input
+            type="text"
+            bordered={false}
+            placeholder={`${investmentDate} 투자노트`}
+            style={{ fontSize: '38px', fontWeight: 'bold', padding: '20px 0' }}
+          />
+
+          <StockTransactionFormContainer />
+
           <EditorContainer loading={!!loading} error={error} onSave={onSave} />
         </>
       )}

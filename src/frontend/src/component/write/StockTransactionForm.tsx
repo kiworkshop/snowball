@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Button, Form, Input, InputNumber } from 'antd';
 
-interface StockTransactionInputProps {
+interface StockTransactionFormProps {
   onSubmit: (values: any) => void;
+  transactionAmount: number;
 }
 
-const StockTransactionForm: React.FC<StockTransactionInputProps> = ({
+const StockTransactionForm: React.FC<StockTransactionFormProps> = ({
   onSubmit,
 }) => {
   const [form] = Form.useForm();
@@ -15,6 +16,7 @@ const StockTransactionForm: React.FC<StockTransactionInputProps> = ({
   return (
     <Form
       form={form}
+      labelCol={{ span: 6 }}
       onFinish={(values) => {
         onSubmit(values);
         form.resetFields();
@@ -47,6 +49,7 @@ const StockTransactionForm: React.FC<StockTransactionInputProps> = ({
               form.getFieldValue('tradedPrice');
             setTransactionAmount(isNaN(newTotalPrice) ? 0 : newTotalPrice);
           }}
+          style={{ width: '100%' }}
         />
       </Form.Item>
 
@@ -68,6 +71,7 @@ const StockTransactionForm: React.FC<StockTransactionInputProps> = ({
               form.getFieldValue('tradedPrice');
             setTransactionAmount(isNaN(newTotalPrice) ? 0 : newTotalPrice);
           }}
+          style={{ width: '100%' }}
         />
       </Form.Item>
 
@@ -76,7 +80,7 @@ const StockTransactionForm: React.FC<StockTransactionInputProps> = ({
           value={`${transactionAmount}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
           disabled
           bordered={false}
-          style={{ color: '#000' }}
+          style={{ color: '#000', textAlign: 'right', width: '100%' }}
         />
       </Form.Item>
 
