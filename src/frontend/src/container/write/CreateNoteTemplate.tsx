@@ -12,7 +12,7 @@ import { RootState } from '../../store/modules';
 import Container from '../../component/base/Container';
 import EditorContainer from './EditorContainer';
 import CalendarContainer from './CalendarContainer';
-import StockTransactionFormContainer from './StockTransactionFormContainer';
+import StockTransactionContainer from './StockTransactionContainer';
 
 const CreateNoteTemplate = () => {
   const dispatch = useDispatch();
@@ -59,7 +59,7 @@ const CreateNoteTemplate = () => {
             style={{ fontSize: '38px', fontWeight: 'bold', padding: '20px 0' }}
           />
 
-          <StockTransactionFormContainer />
+          <StockTransactionContainer />
 
           <EditorContainer loading={!!loading} error={error} onSave={onSave} />
         </>

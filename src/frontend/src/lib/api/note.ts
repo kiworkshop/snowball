@@ -1,4 +1,5 @@
 import axios from '../axios';
+
 import { Note } from '../../type/note';
 import { NoteAPIResponse } from '../../type/api';
 
