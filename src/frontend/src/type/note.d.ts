@@ -9,7 +9,17 @@ export namespace Note {
     quantity: number;
     tradedPrice: number;
     stockDetail: {
+      id: number;
+      createdDate: string;
+      modifiedDate: string;
       companyName: string;
+      itemCode: string;
+      category: string;
+      mainProduct: string;
+      listingDate: string;
+      settlementMonth: string;
+      representative: string;
+      marketType: string;
     };
     createdDate: moment.Moment | null;
     modifiedDate: moment.Moment | null;
@@ -26,6 +36,7 @@ export namespace Note {
   }
 
   interface StockTransactionOfForm {
+    id: string;
     companyName: string;
     transactionType: 'BUY' | 'SELL';
     quantity: number;

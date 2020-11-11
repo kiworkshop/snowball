@@ -10,10 +10,7 @@ export const getNote = (id: string) =>
   axios.get<NoteAPIResponse.Note>(`/notes/${id}`);
 
 export const createNote = (form: Note.Form) =>
-  axios.post<NoteAPIResponse.OnlyWithId>('/notes', {
-    text: form.content,
-    investmentDate: form.investmentDate,
-  });
+  axios.post<NoteAPIResponse.OnlyWithId>('/notes', form);
 
 export const updateNote = (id: string, form: Note.Form) =>
   axios.put(`/notes/${id}`, form);

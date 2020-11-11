@@ -7,6 +7,7 @@ import {
   Form,
   Input,
   InputNumber,
+  message,
   Popconfirm,
   Popover,
   Row,
@@ -17,6 +18,7 @@ import {
 import { RootState } from '../../store/modules';
 import { setFormThunk } from '../../store/modules/note';
 import { addCommaToNumber } from '../../lib/transform';
+import { getSingleStockDetail } from '../../lib/api/stockDetail';
 
 interface StockTransactionDataSource {
   index: number;
@@ -44,16 +46,24 @@ const StockTransactionForm: React.FC<StockTransactionFormProps> = ({
 
   const dispatch = useDispatch();
   const onSubmit = useCallback(
-    (values: any) => {
-      dispatch(
-        setFormThunk({
-          stockTransactions: formState.stockTransactions.concat([
-            { ...values, transactionType: type },
-          ]),
-        })
-      );
-      form.resetFields();
-      setTransactionAmount(0);
+    async (values: any) => {
+      try {
+        const {
+          data: { id: companyId },
+        } = await getSingleStockDetail(values.companyName);
+
+        dispatch(
+          setFormThunk({
+            stockTransactions: formState.stockTransactions.concat([
+              { ...values, id: companyId, transactionType: type },
+            ]),
+          })
+        );
+        form.resetFields();
+        setTransactionAmount(0);
+      } catch (err) {
+        message.error('올바른 종목명을 입력해 주세요.');
+      }
     },
     [dispatch, formState.stockTransactions, type, form]
   );

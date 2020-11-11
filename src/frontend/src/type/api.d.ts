@@ -7,7 +7,17 @@ export namespace NoteAPIResponse {
     quantity: number;
     tradedPrice: number;
     stockDetail: {
+      id: number;
+      createdDate: string;
+      modifiedDate: string;
       companyName: string;
+      itemCode: string;
+      category: string;
+      mainProduct: string;
+      listingDate: string;
+      settlementMonth: string;
+      representative: string;
+      marketType: string;
     };
     createdDate: string;
     modifiedDate: string;
