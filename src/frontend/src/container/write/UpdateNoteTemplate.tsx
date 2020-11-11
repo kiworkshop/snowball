@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { PageHeader } from 'antd';
+import { Input, PageHeader } from 'antd';
 import {
   initializeFormThunk,
   updateNoteThunk,
@@ -13,6 +13,7 @@ import EditorContainer from './EditorContainer';
 import CalendarContainer from './CalendarContainer';
 import Container from '../../component/base/Container';
 import { Page404 } from '../../pages';
+import StockTransactionContainer from './StockTransactionContainer';
 
 interface UpdateNoteTemplateProps {
   id: string;
@@ -30,12 +31,21 @@ const UpdateNoteTemplate: React.FC<UpdateNoteTemplateProps> = ({ id }) => {
     dispatch(updateNoteThunk(id, form));
   }, [dispatch, id, form]);
 
+  const investmentDate = form.investmentDate?.format('YYYY-MM-DD');
+
   useEffect(() => {
     dispatch(getNoteThunk(id));
     dispatch(
       setFormThunk({
         content: note.content,
         investmentDate: note.investmentDate,
+        stockTransactions: note.stockTransactions.map((stockTransaction) => ({
+          id: stockTransaction.id,
+          companyName: stockTransaction.stockDetail.companyName,
+          transactionType: stockTransaction.transactionType,
+          quantity: stockTransaction.quantity,
+          tradedPrice: stockTransaction.tradedPrice,
+        })),
       })
     );
 
@@ -54,10 +64,19 @@ const UpdateNoteTemplate: React.FC<UpdateNoteTemplateProps> = ({ id }) => {
         <>
           <PageHeader
             title="날짜 수정하기"
-            subTitle="투자노트 수정"
+            subTitle={investmentDate}
             onBack={() => setIsDateSelected(false)}
             style={{ padding: '0 0 25px 0' }}
           />
+
+          <Input
+            type="text"
+            bordered={false}
+            placeholder={`${investmentDate} 투자노트`}
+            style={{ fontSize: '38px', fontWeight: 'bold', padding: '20px 0' }}
+          />
+
+          <StockTransactionContainer />
 
           <EditorContainer
             loading={!!loading.updateNote}
