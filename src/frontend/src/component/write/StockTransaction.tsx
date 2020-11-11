@@ -1,5 +1,4 @@
-import React, { useCallback, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
 import { CloseCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import {
   Button,
@@ -7,7 +6,6 @@ import {
   Form,
   Input,
   InputNumber,
-  message,
   Popconfirm,
   Popover,
   Row,
@@ -15,10 +13,8 @@ import {
   Typography,
 } from 'antd';
 
-import { RootState } from '../../store/modules';
-import { setFormThunk } from '../../store/modules/note';
 import { addCommaToNumber } from '../../lib/transform';
-import { getSingleStockDetail } from '../../lib/api/stockDetail';
+import { FormInstance } from 'antd/lib/form';
 
 interface StockTransactionDataSource {
   index: number;
@@ -30,55 +26,32 @@ interface StockTransactionDataSource {
 }
 
 interface StockTransactionFormProps {
-  type: 'BUY' | 'SELL';
+  formInstance: FormInstance<any>;
+  transactionAmount: number;
+  setTransactionAmount: React.Dispatch<React.SetStateAction<number>>;
+  onSubmit: (values: any) => Promise<void>;
 }
 
 const { Text } = Typography;
 
 const StockTransactionForm: React.FC<StockTransactionFormProps> = ({
-  type,
+  formInstance,
+  transactionAmount,
+  setTransactionAmount,
+  onSubmit,
 }) => {
-  const [form] = Form.useForm();
-
-  const [transactionAmount, setTransactionAmount] = useState(0);
-
-  const { form: formState } = useSelector((state: RootState) => state.note);
-
-  const dispatch = useDispatch();
-  const onSubmit = useCallback(
-    async (values: any) => {
-      try {
-        const {
-          data: { id: companyId },
-        } = await getSingleStockDetail(values.companyName);
-
-        dispatch(
-          setFormThunk({
-            stockTransactions: formState.stockTransactions.concat([
-              { ...values, id: companyId, transactionType: type },
-            ]),
-          })
-        );
-        form.resetFields();
-        setTransactionAmount(0);
-      } catch (err) {
-        message.error('올바른 종목명을 입력해 주세요.');
-      }
-    },
-    [dispatch, formState.stockTransactions, type, form]
-  );
-
   const inputNumberFormatter = (value: string | number | undefined) =>
     `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
   const onChangeInputNumber = () => {
     const newTotalPrice =
-      form.getFieldValue('quantity') * form.getFieldValue('tradedPrice');
+      formInstance.getFieldValue('quantity') *
+      formInstance.getFieldValue('tradedPrice');
     setTransactionAmount(isNaN(newTotalPrice) ? 0 : newTotalPrice);
   };
 
   return (
-    <Form form={form} labelCol={{ span: 6 }} onFinish={onSubmit}>
+    <Form form={formInstance} labelCol={{ span: 6 }} onFinish={onSubmit}>
       <Form.Item
         label="종목"
         name="companyName"
@@ -138,27 +111,14 @@ const StockTransactionForm: React.FC<StockTransactionFormProps> = ({
 interface StockTransactionTableProps {
   dataSource: Array<StockTransactionDataSource>;
   type: 'BUY' | 'SELL';
+  onDelete: (index: number) => () => void;
 }
 
 const StockTransactionTable: React.FC<StockTransactionTableProps> = ({
   dataSource,
   type,
+  onDelete,
 }) => {
-  const { form } = useSelector((state: RootState) => state.note);
-  const dispatch = useDispatch();
-  const onDelete = useCallback(
-    (index: number) => () => {
-      dispatch(
-        setFormThunk({
-          stockTransactions: form.stockTransactions.filter(
-            (_, idx) => idx !== index
-          ),
-        })
-      );
-    },
-    [dispatch, form.stockTransactions]
-  );
-
   const columns = [
     { title: '종목', dataIndex: 'companyName', key: 'companyName' },
     { title: '수량(주)', dataIndex: 'quantity', key: 'quantity' },
@@ -218,45 +178,81 @@ interface StockTransactionProps {
   stockTransactionDataSource: (
     type: 'BUY' | 'SELL'
   ) => Array<StockTransactionDataSource>;
-}
-
-interface StockTransactionColumnProps {
-  type: 'BUY' | 'SELL';
+  formInstance: { BUY: FormInstance<any>; SELL: FormInstance<any> };
+  transactionAmount: { BUY: number; SELL: number };
+  setTransactionAmount: {
+    BUY: React.Dispatch<React.SetStateAction<number>>;
+    SELL: React.Dispatch<React.SetStateAction<number>>;
+  };
+  onDelete: (index: number) => () => void;
+  onSubmit: (type: 'BUY' | 'SELL') => (values: any) => Promise<void>;
 }
 
 const StockTransaction: React.FC<StockTransactionProps> = ({
   stockTransactionDataSource,
+  formInstance,
+  transactionAmount,
+  setTransactionAmount,
+  onDelete,
+  onSubmit,
 }) => {
-  const StockTransactionColumn: React.FC<StockTransactionColumnProps> = ({
-    type,
-  }) => {
-    return (
+  return (
+    <Row style={{ marginBottom: '20px' }}>
       <Col span={24} md={12}>
         <Popover
-          content={<StockTransactionForm type={type} />}
+          content={
+            <StockTransactionForm
+              formInstance={formInstance.BUY}
+              transactionAmount={transactionAmount.BUY}
+              setTransactionAmount={setTransactionAmount.BUY}
+              onSubmit={onSubmit('BUY')}
+            />
+          }
           trigger="click"
           placement="bottomLeft"
         >
           <Button>
             <PlusOutlined />
-            {type === 'BUY' ? '매수' : '매도'}
+            매수
           </Button>
         </Popover>
 
-        {stockTransactionDataSource(type).length > 0 && (
+        {stockTransactionDataSource('BUY').length > 0 && (
           <StockTransactionTable
-            dataSource={stockTransactionDataSource(type)}
-            type={type}
+            dataSource={stockTransactionDataSource('BUY')}
+            type={'BUY'}
+            onDelete={onDelete}
           />
         )}
       </Col>
-    );
-  };
 
-  return (
-    <Row style={{ marginBottom: '20px' }}>
-      <StockTransactionColumn type="BUY" />
-      <StockTransactionColumn type="SELL" />
+      <Col span={24} md={12}>
+        <Popover
+          content={
+            <StockTransactionForm
+              formInstance={formInstance.SELL}
+              transactionAmount={transactionAmount.SELL}
+              setTransactionAmount={setTransactionAmount.SELL}
+              onSubmit={onSubmit('SELL')}
+            />
+          }
+          trigger="click"
+          placement="bottomLeft"
+        >
+          <Button>
+            <PlusOutlined />
+            매도
+          </Button>
+        </Popover>
+
+        {stockTransactionDataSource('SELL').length > 0 && (
+          <StockTransactionTable
+            dataSource={stockTransactionDataSource('SELL')}
+            type={'SELL'}
+            onDelete={onDelete}
+          />
+        )}
+      </Col>
     </Row>
   );
 };
