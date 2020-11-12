@@ -1,37 +1,32 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Button, Alert, Typography, Spin } from 'antd';
+import { Button, Alert, Spin } from 'antd';
 import ReactQuill from 'react-quill';
+import { Note } from '../../type/note';
 
 import 'react-quill/dist/quill.snow.css';
-import { NoteType } from '../../type/note';
 
 interface EditorProps {
-  noteInfo: NoteType.NoteForm;
-  setValue: (value: string) => void;
+  formData: Note.Form;
+  onChange: (content: string) => void;
   onSave: () => void;
   loading: boolean;
-  error: string;
-  onAlertClose: () => void;
+  error: Error | null;
 }
 
 const StyledEditor = styled(ReactQuill)`
   margin-bottom: 30px;
-
   .ql-editor {
     min-height: 500px;
   }
 `;
 
-const { Title } = Typography;
-
 const Editor: React.FC<EditorProps> = ({
-  noteInfo,
-  setValue,
+  formData,
+  onChange,
   onSave,
   loading,
   error,
-  onAlertClose,
 }) => {
   const toolbarOptions = [
     ['bold', 'italic', 'underline', 'strike'],
@@ -55,22 +50,26 @@ const Editor: React.FC<EditorProps> = ({
 
   return (
     <>
-      <Title>{noteInfo.investmentDate} 투자노트</Title>
       <StyledEditor
         theme="snow"
-        value={noteInfo.text}
-        onChange={setValue}
+        value={formData.content}
+        onChange={onChange}
         modules={{ toolbar: toolbarOptions }}
       />
 
-      {error ? (
-        <Alert message={error} type="error" closable onClose={onAlertClose} />
-      ) : (
-        <Spin tip="저장중..." spinning={loading}>
-          <Button size="large" block onClick={onSave}>
-            저장하기
-          </Button>
-        </Spin>
+      <Spin tip="저장중..." spinning={loading}>
+        <Button size="large" block onClick={onSave}>
+          저장하기
+        </Button>
+      </Spin>
+
+      {error && (
+        <Alert
+          message="노트를 작성하는 도중 오류가 발생했습니다."
+          type="error"
+          closable
+          style={{ position: 'relative', top: '-40px' }}
+        />
       )}
     </>
   );

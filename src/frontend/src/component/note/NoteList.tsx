@@ -1,14 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
-import { List, Collapse, Button, Typography } from 'antd';
+import { List, Collapse, Button, Typography, Spin, Alert } from 'antd';
 import { FolderOpenOutlined, RightOutlined } from '@ant-design/icons';
 import { setDate } from '../../lib/date';
 
-import { NoteType } from '../../type/note';
+import { Note } from '../../type/note';
 
 interface NoteListProps {
-  notes: Array<NoteType.Note>;
-  onClick: (id: string) => void;
+  notes: Array<Note.Note>;
+  onClickMoreInfoButton: (id: string) => () => void;
+  loading: boolean;
+  error: Error | null;
 }
 
 const ListHeader = styled.strong`
@@ -17,7 +19,6 @@ const ListHeader = styled.strong`
 
 const NoteWrapper = styled(Collapse)`
   padding-bottom: 10px;
-
   & + & {
     border-top: 1px solid #f0f0f0;
   }
@@ -29,31 +30,53 @@ const MoreInfoButton = styled(Button)`
 
 const { Panel } = Collapse;
 
-const NoteList: React.FC<NoteListProps> = ({ notes, onClick }) => {
+const NoteList: React.FC<NoteListProps> = ({
+  notes,
+  onClickMoreInfoButton,
+  loading,
+  error,
+}) => {
   return (
-    <List
-      header={
-        <ListHeader>
-          <FolderOpenOutlined style={{ marginRight: '8px' }} />
-          투자노트 목록
-        </ListHeader>
-      }
-      bordered
-      dataSource={notes}
-      renderItem={(note) => (
-        <NoteWrapper ghost>
-          <Panel
-            key={note.id}
-            header={`${setDate(note.investmentDate)} 투자노트`}
-          >
-            <Typography.Paragraph>{note.text}</Typography.Paragraph>
-            <MoreInfoButton type="text" onClick={() => onClick(note.id)}>
-              더보기 <RightOutlined />
-            </MoreInfoButton>
-          </Panel>
-        </NoteWrapper>
+    <Spin tip="로딩중..." spinning={loading}>
+      <List
+        header={
+          <ListHeader>
+            <FolderOpenOutlined style={{ marginRight: '8px' }} />
+            투자노트 목록
+          </ListHeader>
+        }
+        bordered
+        dataSource={notes}
+        renderItem={(note) => (
+          <NoteWrapper ghost>
+            <Panel
+              key={note.id}
+              header={
+                note.investmentDate &&
+                `${setDate(note.investmentDate)} 투자노트`
+              }
+            >
+              <Typography.Paragraph>{note.content}</Typography.Paragraph>
+              <MoreInfoButton
+                type="text"
+                onClick={onClickMoreInfoButton(note.id)}
+              >
+                더보기 <RightOutlined />
+              </MoreInfoButton>
+            </Panel>
+          </NoteWrapper>
+        )}
+      />
+
+      {error && (
+        <Alert
+          type="error"
+          closable
+          message="투자노트 목록을 불러오는 동안 오류가 발생했습니다."
+          style={{ marginTop: '16px' }}
+        />
       )}
-    />
+    </Spin>
   );
 };
 

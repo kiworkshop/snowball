@@ -1,9 +1,8 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { message } from 'antd';
 import routes from '../../routes';
-import { login } from '../../store/modules/user';
+import { loginStoredUserThunk, loginThunk } from '../../store/modules/user';
 import { RootState } from '../../store/modules';
 
 import Login from '../../component/login/Login';
@@ -11,9 +10,11 @@ import Login from '../../component/login/Login';
 const LoginContainer = () => {
   const dispatch = useDispatch();
 
-  const { loading, error, logged } = useSelector(
-    (state: RootState) => state.user
-  );
+  const {
+    loading: { login: loading },
+    error: { login: error },
+    isLoggedIn,
+  } = useSelector((state: RootState) => state.user);
 
   const tempUserForDevMode = {
     id: '1',
@@ -25,27 +26,25 @@ const LoginContainer = () => {
     notes: [],
   };
 
-  const onClick = useCallback(() => {
+  const onClickLoginButton = useCallback(() => {
     if (process.env.NODE_ENV === 'production') {
-      dispatch(login());
+      dispatch(loginThunk());
     } else {
-      dispatch(login(tempUserForDevMode));
+      dispatch(loginStoredUserThunk(tempUserForDevMode));
     }
   }, [dispatch, tempUserForDevMode]);
 
-  useEffect(() => {
-    if (error) {
-      message.error(error);
-    }
-  }, [error]);
-
-  if (logged) {
+  if (isLoggedIn) {
     return <Redirect to={routes.home()} />;
   }
 
   return (
     <>
-      <Login onClick={onClick} loading={loading} />
+      <Login
+        onClickLoginButton={onClickLoginButton}
+        loading={loading}
+        error={error}
+      />
     </>
   );
 };

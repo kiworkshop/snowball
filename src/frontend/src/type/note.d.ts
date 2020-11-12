@@ -1,62 +1,59 @@
-import { ThunkAction } from 'redux-thunk';
-import { UserType } from './user';
-import { RootState } from '../store/modules';
-import { LOGIN_SUCCESS } from '../store/constants/userConstants';
-import {
-  INITIALIZE_NOTE_FORM,
-  INITIALIZE_NOTE_INFO,
-  CHANGE_ERROR,
-  CHANGE_INVESTMENT_DATE,
-  CHANGE_TEXT,
-  GET_NOTE,
-  GET_NOTE_SUCCESS,
-  GET_NOTE_FAIL,
-  UPDATE_NOTE,
-  UPDATE_NOTE_FAIL,
-  UPDATE_NOTE_SUCCESS,
-  WRITE_NOTE,
-  WRITE_NOTE_FAIL,
-  WRITE_NOTE_SUCCESS,
-} from '../store/constants/noteConstants';
+import moment from 'moment';
 
-export namespace NoteType {
+export namespace Note {
+  interface StockTransaction {
+    id: string;
+    user: string;
+    note: string;
+    transactionType: 'BUY' | 'SELL';
+    quantity: number;
+    tradedPrice: number;
+    stockDetail: {
+      id: number;
+      createdDate: string;
+      modifiedDate: string;
+      companyName: string;
+      itemCode: string;
+      category: string;
+      mainProduct: string;
+      listingDate: string;
+      settlementMonth: string;
+      representative: string;
+      marketType: string;
+    };
+    createdDate: moment.Moment | null;
+    modifiedDate: moment.Moment | null;
+  }
+
   interface Note {
     id: string;
-    text: string;
-    investmentDate: string;
-    createdDate: string;
-    lastModifiedDate: string;
+    title: string;
+    content: string;
+    stockTransactions: Array<StockTransaction>;
+    investmentDate: moment.Moment | null;
+    createdDate: moment.Moment | null;
+    lastModifiedDate: moment.Moment | null;
   }
 
-  interface NoteForm {
-    text: string;
-    investmentDate: string;
-    user: UserType.UserInfo;
+  interface StockTransactionOfForm {
+    id: string;
+    companyName: string;
+    transactionType: 'BUY' | 'SELL';
+    quantity: number;
+    tradedPrice: number;
   }
 
-  interface NoteState {
-    noteInfo: Note;
-    noteForm: NoteForm;
-    loading: boolean;
-    error: string;
+  interface Form {
+    title: string;
+    content: string;
+    investmentDate: moment.Moment | null;
+    stockTransactions: Array<StockTransactionOfForm>;
   }
 
-  type NoteAction =
-    | { type: typeof LOGIN_SUCCESS; payload: UserType.UserInfo }
-    | { type: typeof INITIALIZE_NOTE_FORM }
-    | { type: typeof INITIALIZE_NOTE_INFO }
-    | { type: typeof CHANGE_INVESTMENT_DATE; payload: string }
-    | { type: typeof CHANGE_TEXT; payload: string }
-    | { type: typeof CHANGE_ERROR; payload: string }
-    | { type: typeof GET_NOTE }
-    | { type: typeof GET_NOTE_SUCCESS; payload: Note }
-    | { type: typeof GET_NOTE_FAIL; payload: string }
-    | { type: typeof WRITE_NOTE }
-    | { type: typeof WRITE_NOTE_SUCCESS }
-    | { type: typeof WRITE_NOTE_FAIL; payload: string }
-    | { type: typeof UPDATE_NOTE }
-    | { type: typeof UPDATE_NOTE_SUCCESS }
-    | { type: typeof UPDATE_NOTE_FAIL; payload: string };
-
-  type ThunkResult<R> = ThunkAction<R, RootState, undefined, NoteAction>;
+  interface ChangedPartOfForm {
+    title?: string;
+    content?: string;
+    investmentDate?: moment.Moment | null;
+    stockTransactions?: Array<StockTransactionOfForm>;
+  }
 }

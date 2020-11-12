@@ -5,11 +5,11 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import routes from '../../routes';
 
-import { UserType } from '../../type/user';
+import { User } from '../../type/user';
 import Container from './Container';
 
 interface NavProps {
-  user: UserType.UserInfo;
+  user: User.Profile;
   onLogout: () => void;
   onClickNavLink: (link: string) => () => void;
   selectedKeys?: Array<string>;
@@ -38,7 +38,6 @@ const BrandTitle = styled(Link)`
   color: #13c2c2;
   font-size: 1.6rem;
   font-weight: bold;
-
   &:hover {
     color: #36cfc9;
   }

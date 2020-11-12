@@ -10,7 +10,7 @@ import NoteListContainer from '../container/note/NoteListContainer';
 import Container from '../component/base/Container';
 
 const MainPage = () => {
-  const logged = useSelector((state: RootState) => state.user.logged);
+  const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
 
   return (
     <Layout style={{ background: '#fff', height: '100%', paddingTop: '64px' }}>
@@ -20,7 +20,7 @@ const MainPage = () => {
         <NoteListContainer />
       </Container>
 
-      {!logged && <Redirect to={routes.login()} />}
+      {!isLoggedIn && <Redirect to={routes.login()} />}
     </Layout>
   );
 };

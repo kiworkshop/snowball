@@ -7,12 +7,12 @@ import routes from '../routes';
 import LoginContainer from '../container/login/LoginContainer';
 
 const LoginPage = () => {
-  const logged = useSelector((state: RootState) => state.user.logged);
+  const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
 
   return (
     <>
       <LoginContainer />
-      {logged && <Redirect to={routes.home()} />}
+      {isLoggedIn && <Redirect to={routes.home()} />}
     </>
   );
 };

@@ -1,16 +1,25 @@
 import React from 'react';
-import { Layout, Typography, Button, Spin } from 'antd';
+import { Layout, Typography, Button, Spin, message } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 
 interface LoginProps {
   loading: boolean;
-  onClick: () => void;
+  error: Error | null;
+  onClickLoginButton: () => void;
 }
 
 const { Content, Footer } = Layout;
 const { Title } = Typography;
 
-const Login: React.FC<LoginProps> = ({ onClick, loading }) => {
+const Login: React.FC<LoginProps> = ({
+  onClickLoginButton,
+  loading,
+  error,
+}) => {
+  if (error) {
+    message.error(error);
+  }
+
   return (
     <Layout
       style={{
@@ -35,7 +44,7 @@ const Login: React.FC<LoginProps> = ({ onClick, loading }) => {
           매일매일 굴러가는 당신의 자산을 관리하세요!
         </Title>
 
-        <Spin tip="로딩중..." spinning={loading}>
+        <Spin tip="로딩중..." spinning={!!loading}>
           <Button
             icon={<UserOutlined />}
             style={{
@@ -43,7 +52,7 @@ const Login: React.FC<LoginProps> = ({ onClick, loading }) => {
               fontWeight: 800,
               height: '56px',
             }}
-            onClick={onClick}
+            onClick={onClickLoginButton}
           >
             테스트 유저 로그인
           </Button>

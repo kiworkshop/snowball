@@ -4,7 +4,9 @@ import { Redirect, RouteComponentProps } from 'react-router-dom';
 import { RootState } from '../store/modules';
 import routes from '../routes';
 
-import UpdateNote from '../container/note/UpdateNote';
+import Container from '../component/base/Container';
+import NavContainer from '../container/base/NavContainer';
+import UpdateNoteTemplate from '../container/write/UpdateNoteTemplate';
 
 interface MatchProps {
   id: string;
@@ -13,14 +15,14 @@ interface MatchProps {
 const UpdateNotePage: React.FC<RouteComponentProps<MatchProps>> = ({
   match,
 }) => {
-  const { id } = match.params;
-  const logged = useSelector((state: RootState) => state.user.logged);
+  const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
 
   return (
-    <>
-      <UpdateNote id={id} />
-      {!logged && <Redirect to={routes.login()} />}
-    </>
+    <Container style={{ padding: '50px 0' }}>
+      <NavContainer />
+      <UpdateNoteTemplate id={match.params.id} />
+      {!isLoggedIn && <Redirect to={routes.login()} />}
+    </Container>
   );
 };
 
