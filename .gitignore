@@ -33,3 +33,6 @@ out/
 
 ### VS Code ###
 .vscode/
+/src/frontend/nodejs/
+/src/frontend/yarn/
+/src/frontend/package-lock.json

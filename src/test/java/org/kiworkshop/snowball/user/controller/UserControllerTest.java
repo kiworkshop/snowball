@@ -57,8 +57,6 @@ class UserControllerTest extends ControllerTest {
                         requestFields(
                                 fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
                                 fieldWithPath("name").type(JsonFieldType.STRING).description("유저 이름"),
-                                fieldWithPath("age").type(JsonFieldType.NUMBER).description("나이"),
-                                fieldWithPath("gender").type(JsonFieldType.STRING).description("성별"),
                                 fieldWithPath("pictureUrl").type(JsonFieldType.STRING).description("프로필 사진의 url 주소")
                         ),
                         responseFields(
