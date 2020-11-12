@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import { message } from 'antd';
 import routes from '../../routes';
 import { login } from '../../store/modules/user';
 import { RootState } from '../../store/modules';
 
 import Login from '../../component/login/Login';
-import { message } from 'antd';
 
 const LoginContainer = () => {
   const dispatch = useDispatch();
@@ -15,9 +15,23 @@ const LoginContainer = () => {
     (state: RootState) => state.user
   );
 
-  const onClick = useCallback(async () => {
-    dispatch(login());
-  }, [dispatch]);
+  const tempUserForDevMode = {
+    id: '1',
+    email: 'snowball@gmail.com',
+    name: '눈사람',
+    age: 19,
+    gender: 'man',
+    pictureUrl: '',
+    notes: [],
+  };
+
+  const onClick = useCallback(() => {
+    if (process.env.NODE_ENV === 'production') {
+      dispatch(login());
+    } else {
+      dispatch(login(tempUserForDevMode));
+    }
+  }, [dispatch, tempUserForDevMode]);
 
   useEffect(() => {
     if (error) {

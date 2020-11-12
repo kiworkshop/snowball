@@ -28,6 +28,15 @@ export const login = (user?: UserType.UserInfo): ThunkResult<void> => async (
 
     if (user) {
       dispatch({ type: LOGIN_SUCCESS, payload: user });
+
+      const storageUser = store.get('snowball-user');
+
+      if (!storageUser) {
+        store.set('snowball-user', {
+          user: user,
+          expired: Date.now() + 1000 * 60 * 60 * 24,
+        });
+      }
     } else {
       const { data: loggedInUser } = await loginAPI();
       store.set('snowball-user', {

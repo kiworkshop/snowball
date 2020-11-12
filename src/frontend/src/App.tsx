@@ -26,15 +26,14 @@ function App() {
     }
 
     dispatch(login(userInfo.user));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   return (
     <Router>
       <Switch>
         <Route path="/" component={MainPage} exact />
         <Route path="/login" component={LoginPage} exact />
-        <Route path="/write/note" component={CreateNotePage} exact />
+        <Route path="/create/note" component={CreateNotePage} exact />
         <Route path="/update/note/:id" component={UpdateNotePage} />
         <Route path="/note/:id" component={NoteDetailPage} exact />
         <Route component={Page404} />

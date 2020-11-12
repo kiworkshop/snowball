@@ -1,15 +1,17 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { PageHeader } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { PageHeader, Space, Spin } from 'antd';
 import { changeInvestmentDate } from '../../store/modules/note';
-import { getNote } from '../../lib/api/note';
+import { getNote } from '../../store/modules/note';
 
 import Page404 from '../../pages/Page404';
 import Container from '../../component/base/Container';
-import DatePicker from '../../component/note/DatePicker';
+import Calendar from '../../component/note/Calendar';
 import EditorContainer from './EditorContainer';
 import ErrorPage from '../../pages/ErrorPage';
 import NavContainer from '../base/NavContainer';
+import { RootState } from '../../store/modules';
+import moment from 'moment';
 
 interface UpdateNoteProps {
   id: string;
@@ -18,15 +20,11 @@ interface UpdateNoteProps {
 const UpdateNote: React.FC<UpdateNoteProps> = ({ id }) => {
   const dispatch = useDispatch();
 
-  const [dateSelected, setDateSelected] = useState(true);
-  const [note, setNote] = useState({
-    id: '',
-    text: '',
-    investmentDate: '',
-    createdDate: '',
-    lastModifiedDate: '',
-  });
-  const [error, setError] = useState<number | null>(null);
+  const { loading, error, noteInfo } = useSelector(
+    (state: RootState) => state.note
+  );
+
+  const [isDateSelected, setIsDateSelected] = useState(false);
 
   const setInvestmentDate = useCallback(
     (date: string) => {
@@ -35,36 +33,32 @@ const UpdateNote: React.FC<UpdateNoteProps> = ({ id }) => {
     [dispatch]
   );
 
-  const onClick = useCallback(() => {
-    setDateSelected(true);
-  }, []);
+  const { investmentDate } = useSelector(
+    (state: RootState) => state.note.noteForm
+  );
+
+  const onSelectDate = useCallback(
+    (date: moment.Moment) => {
+      const selectedDate = moment(date).format('YYYY-MM-DD');
+
+      const prevYearAndMonth = investmentDate.slice(0, 7);
+      const yearAndMonthOfSelectedDate = selectedDate.slice(0, 7);
+
+      if (prevYearAndMonth === yearAndMonthOfSelectedDate) {
+        setIsDateSelected(true);
+      }
+      setInvestmentDate(selectedDate);
+    },
+    [investmentDate, setInvestmentDate]
+  );
 
   useEffect(() => {
-    async function fetchNote() {
-      try {
-        const response = await getNote(id);
+    dispatch(getNote(id));
+  }, [dispatch, id]);
 
-        if (response.status === 200) {
-          setNote(response.data);
-        } else if (response.status === 404) {
-          setError(404);
-        } else {
-          setError(response.status);
-        }
-      } catch (e) {
-        console.log(e);
-        setError(500);
-      }
-    }
-
-    fetchNote();
-  }, [id]);
-
-  if (error === 404) {
+  if (error === 'Not Found') {
     return <Page404 />;
-  }
-
-  if (error && error !== 404) {
+  } else if (error) {
     return <ErrorPage />;
   }
 
@@ -72,22 +66,37 @@ const UpdateNote: React.FC<UpdateNoteProps> = ({ id }) => {
     <>
       <NavContainer />
       <Container style={{ padding: '50px 0' }}>
-        {dateSelected && (
-          <>
-            <PageHeader
-              title="날짜 수정하기"
-              onBack={() => setDateSelected(false)}
-              style={{ padding: '0 0 25px 0' }}
-            />
-            <EditorContainer note={note} />
-          </>
+        {loading ? (
+          <Space
+            align="center"
+            style={{
+              width: '100%',
+              paddingTop: '100px',
+              justifyContent: 'center',
+            }}
+          >
+            <Spin size="large" tip="로딩중..." />
+          </Space>
+        ) : (
+          noteInfo.id &&
+          isDateSelected && (
+            <>
+              <PageHeader
+                title="날짜 수정하기"
+                subTitle="투자노트 수정"
+                onBack={() => setIsDateSelected(false)}
+                style={{ padding: '0 0 25px 0' }}
+              />
+              <EditorContainer note={noteInfo} />
+            </>
+          )
         )}
 
-        {!dateSelected && (
-          <DatePicker
-            initialDate={note.investmentDate}
-            onChange={setInvestmentDate}
-            onClick={onClick}
+        {noteInfo.id && !isDateSelected && (
+          <Calendar
+            defaultDate={noteInfo.investmentDate}
+            onSelectDate={onSelectDate}
+            value={moment(investmentDate)}
           />
         )}
       </Container>

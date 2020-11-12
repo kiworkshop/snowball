@@ -1,7 +1,13 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { changeError, changeText, writeNote } from '../../store/modules/note';
+import {
+  changeError,
+  changeInvestmentDate,
+  changeText,
+  updateNote,
+  writeNote,
+} from '../../store/modules/note';
 
 import { RootState } from '../../store/modules';
 import { NoteType } from '../../type/note';
@@ -19,6 +25,11 @@ const EditorContainer: React.FC<EditorContainerProps> = ({ note }) => {
     dispatch,
   ]);
 
+  const setInvestmentDate = useCallback(
+    (date: string) => dispatch(changeInvestmentDate(date)),
+    [dispatch]
+  );
+
   const { noteForm, loading, error } = useSelector(
     (state: RootState) => state.note
   );
@@ -26,7 +37,9 @@ const EditorContainer: React.FC<EditorContainerProps> = ({ note }) => {
   const history = useHistory();
 
   const onSave = useCallback(() => {
-    if (!note) {
+    if (note) {
+      dispatch(updateNote(noteForm, note.id, history));
+    } else {
       dispatch(writeNote(noteForm, history));
     }
   }, [dispatch, note, noteForm, history]);
@@ -34,6 +47,13 @@ const EditorContainer: React.FC<EditorContainerProps> = ({ note }) => {
   const onAlertClose = useCallback(() => {
     dispatch(changeError(''));
   }, [dispatch]);
+
+  useEffect(() => {
+    if (note) {
+      setText(note.text);
+      setInvestmentDate(note.investmentDate);
+    }
+  }, [note, setText, setInvestmentDate]);
 
   return (
     <Editor
