@@ -1,43 +1,37 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Button } from 'antd';
-import moment from 'moment';
+import { Button, Alert, Typography, Spin } from 'antd';
 import ReactQuill from 'react-quill';
 
 import 'react-quill/dist/quill.snow.css';
-
-import Container from '../../component/base/Container';
+import { NoteType } from '../../type/note';
 
 interface EditorProps {
-  value: string;
-  setValue: React.Dispatch<React.SetStateAction<string>>;
-  noteDate: string;
+  noteInfo: NoteType.NoteForm;
+  setValue: (value: string) => void;
   onSave: () => void;
+  loading: boolean;
+  error: string;
+  onAlertClose: () => void;
 }
 
-const StyledContainer = styled(Container)`
-  padding: 50px 0;
-`;
-
-const NoteDate = styled.h1`
-  font-size: 2rem;
-`;
-
 const StyledEditor = styled(ReactQuill)`
+  margin-bottom: 30px;
+
   .ql-editor {
     min-height: 500px;
   }
 `;
 
-const SaveButton = styled(Button)`
-  margin-top: 30px;
-`;
+const { Title } = Typography;
 
 const Editor: React.FC<EditorProps> = ({
-  value,
+  noteInfo,
   setValue,
-  noteDate,
   onSave,
+  loading,
+  error,
+  onAlertClose,
 }) => {
   const toolbarOptions = [
     ['bold', 'italic', 'underline', 'strike'],
@@ -60,18 +54,25 @@ const Editor: React.FC<EditorProps> = ({
   ];
 
   return (
-    <StyledContainer>
-      <NoteDate>{moment(noteDate).format('YYYY-MM-DD')} 투자노트</NoteDate>
+    <>
+      <Title>{noteInfo.investmentDate} 투자노트</Title>
       <StyledEditor
         theme="snow"
-        value={value}
+        value={noteInfo.text}
         onChange={setValue}
         modules={{ toolbar: toolbarOptions }}
       />
-      <SaveButton size="large" block onClick={onSave}>
-        저장하기
-      </SaveButton>
-    </StyledContainer>
+
+      {error ? (
+        <Alert message={error} type="error" closable onClose={onAlertClose} />
+      ) : (
+        <Spin tip="저장중..." spinning={loading}>
+          <Button size="large" block onClick={onSave}>
+            저장하기
+          </Button>
+        </Spin>
+      )}
+    </>
   );
 };
 

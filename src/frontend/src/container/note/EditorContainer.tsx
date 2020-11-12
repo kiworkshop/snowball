@@ -1,61 +1,49 @@
-import React, { useState } from 'react';
-import moment from 'moment';
-import { message } from 'antd';
+import React, { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { changeError, changeText, writeNote } from '../../store/modules/note';
+
 import { RootState } from '../../store/modules';
-import { addNote, updateNote } from '../../lib/api/note';
-import routes from '../../routes';
+import { NoteType } from '../../type/note';
 
 import Editor from '../../component/note/Editor';
 
 interface EditorContainerProps {
-  date: string;
-  initialValue?: string;
-  id?: string;
+  note?: NoteType.Note;
 }
 
-const EditorContainer: React.FC<EditorContainerProps> = ({
-  date,
-  initialValue = '',
-  id,
-}) => {
-  const [value, setValue] = useState(initialValue);
+const EditorContainer: React.FC<EditorContainerProps> = ({ note }) => {
+  const dispatch = useDispatch();
+
+  const setText = useCallback((value: string) => dispatch(changeText(value)), [
+    dispatch,
+  ]);
+
+  const { noteForm, loading, error } = useSelector(
+    (state: RootState) => state.note
+  );
 
   const history = useHistory();
 
-  const user = useSelector((state: RootState) => state.user.userInfo);
-
-  const onSave = async () => {
-    try {
-      const writtenData = {
-        text: value,
-        investmentDate: moment(date).format('YYYY-MM-DD'),
-        user,
-      };
-
-      let response;
-
-      if (id) {
-        response = await updateNote(id, writtenData);
-      } else {
-        response = await addNote(writtenData);
-      }
-
-      if (response.status === 200) {
-        const { id: noteId } = response.data;
-        history.push(routes.note.detail(noteId));
-      } else {
-        message.error('알 수 없는 오류가 발생했습니다.');
-      }
-    } catch (e) {
-      console.log(e);
-      message.error('알 수 없는 오류가 발생했습니다.');
+  const onSave = useCallback(() => {
+    if (!note) {
+      dispatch(writeNote(noteForm, history));
     }
-  };
+  }, [dispatch, note, noteForm, history]);
+
+  const onAlertClose = useCallback(() => {
+    dispatch(changeError(''));
+  }, [dispatch]);
 
   return (
-    <Editor value={value} setValue={setValue} noteDate={date} onSave={onSave} />
+    <Editor
+      noteInfo={noteForm}
+      setValue={setText}
+      onSave={onSave}
+      loading={loading}
+      error={error}
+      onAlertClose={onAlertClose}
+    />
   );
 };
 

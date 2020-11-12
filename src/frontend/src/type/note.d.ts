@@ -14,4 +14,11 @@ export namespace NoteType {
     investmentDate: string;
     user: UserType.UserInfo;
   }
+
+  interface NoteState {
+    noteInfo: Note;
+    noteForm: NoteForm;
+    loading: boolean;
+    error: string;
+  }
 }

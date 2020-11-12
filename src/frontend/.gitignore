@@ -135,4 +135,7 @@ modules.xml
 # Sonarlint plugin
 .idea/sonarlint
 
+yarn/*
+nodejs/*
+
 # End of https://www.toptal.com/developers/gitignore/api/webstorm+all,macos,react
