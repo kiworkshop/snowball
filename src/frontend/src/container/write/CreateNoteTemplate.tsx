@@ -24,14 +24,17 @@ const CreateNoteTemplate = () => {
     error: { createNote: error },
   } = useSelector((state: RootState) => state.note);
 
+  const TODAY = useMemo(() => moment(Date.now()), []);
+  const investmentDate = form.investmentDate?.format('YYYY-MM-DD');
+
   const onClickBackButton = () => setIsDateSelected(false);
 
   const onSave = useCallback(() => {
+    if (!form.title) {
+      dispatch(setFormThunk({ title: `${investmentDate} 투자노트` }));
+    }
     dispatch(createNoteThunk(form));
-  }, [dispatch, form]);
-
-  const TODAY = useMemo(() => moment(Date.now()), []);
-  const investmentDate = form.investmentDate?.format('YYYY-MM-DD');
+  }, [dispatch, form, investmentDate]);
 
   useEffect(() => {
     dispatch(setFormThunk({ investmentDate: TODAY }));
