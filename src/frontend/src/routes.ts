@@ -3,7 +3,7 @@ export default {
   login: () => '/login',
   note: {
     detail: (id: string) => `/note/${id}`,
-    create: (date: string = '') => `/write/note/${date}`,
+    create: () => '/create/note',
     update: (id: string) => `/update/note/${id}`,
     delete: (id: string) => `/delete/note/${id}`,
   },

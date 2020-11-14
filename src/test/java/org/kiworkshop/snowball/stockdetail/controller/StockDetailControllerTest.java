@@ -91,6 +91,7 @@ class StockDetailControllerTest extends ControllerTest {
                                 fieldWithPath("createdDate").type(JsonFieldType.STRING).description("주식상세정보가 생성된 날짜"),
                                 fieldWithPath("modifiedDate").type(JsonFieldType.STRING).description("주식상세정보가 수정된 날짜")
                         )
+                                )
                         )
                 );
     }

@@ -6,15 +6,15 @@ import routes from '../routes';
 
 import LoginContainer from '../container/login/LoginContainer';
 
-const Login = () => {
-  const logged = useSelector((state: RootState) => state.user.logged);
+const LoginPage = () => {
+  const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
 
   return (
     <>
       <LoginContainer />
-      {logged && <Redirect to={routes.home()} />}
+      {isLoggedIn && <Redirect to={routes.home()} />}
     </>
   );
 };
 
-export default Login;
+export default LoginPage;

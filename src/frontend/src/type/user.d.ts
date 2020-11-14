@@ -1,18 +1,19 @@
-import { NoteType } from './note';
+import { Note } from './note';
 
-export namespace UserType {
-  interface UserInfo {
+export namespace User {
+  type IsLoggedIn = boolean;
+  type Notes = Array<Note.Note>;
+
+  interface Profile {
     id: string;
     email: string;
     name: string;
     age: number | null;
     gender: string;
     pictureUrl: string;
-    notes: Array<NoteType.Note>;
   }
 
-  interface UserState {
-    userInfo: UserInfo;
-    logged: boolean;
+  interface Info extends Profile {
+    notes: Note.Notes;
   }
 }

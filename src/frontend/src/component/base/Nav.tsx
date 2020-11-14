@@ -1,89 +1,54 @@
 import React from 'react';
-import { Dropdown, Menu } from 'antd';
-import { HomeFilled } from '@ant-design/icons';
-import { FaUserCircle } from 'react-icons/fa';
+import { Layout, Dropdown, Menu, Button } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-
-import { UserType } from '../../type/user';
 import routes from '../../routes';
 
+import { User } from '../../type/user';
+import Container from './Container';
+
 interface NavProps {
-  user: UserType.UserInfo;
+  user: User.Profile;
   onLogout: () => void;
+  onClickNavLink: (link: string) => () => void;
+  selectedKeys?: Array<string>;
 }
 
-const StyledNav = styled.nav`
+const { Header } = Layout;
+
+const StyledHeader = styled(Header)`
   background: #fff;
-  box-shadow: 0 4px 2px -4px gray;
-  height: 80px;
+  box-shadow: 0 2px 8px #f0f1f2;
   left: 0;
+  padding: 0;
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 1000;
+  z-index: 2;
 `;
 
-const NavInner = styled.div`
+const HeaderInner = styled(Container)`
   align-items: center;
   display: flex;
-  height: 100%;
-  justify-content: center;
-  position: relative;
+  justify-content: space-between;
 `;
 
 const BrandTitle = styled(Link)`
-  color: #141414;
-  font-size: 2rem;
-  font-weight: 600;
-  left: 30px;
-  position: absolute;
-
+  color: #13c2c2;
+  font-size: 1.6rem;
+  font-weight: bold;
   &:hover {
-    color: #595959;
+    color: #36cfc9;
   }
 `;
 
-const NavMenusWrapper = styled.ul`
-  display: flex;
-  margin-bottom: 0;
-  padding-left: 0;
-`;
-
-const NavMenu = styled(Link)`
-  align-items: center;
-  color: #141414;
-  display: flex;
-  flex-direction: column;
-
-  &:hover {
-    color: #595959;
-  }
-`;
-
-const UserWrapper = styled.div`
-  align-items: center;
-  cursor: pointer;
-  display: flex;
-  position: absolute;
-  right: 30px;
-`;
-
-const UserIcon = styled(FaUserCircle)`
-  height: 40px;
-  margin-right: 8px;
-  width: 40px;
-`;
-
-const Username = styled.span`
-  font-size: 1.1rem;
-`;
-
-const EmptyDiv = styled.div`
-  height: 80px;
-`;
-
-const Nav: React.FC<NavProps> = ({ user, onLogout }) => {
+const Nav: React.FC<NavProps> = ({
+  user,
+  onLogout,
+  onClickNavLink,
+  selectedKeys,
+}) => {
   const ProfileMenus = (
     <Menu>
       <Menu.Item key="0" onClick={onLogout}>
@@ -93,31 +58,34 @@ const Nav: React.FC<NavProps> = ({ user, onLogout }) => {
   );
 
   return (
-    <>
-      <StyledNav>
-        <NavInner>
-          <BrandTitle to={routes.home()}>SNOWBALL</BrandTitle>
+    <StyledHeader>
+      <HeaderInner>
+        <BrandTitle to={routes.home()}>SNOWBALL</BrandTitle>
 
-          <NavMenusWrapper>
-            <NavMenu to={routes.home()}>
-              <HomeFilled style={{ fontSize: '2rem' }} />홈
-            </NavMenu>
-          </NavMenusWrapper>
+        <Menu mode="horizontal" selectedKeys={selectedKeys}>
+          <Menu.Item key="home" onClick={onClickNavLink(routes.home())}>
+            홈
+          </Menu.Item>
 
-          <Dropdown
-            overlay={ProfileMenus}
-            placement="bottomRight"
-            trigger={['click']}
+          <Menu.Item
+            key="createNote"
+            onClick={onClickNavLink(routes.note.create())}
           >
-            <UserWrapper>
-              <UserIcon />
-              <Username>{user.name}</Username>
-            </UserWrapper>
+            투자노트 작성
+          </Menu.Item>
+
+          <Menu.Item key="portfolio" onClick={onClickNavLink(routes.home())}>
+            포트폴리오
+          </Menu.Item>
+
+          <Dropdown overlay={ProfileMenus} trigger={['click']}>
+            <Button style={{ marginLeft: '20px' }}>
+              {user.name} 님 <DownOutlined />
+            </Button>
           </Dropdown>
-        </NavInner>
-      </StyledNav>
-      <EmptyDiv />
-    </>
+        </Menu>
+      </HeaderInner>
+    </StyledHeader>
   );
 };
 
