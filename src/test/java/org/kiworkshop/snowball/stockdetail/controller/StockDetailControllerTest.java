@@ -8,23 +8,23 @@ import org.kiworkshop.snowball.stockdetail.entity.StockDetailRepository;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.kiworkshop.snowball.util.ApiDocumentUtils.getDocumentRequest;
 import static org.kiworkshop.snowball.util.ApiDocumentUtils.getDocumentResponse;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(StockDetailController.class)
@@ -32,6 +32,28 @@ class StockDetailControllerTest extends ControllerTest {
 
     @MockBean
     private StockDetailRepository stockDetailRepository;
+
+    @Test
+    void getStockDetailByName() throws Exception {
+        //given
+        given(stockDetailRepository.findByCompanyName(anyString())).willReturn(StockDetailFixture.create());
+        //when
+        mvc.perform(RestDocumentationRequestBuilders.get("/stockdetail")
+                .param("companyName", "삼성전자")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(document("stockdetail/get-stockdetail",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        requestParameters(
+                                parameterWithName("companyName").description("주식상세정보 회사명")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("주식상세정보 id")
+                        )
+                        )
+                );
+    }
 
     @Test
     void getStockDetails() throws Exception {
@@ -67,7 +89,7 @@ class StockDetailControllerTest extends ControllerTest {
                                 fieldWithPath("marketType").type(JsonFieldType.STRING).description("시장종류"),
                                 fieldWithPath("createdDate").type(JsonFieldType.STRING).description("주식상세정보가 생성된 날짜"),
                                 fieldWithPath("modifiedDate").type(JsonFieldType.STRING).description("주식상세정보가 수정된 날짜")
-                                )
+                        )
                         )
                 );
     }
