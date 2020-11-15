@@ -67,11 +67,15 @@ function* setFormForUpdateSaga(
         content: note.content,
         investmentDate: moment(note.investmentDate),
         stockTransactions: note.stockTransactions.map((stockTransaction) => ({
-          id: stockTransaction.id,
           companyName: stockTransaction.stockDetail.companyName,
           transactionType: stockTransaction.transactionType,
           quantity: stockTransaction.quantity,
           tradedPrice: stockTransaction.tradedPrice,
+          user: null,
+          note: null,
+          stockDetail: {
+            id: stockTransaction.stockDetail.id,
+          },
         })),
       })
     );

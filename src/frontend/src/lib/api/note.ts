@@ -71,10 +71,14 @@ export interface Form {
   content: string;
   investmentDate: moment.Moment | null;
   stockTransactions: Array<{
-    id: number;
     companyName: string;
-    transactionType: 'BUY' | 'SELL';
     quantity: number;
     tradedPrice: number;
+    transactionType: 'BUY' | 'SELL';
+    note: number | null;
+    user: number | null;
+    stockDetail: {
+      id: number;
+    };
   }>;
 }

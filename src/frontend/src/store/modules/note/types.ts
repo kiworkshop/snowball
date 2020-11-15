@@ -34,11 +34,15 @@ export interface Form {
   content: string;
   investmentDate: moment.Moment | null;
   stockTransactions: Array<{
-    id: number;
     companyName: string;
     quantity: number;
     tradedPrice: number;
     transactionType: 'BUY' | 'SELL';
+    note: number | null;
+    user: number | null;
+    stockDetail: {
+      id: number;
+    };
   }>;
 }
 
@@ -71,10 +75,14 @@ export interface ChangedPartsOfForm {
   content?: string;
   investmentDate?: moment.Moment | null;
   stockTransactions?: Array<{
-    id: number;
     companyName: string;
     quantity: number;
     tradedPrice: number;
     transactionType: 'BUY' | 'SELL';
+    note: number | null;
+    user: number | null;
+    stockDetail: {
+      id: number;
+    };
   }>;
 }

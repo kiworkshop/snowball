@@ -76,7 +76,15 @@ const StockTransactionContainer = () => {
         dispatch(
           setForm({
             stockTransactions: form.stockTransactions.concat([
-              { ...values, id: companyId, transactionType: type },
+              {
+                ...values,
+                transactionType: type,
+                note: null,
+                user: null,
+                stockDetail: {
+                  id: companyId,
+                },
+              },
             ]),
           })
         );
