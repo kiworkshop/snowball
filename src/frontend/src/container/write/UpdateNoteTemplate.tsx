@@ -41,9 +41,6 @@ const UpdateNoteTemplate: React.FC<UpdateNoteTemplateProps> = ({ id }) => {
   );
 
   const onSave = useCallback(() => {
-    if (!form.title) {
-      dispatch(setForm({ title: `${investmentDate} 투자노트` }));
-    }
     dispatch(updateNoteAsync.request({ id, form }));
   }, [dispatch, id, form, investmentDate]);
 

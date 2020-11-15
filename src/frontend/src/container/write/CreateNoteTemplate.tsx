@@ -31,9 +31,6 @@ const CreateNoteTemplate = () => {
   const onClickBackButton = () => setIsDateSelected(false);
 
   const onSave = useCallback(() => {
-    if (!form.title) {
-      dispatch(setForm({ title: `${investmentDate} 투자노트` }));
-    }
     dispatch(createNoteAsync.request(form));
   }, [dispatch, form, investmentDate]);
 

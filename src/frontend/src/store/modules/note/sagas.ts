@@ -48,7 +48,13 @@ function* getNoteSaga(action: ReturnType<typeof getNoteAsync.request>) {
 
 function* createNoteSaga(action: ReturnType<typeof createNoteAsync.request>) {
   try {
-    const response = yield call(noteAPI.createNote, action.payload);
+    const form = action.payload;
+
+    if (!form.title) {
+      form.title = `${form.investmentDate?.format('YYYY-MM-DD')} 투자노트`;
+    }
+
+    const response = yield call(noteAPI.createNote, form);
     yield put(createNoteAsync.success());
     yield put(goToNoteDetailPage(response.data.id));
   } catch (e) {
@@ -88,6 +94,11 @@ function* setFormForUpdateSaga(
 function* updateNoteSaga(action: ReturnType<typeof updateNoteAsync.request>) {
   try {
     const { id, form } = action.payload;
+
+    if (!form.title) {
+      form.title = `${form.investmentDate?.format('YYYY-MM-DD')} 투자노트`;
+    }
+
     yield call(noteAPI.updateNote, id, form);
     yield put(updateNoteAsync.success());
     yield put(goToNoteDetailPage(id));
