@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+
 import routes from '../../routes';
+import { RootState } from '../../store/modules';
+import { getNotesAsync } from '../../store/modules/note';
 
 import NoteList from '../../component/note/NoteList';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../store/modules';
-import { getNotesOfUserThunk } from '../../store/modules/user';
 
 const NoteListContainer = () => {
   const history = useHistory();
@@ -13,16 +14,16 @@ const NoteListContainer = () => {
 
   const {
     notes,
-    loading: { getNotesOfUser: loading },
-    error: { getNotesOfUser: error },
-  } = useSelector((state: RootState) => state.user);
+    loading: { getNotes: loading },
+    error: { getNotes: error },
+  } = useSelector((state: RootState) => state.note);
 
   const getNotesOfUser = useCallback(
-    () => dispatch(getNotesOfUserThunk(1, 1)),
+    () => dispatch(getNotesAsync.request({ page: 1, size: 1 })),
     [dispatch]
   );
 
-  const onClickMoreInfoButton = (noteId: string) => {
+  const onClickMoreInfoButton = (noteId: number) => {
     return () => history.push(routes.note.detail(noteId));
   };
 

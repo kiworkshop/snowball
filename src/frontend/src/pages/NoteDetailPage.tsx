@@ -15,7 +15,7 @@ const NoteDetailPage: React.FC<RouteComponentProps<MatchProps>> = ({
   return (
     <Layout style={{ background: '#fff', height: '100%', paddingTop: '64px' }}>
       <NavContainer />
-      <NoteContainer id={match.params.id} />
+      <NoteContainer id={Number(match.params.id)} />
     </Layout>
   );
 };

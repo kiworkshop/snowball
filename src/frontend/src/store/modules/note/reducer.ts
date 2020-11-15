@@ -1,16 +1,23 @@
 import { createReducer } from 'typesafe-actions';
 import moment from 'moment';
+
 import { NoteAction, NoteState } from './types';
 import {
   INITIALIZE_FORM,
   INITIALIZE_NOTE,
   SET_FORM,
+  GET_NOTES_REQUEST,
+  GET_NOTES_SUCCESS,
+  GET_NOTES_FAILURE,
   GET_NOTE_REQUEST,
   GET_NOTE_SUCCESS,
   GET_NOTE_FAILURE,
   CREATE_NOTE_REQUEST,
   CREATE_NOTE_SUCCESS,
   CREATE_NOTE_FAILURE,
+  SET_FORM_FOR_UPDATE_REQUEST,
+  SET_FORM_FOR_UPDATE_SUCCESS,
+  SET_FORM_FOR_UPDATE_FAILURE,
   UPDATE_NOTE_REQUEST,
   UPDATE_NOTE_SUCCESS,
   UPDATE_NOTE_FAILURE,
@@ -21,14 +28,15 @@ import {
 
 const initialState: NoteState = {
   note: {
-    id: '',
+    id: null,
     title: '',
     content: '',
     investmentDate: null,
     createdDate: null,
-    lastModifiedDate: null,
+    modifiedDate: null,
     stockTransactions: [],
   },
+  notes: [],
   form: {
     title: '',
     content: '',
@@ -52,12 +60,12 @@ const note = createReducer<NoteState, NoteAction>(initialState, {
   [INITIALIZE_NOTE]: (state) => ({
     ...state,
     note: {
-      id: '',
+      id: null,
       title: '',
       content: '',
       investmentDate: null,
       createdDate: null,
-      lastModifiedDate: null,
+      modifiedDate: null,
       stockTransactions: [],
     },
   }),
@@ -66,6 +74,52 @@ const note = createReducer<NoteState, NoteAction>(initialState, {
     form: {
       ...state.form,
       ...action.payload,
+    },
+  }),
+  [GET_NOTES_REQUEST]: (state) => ({
+    ...state,
+    loading: {
+      ...state.loading,
+      getNotes: true,
+    },
+  }),
+  [GET_NOTES_SUCCESS]: (state, action) => ({
+    ...state,
+    notes: action.payload.content.map((note) => ({
+      ...note,
+      investmentDate: moment(note.investmentDate),
+      createdDate: moment(note.createdDate),
+      modifiedDate: moment(note.modifiedDate),
+      stockTransactions: note.stockTransactions.map((stockTransaction) => ({
+        ...stockTransaction,
+        createdDate: moment(stockTransaction.createdDate),
+        modifiedDate: moment(stockTransaction.modifiedDate),
+        stockDetail: {
+          ...stockTransaction.stockDetail,
+          createdDate: moment(stockTransaction.stockDetail.createdDate),
+          modifiedDate: moment(stockTransaction.stockDetail.modifiedDate),
+          listingDate: moment(stockTransaction.stockDetail.listingDate),
+        },
+      })),
+    })),
+    loading: {
+      ...state.loading,
+      getNotes: false,
+    },
+    error: {
+      ...state.error,
+      getNotes: null,
+    },
+  }),
+  [GET_NOTES_FAILURE]: (state, action) => ({
+    ...state,
+    loading: {
+      ...state.loading,
+      getNotes: false,
+    },
+    error: {
+      ...state.error,
+      getNotes: action.payload,
     },
   }),
   [GET_NOTE_REQUEST]: (state) => ({
@@ -85,12 +139,18 @@ const note = createReducer<NoteState, NoteAction>(initialState, {
       ...action.payload,
       investmentDate: moment(action.payload.investmentDate),
       createdDate: moment(action.payload.createdDate),
-      lastModifiedDate: moment(action.payload.lastModifiedDate),
+      modifiedDate: moment(action.payload.modifiedDate),
       stockTransactions: action.payload.stockTransactions.map(
         (stockTransaction) => ({
           ...stockTransaction,
           createdDate: moment(stockTransaction.createdDate),
           modifiedDate: moment(stockTransaction.modifiedDate),
+          stockDetail: {
+            ...stockTransaction.stockDetail,
+            createdDate: moment(stockTransaction.stockDetail.createdDate),
+            modifiedDate: moment(stockTransaction.stockDetail.modifiedDate),
+            listingDate: moment(stockTransaction.stockDetail.listingDate),
+          },
         })
       ),
     },
@@ -145,6 +205,39 @@ const note = createReducer<NoteState, NoteAction>(initialState, {
     error: {
       ...state.error,
       createNote: action.payload,
+    },
+  }),
+  [SET_FORM_FOR_UPDATE_REQUEST]: (state) => ({
+    ...state,
+    loading: {
+      ...state.loading,
+      setFormForUpdate: true,
+    },
+    error: {
+      ...state.error,
+      setFormForUpdate: null,
+    },
+  }),
+  [SET_FORM_FOR_UPDATE_SUCCESS]: (state) => ({
+    ...state,
+    loading: {
+      ...state.loading,
+      setFormForUpdate: false,
+    },
+    error: {
+      ...state.error,
+      setFormForUpdate: null,
+    },
+  }),
+  [SET_FORM_FOR_UPDATE_FAILURE]: (state, action) => ({
+    ...state,
+    loading: {
+      ...state.loading,
+      setFormForUpdate: false,
+    },
+    error: {
+      ...state.error,
+      setFormForUpdate: action.payload,
     },
   }),
   [UPDATE_NOTE_REQUEST]: (state) => ({

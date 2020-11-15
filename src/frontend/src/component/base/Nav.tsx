@@ -3,13 +3,14 @@ import { Layout, Dropdown, Menu, Button } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import routes from '../../routes';
 
-import { User } from '../../type/user';
+import routes from '../../routes';
+import { Profile } from '../../store/modules/user';
+
 import Container from './Container';
 
 interface NavProps {
-  user: User.Profile;
+  user: Profile;
   onLogout: () => void;
   onClickNavLink: (link: string) => () => void;
   selectedKeys?: Array<string>;

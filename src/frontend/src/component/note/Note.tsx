@@ -1,12 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Space, Typography, Button } from 'antd';
-import { Note as NoteType } from '../../type/note';
+
+import { Note as NoteType } from '../../store/modules/note';
 
 import Container from '../../component/base/Container';
 
 interface NoteProps {
-  note: NoteType.Note;
+  note: NoteType;
   onClickUpdateButton: () => void;
   onClickDeleteButton: () => void;
   loading: boolean;

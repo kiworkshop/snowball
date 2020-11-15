@@ -2,12 +2,13 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { Input, PageHeader } from 'antd';
-import {
-  setFormThunk,
-  initializeFormThunk,
-  createNoteThunk,
-} from '../../store/modules/note';
+
 import { RootState } from '../../store/modules';
+import {
+  createNoteAsync,
+  initializeForm,
+  setForm,
+} from '../../store/modules/note';
 
 import Container from '../../component/base/Container';
 import EditorContainer from './EditorContainer';
@@ -31,16 +32,16 @@ const CreateNoteTemplate = () => {
 
   const onSave = useCallback(() => {
     if (!form.title) {
-      dispatch(setFormThunk({ title: `${investmentDate} 투자노트` }));
+      dispatch(setForm({ title: `${investmentDate} 투자노트` }));
     }
-    dispatch(createNoteThunk(form));
+    dispatch(createNoteAsync.request(form));
   }, [dispatch, form, investmentDate]);
 
   useEffect(() => {
-    dispatch(setFormThunk({ investmentDate: TODAY }));
+    dispatch(setForm({ investmentDate: TODAY }));
 
     return function cleanup() {
-      dispatch(initializeFormThunk());
+      dispatch(initializeForm());
     };
   }, [dispatch, TODAY]);
 

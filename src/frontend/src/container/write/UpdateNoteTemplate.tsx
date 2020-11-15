@@ -1,72 +1,77 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Input, PageHeader } from 'antd';
-import {
-  initializeFormThunk,
-  updateNoteThunk,
-  getNoteThunk,
-  setFormThunk,
-} from '../../store/modules/note';
-import { RootState } from '../../store/modules';
+import { Input, PageHeader, Skeleton } from 'antd';
+import styled from 'styled-components';
 
+import { RootState } from '../../store/modules';
+import {
+  initializeForm,
+  setForm,
+  setFormForUpdateAsync,
+  updateNoteAsync,
+} from '../../store/modules/note';
+
+import Page404 from '../../pages/Page404';
+import Container from '../../component/base/Container';
 import EditorContainer from './EditorContainer';
 import CalendarContainer from './CalendarContainer';
-import Container from '../../component/base/Container';
-import { Page404 } from '../../pages';
 import StockTransactionContainer from './StockTransactionContainer';
 
 interface UpdateNoteTemplateProps {
-  id: string;
+  id: number;
 }
+
+const StyledSkeleton = styled(Skeleton)`
+  .ant-skeleton-paragraph li {
+    height: 500px;
+  }
+`;
 
 const UpdateNoteTemplate: React.FC<UpdateNoteTemplateProps> = ({ id }) => {
   const dispatch = useDispatch();
-  const [isDateSelected, setIsDateSelected] = useState(false);
+  const [isDateSelected, setIsDateSelected] = useState(true);
 
-  const { note, form, loading, error } = useSelector(
+  const { form, loading, error } = useSelector(
     (state: RootState) => state.note
   );
 
-  const onSave = useCallback(() => {
-    dispatch(updateNoteThunk(id, form));
-  }, [dispatch, id, form]);
+  const investmentDate = useMemo(
+    () => form.investmentDate?.format('YYYY-MM-DD'),
+    [form.investmentDate]
+  );
 
-  const investmentDate = form.investmentDate?.format('YYYY-MM-DD');
+  const onSave = useCallback(() => {
+    if (!form.title) {
+      dispatch(setForm({ title: `${investmentDate} 투자노트` }));
+    }
+    dispatch(updateNoteAsync.request({ id, form }));
+  }, [dispatch, id, form, investmentDate]);
 
   useEffect(() => {
-    dispatch(getNoteThunk(id));
-    dispatch(
-      setFormThunk({
-        content: note.content,
-        investmentDate: note.investmentDate,
-        stockTransactions: note.stockTransactions.map((stockTransaction) => ({
-          id: stockTransaction.id,
-          companyName: stockTransaction.stockDetail.companyName,
-          transactionType: stockTransaction.transactionType,
-          quantity: stockTransaction.quantity,
-          tradedPrice: stockTransaction.tradedPrice,
-        })),
-      })
-    );
+    dispatch(setFormForUpdateAsync.request(id));
 
     return function cleanup() {
-      dispatch(initializeFormThunk());
+      dispatch(initializeForm());
     };
-  }, [dispatch, id, note]);
+  }, [dispatch, id]);
 
-  if (error.getNote) {
+  if (error.setFormForUpdate) {
     return <Page404 />;
   }
 
   return (
     <Container style={{ padding: '50px 0' }}>
       {isDateSelected && (
-        <>
+        <StyledSkeleton
+          loading={loading.setFormForUpdate}
+          active
+          paragraph={{ rows: 1, width: '100%' }}
+        >
           <PageHeader
             title="날짜 수정하기"
             subTitle={investmentDate}
             onBack={() => setIsDateSelected(false)}
-            style={{ padding: '0 0 25px 0' }}
+            style={{ padding: '0' }}
           />
 
           <Input
@@ -83,7 +88,7 @@ const UpdateNoteTemplate: React.FC<UpdateNoteTemplateProps> = ({ id }) => {
             error={error.updateNote}
             onSave={onSave}
           />
-        </>
+        </StyledSkeleton>
       )}
 
       {!isDateSelected && (

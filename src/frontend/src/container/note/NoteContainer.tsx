@@ -1,15 +1,16 @@
 import React, { useCallback, useEffect } from 'react';
-import { message, Modal } from 'antd';
+import { Modal } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { deleteNoteThunk, getNoteThunk } from '../../store/modules/note';
-import { RootState } from '../../store/modules';
+
 import routes from '../../routes';
+import { RootState } from '../../store/modules';
+import { deleteNoteAsync, getNoteAsync } from '../../store/modules/note';
 
 import Note from '../../component/note/Note';
 
 interface NoteContainerProps {
-  id: string;
+  id: number;
 }
 
 const NoteContainer: React.FC<NoteContainerProps> = ({ id }) => {
@@ -22,7 +23,7 @@ const NoteContainer: React.FC<NoteContainerProps> = ({ id }) => {
   );
 
   const onClickUpdateButton = () => history.push(routes.note.update(id));
-  const deleteNote = useCallback(() => dispatch(deleteNoteThunk(id)), [
+  const deleteNote = useCallback(() => dispatch(deleteNoteAsync.request(id)), [
     dispatch,
     id,
   ]);
@@ -40,7 +41,7 @@ const NoteContainer: React.FC<NoteContainerProps> = ({ id }) => {
     });
 
   const getNote = useCallback(() => {
-    dispatch(getNoteThunk(id));
+    dispatch(getNoteAsync.request(id));
   }, [dispatch, id]);
 
   useEffect(() => {
@@ -49,8 +50,6 @@ const NoteContainer: React.FC<NoteContainerProps> = ({ id }) => {
 
   return (
     <>
-      {error.deleteNote && message.error('삭제하는 동안 오류가 발생했습니다.')}
-
       <Note
         note={note}
         onClickUpdateButton={onClickUpdateButton}

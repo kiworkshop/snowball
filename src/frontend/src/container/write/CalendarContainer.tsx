@@ -1,9 +1,11 @@
 import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
-import Calendar from '../../component/write/Calendar';
+
 import { RootState } from '../../store/modules';
-import { setFormThunk } from '../../store/modules/note';
+import { setForm } from '../../store/modules/note';
+
+import Calendar from '../../component/write/Calendar';
 
 interface CalendarContainerProps {
   setIsDateSelected: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,7 +21,7 @@ const CalendarContainer: React.FC<CalendarContainerProps> = ({
 
   const setInvestmentDate = useCallback(
     (date: moment.Moment) => {
-      dispatch(setFormThunk({ investmentDate: date }));
+      dispatch(setForm({ investmentDate: date }));
     },
     [dispatch]
   );

@@ -4,10 +4,10 @@ import { Form, message } from 'antd';
 
 import { RootState } from '../../store/modules';
 import { addCommaToNumber } from '../../lib/transform';
+import { getSingleStockDetail } from '../../lib/api/stockDetail';
 
 import StockTransaction from '../../component/write/StockTransaction';
-import { setFormThunk } from '../../store/modules/note';
-import { getSingleStockDetail } from '../../lib/api/stockDetail';
+import { setForm } from '../../store/modules/note';
 
 const StockTransactionContainer = () => {
   const { form } = useSelector((state: RootState) => state.note);
@@ -35,7 +35,7 @@ const StockTransactionContainer = () => {
   const onDelete = useCallback(
     (index: number) => () => {
       dispatch(
-        setFormThunk({
+        setForm({
           stockTransactions: form.stockTransactions.filter(
             (_, idx) => idx !== index
           ),
@@ -74,7 +74,7 @@ const StockTransactionContainer = () => {
         } = await getSingleStockDetail(values.companyName);
 
         dispatch(
-          setFormThunk({
+          setForm({
             stockTransactions: form.stockTransactions.concat([
               { ...values, id: companyId, transactionType: type },
             ]),
