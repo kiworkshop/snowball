@@ -1,6 +1,7 @@
 package org.kiworkshop.snowball.stocktransaction.entity;
 
 import org.kiworkshop.snowball.common.type.TransactionType;
+import org.kiworkshop.snowball.stockdetail.entity.StockDetailFixture;
 import org.kiworkshop.snowball.user.Entity.UserFixture;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -18,6 +19,7 @@ public class StockTransactionFixture {
                 .quantity(1L)
                 .tradedPrice(1000L)
                 .transactionType(type)
+                .stockDetail(StockDetailFixture.create())
                 .build();
         ReflectionTestUtils.setField(stockTransaction, "id", id);
         ReflectionTestUtils.setField(stockTransaction, "createdDate", LocalDateTime.now());
@@ -26,6 +28,7 @@ public class StockTransactionFixture {
     }
     public static List<StockTransaction> createList(){
         List<StockTransaction> stockTransactions = new ArrayList<>();
+        stockTransactions.add(StockTransactionFixture.create(TransactionType.BUY));
         stockTransactions.add(StockTransactionFixture.create(TransactionType.BUY));
         stockTransactions.add(StockTransactionFixture.create(TransactionType.SELL));
         return stockTransactions;

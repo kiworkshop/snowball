@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Getter
 @NoArgsConstructor
@@ -36,5 +37,18 @@ public class StockDetail extends BaseTimeEntity {
         this.settlementMonth = settlementMonth;
         this.representative = representative;
         this.marketType = marketType;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StockDetail that = (StockDetail) o;
+        return Objects.equals(companyName, that.companyName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(companyName);
     }
 }

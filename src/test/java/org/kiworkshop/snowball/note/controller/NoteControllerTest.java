@@ -69,11 +69,11 @@ class NoteControllerTest extends ControllerTest {
                                 fieldWithPath("investmentDate").type(JsonFieldType.STRING).description("투자한 날짜"),
                                 subsectionWithPath("user").type(JsonFieldType.OBJECT).description("투자노트 작성자"),
                                 subsectionWithPath("stockTransactions").type(JsonFieldType.ARRAY).description("주식 거래내역 목록"),
-                                subsectionWithPath("stockTransactions[].id").type(JsonFieldType.NUMBER).description("주식 거래내역 id"),
+                                subsectionWithPath("stockTransactions[].stockDetail.id").type(JsonFieldType.NUMBER).description("주식 상세정보 id"),
                                 subsectionWithPath("stockTransactions[].quantity").type(JsonFieldType.NUMBER).description("주식 거래내역 수량"),
                                 subsectionWithPath("stockTransactions[].tradedPrice").type(JsonFieldType.NUMBER).description("주식 거래내역 매매가격"),
                                 subsectionWithPath("stockTransactions[].transactionType").type(JsonFieldType.STRING).description("주식 거래내역 종류")
-                        ),
+                                ),
                         responseFields(
                                 fieldWithPath("id").type(JsonFieldType.NUMBER).description("투자노트 id")
                         )

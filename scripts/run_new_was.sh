@@ -21,5 +21,8 @@ if [ ! -z ${TARGET_PID} ]; then
 fi
 
 echo "> Now new WAS runs at ${TARGET_PORT}."
-nohup java -jar -Dserver.port=${TARGET_PORT} /home/ec2-user/snowball/build/libs/* > /home/ec2-user/nohup.out 2>&1 &
+nohup java -jar \
+    -Dspring.config.location=classpath:/application.yml,classpath:/application-real.yml \
+    -Dspring.profiles.active=real \
+    -Dserver.port=${TARGET_PORT} /home/ec2-user/snowball/build/libs/* > /home/ec2-user/nohup.out 2>&1 &
 exit 0
