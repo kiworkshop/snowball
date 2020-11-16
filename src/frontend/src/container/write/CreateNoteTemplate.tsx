@@ -30,6 +30,13 @@ const CreateNoteTemplate = () => {
 
   const onClickBackButton = () => setIsDateSelected(false);
 
+  const onTitleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      dispatch(setForm({ title: e.target.value }));
+    },
+    [dispatch]
+  );
+
   const onSave = useCallback(() => {
     dispatch(createNoteAsync.request(form));
   }, [dispatch, form]);
@@ -55,9 +62,11 @@ const CreateNoteTemplate = () => {
 
           <Input
             type="text"
+            value={form.title}
             bordered={false}
             placeholder={`${investmentDate} 투자노트`}
             style={{ fontSize: '38px', fontWeight: 'bold', padding: '20px 0' }}
+            onChange={onTitleChange}
           />
 
           <StockTransactionContainer />

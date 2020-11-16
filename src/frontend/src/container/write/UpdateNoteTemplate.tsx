@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { RootState } from '../../store/modules';
 import {
   initializeForm,
+  setForm,
   setFormForUpdateAsync,
   updateNoteAsync,
 } from '../../store/modules/note';
@@ -37,6 +38,13 @@ const UpdateNoteTemplate: React.FC<UpdateNoteTemplateProps> = ({ id }) => {
   const investmentDate = useMemo(
     () => form.investmentDate?.format('YYYY-MM-DD'),
     [form.investmentDate]
+  );
+
+  const onTitleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      dispatch(setForm({ title: e.target.value }));
+    },
+    [dispatch]
   );
 
   const onSave = useCallback(() => {
@@ -72,9 +80,11 @@ const UpdateNoteTemplate: React.FC<UpdateNoteTemplateProps> = ({ id }) => {
 
           <Input
             type="text"
+            value={form.title}
             bordered={false}
             placeholder={`${investmentDate} 투자노트`}
             style={{ fontSize: '38px', fontWeight: 'bold', padding: '20px 0' }}
+            onChange={onTitleChange}
           />
 
           <StockTransactionContainer />
