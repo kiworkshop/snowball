@@ -1,5 +1,6 @@
 package org.kiworkshop.snowball.note.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,7 @@ public class Note extends BaseTimeEntity {
     private String content;
     private LocalDate investmentDate;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "note")
     private List<StockTransaction> stockTransactions;
 

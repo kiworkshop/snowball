@@ -1,5 +1,6 @@
 package org.kiworkshop.snowball.stocktransaction.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,8 @@ public class StockTransaction extends BaseTimeEntity {
     private User user;
     @ManyToOne
     private StockDetail stockDetail;
+
+    @JsonBackReference
     @ManyToOne
     private Note note;
 
