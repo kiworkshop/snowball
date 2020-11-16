@@ -85,3 +85,11 @@ operation::/stockdetail/get-stockdetail[snippets='http-request,request-parameter
 === Get StockDetails
 
 operation::/stockdetail/get-stockdetails[snippets='http-request,request-parameters,http-response,response-fields-content']
+
+= Package: Portfolio
+
+== PortfolioSummary
+
+=== Get a PortfolioSummary
+
+operation::/portfolio/get-portfolio-summary[snippets='http-request,path-parameters,http-response,response-fields']
