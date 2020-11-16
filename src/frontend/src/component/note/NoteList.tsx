@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { List, Collapse, Button, Typography, Spin, Alert } from 'antd';
 import { FolderOpenOutlined, RightOutlined } from '@ant-design/icons';
+import parse from 'html-react-parser';
 
 import { setDate } from '../../lib/date';
 import { Notes } from '../../store/modules/note';
@@ -56,7 +57,11 @@ const NoteList: React.FC<NoteListProps> = ({
                 `${setDate(note.investmentDate)} 투자노트`
               }
             >
-              <Typography.Paragraph>{note.content}</Typography.Paragraph>
+              <Typography.Paragraph
+                style={{ height: '20px', overflow: 'hidden' }}
+              >
+                {parse(note.content)}
+              </Typography.Paragraph>
               <MoreInfoButton
                 type="text"
                 onClick={onClickMoreInfoButton(note.id!)}

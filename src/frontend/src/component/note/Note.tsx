@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Space, Typography, Button } from 'antd';
+import parse from 'html-react-parser';
 
 import { Note as NoteType } from '../../store/modules/note';
 
@@ -56,7 +57,7 @@ const Note: React.FC<NoteProps> = ({
               </Button>
             </Space>
           </Space>
-          <Space>{note.content}</Space>
+          <Space>{parse(note.content)}</Space>
         </>
       )}
     </NoteContainer>
