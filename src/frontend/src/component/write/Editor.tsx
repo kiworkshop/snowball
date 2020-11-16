@@ -2,12 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import { Button, Alert, Spin } from 'antd';
 import ReactQuill from 'react-quill';
-import { Note } from '../../type/note';
+
+import { Form } from '../../store/modules/note';
 
 import 'react-quill/dist/quill.snow.css';
 
 interface EditorProps {
-  formData: Note.Form;
+  formData: Form;
   onChange: (content: string) => void;
   onSave: () => void;
   loading: boolean;

@@ -3,24 +3,29 @@ import ReactDOM from 'react-dom';
 import { Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import store from 'store2';
 import { createBrowserHistory } from 'history';
-import rootReducer from './store/modules';
+import createSagaMiddleware from 'redux-saga';
+import rootReducer, { rootSaga } from './store/modules';
+import { loginStoredUser } from './store/modules/user';
 
 import './index.less';
 import App from './App';
-import { loginStoredUser } from './store/modules/user';
 
 const customHistory = createBrowserHistory();
+const sagaMiddleware = createSagaMiddleware({
+  context: {
+    history: customHistory,
+  },
+});
 
 const reduxStore = createStore(
   rootReducer,
-  composeWithDevTools(
-    applyMiddleware(thunk.withExtraArgument({ history: customHistory }))
-  )
+  composeWithDevTools(applyMiddleware(sagaMiddleware))
 );
+
+sagaMiddleware.run(rootSaga);
 
 function loadUser() {
   try {
@@ -31,7 +36,7 @@ function loadUser() {
       return;
     }
 
-    reduxStore.dispatch(loginStoredUser(storedUser.info));
+    reduxStore.dispatch(loginStoredUser(storedUser.profile));
   } catch (err) {
     console.log('localstorage is not working');
   }

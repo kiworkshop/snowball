@@ -20,7 +20,7 @@ const UpdateNotePage: React.FC<RouteComponentProps<MatchProps>> = ({
   return (
     <Container style={{ padding: '50px 0' }}>
       <NavContainer />
-      <UpdateNoteTemplate id={match.params.id} />
+      <UpdateNoteTemplate id={Number(match.params.id)} />
       {!isLoggedIn && <Redirect to={routes.login()} />}
     </Container>
   );

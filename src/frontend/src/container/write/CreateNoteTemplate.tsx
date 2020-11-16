@@ -2,12 +2,13 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { Input, PageHeader } from 'antd';
-import {
-  setFormThunk,
-  initializeFormThunk,
-  createNoteThunk,
-} from '../../store/modules/note';
+
 import { RootState } from '../../store/modules';
+import {
+  createNoteAsync,
+  initializeForm,
+  setForm,
+} from '../../store/modules/note';
 
 import Container from '../../component/base/Container';
 import EditorContainer from './EditorContainer';
@@ -24,20 +25,20 @@ const CreateNoteTemplate = () => {
     error: { createNote: error },
   } = useSelector((state: RootState) => state.note);
 
-  const onClickBackButton = () => setIsDateSelected(false);
-
-  const onSave = useCallback(() => {
-    dispatch(createNoteThunk(form));
-  }, [dispatch, form]);
-
   const TODAY = useMemo(() => moment(Date.now()), []);
   const investmentDate = form.investmentDate?.format('YYYY-MM-DD');
 
+  const onClickBackButton = () => setIsDateSelected(false);
+
+  const onSave = useCallback(() => {
+    dispatch(createNoteAsync.request(form));
+  }, [dispatch, form, investmentDate]);
+
   useEffect(() => {
-    dispatch(setFormThunk({ investmentDate: TODAY }));
+    dispatch(setForm({ investmentDate: TODAY }));
 
     return function cleanup() {
-      dispatch(initializeFormThunk());
+      dispatch(initializeForm());
     };
   }, [dispatch, TODAY]);
 

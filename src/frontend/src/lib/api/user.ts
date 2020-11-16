@@ -1,4 +1,4 @@
 import axios from '../axios';
-import { User } from '../../type/user';
+import { Profile } from '../../store/modules/user';
 
-export const login = () => axios.get<User.Info>('/login');
+export const login = () => axios.get<Profile>('/login');

@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { RootState } from '../../store/modules';
-import { setFormThunk } from '../../store/modules/note';
+import { setForm } from '../../store/modules/note';
 
 import Editor from '../../component/write/Editor';
 
@@ -20,7 +20,7 @@ const EditorContainer: React.FC<EditorContainerProps> = ({
   const dispatch = useDispatch();
 
   const onChange = useCallback(
-    (content: string) => dispatch(setFormThunk({ content })),
+    (content: string) => dispatch(setForm({ content })),
     [dispatch]
   );
 

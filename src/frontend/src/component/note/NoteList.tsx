@@ -2,13 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import { List, Collapse, Button, Typography, Spin, Alert } from 'antd';
 import { FolderOpenOutlined, RightOutlined } from '@ant-design/icons';
-import { setDate } from '../../lib/date';
 
-import { Note } from '../../type/note';
+import { setDate } from '../../lib/date';
+import { Notes } from '../../store/modules/note';
 
 interface NoteListProps {
-  notes: Array<Note.Note>;
-  onClickMoreInfoButton: (id: string) => () => void;
+  notes: Notes;
+  onClickMoreInfoButton: (id: number) => () => void;
   loading: boolean;
   error: Error | null;
 }
@@ -50,7 +50,7 @@ const NoteList: React.FC<NoteListProps> = ({
         renderItem={(note) => (
           <NoteWrapper ghost>
             <Panel
-              key={note.id}
+              key={note.id!}
               header={
                 note.investmentDate &&
                 `${setDate(note.investmentDate)} 투자노트`
@@ -59,7 +59,7 @@ const NoteList: React.FC<NoteListProps> = ({
               <Typography.Paragraph>{note.content}</Typography.Paragraph>
               <MoreInfoButton
                 type="text"
-                onClick={onClickMoreInfoButton(note.id)}
+                onClick={onClickMoreInfoButton(note.id!)}
               >
                 더보기 <RightOutlined />
               </MoreInfoButton>
