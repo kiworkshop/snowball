@@ -13,6 +13,8 @@ export const LOGIN_STORED_USER = 'user/LOGIN_STORED_USER' as const;
 
 export const STORE_USER_TO_LOCAL_STORAGE = 'user/STORE_USER_TO_LOCAL_STORAGE' as const;
 
+export const GO_TO_LOGIN_PAGE = 'user/GO_TO_LOGIN_PAGE' as const;
+
 /* ACTION CREATOR */
 export const logout = () => action(LOGOUT);
 export const loginStoredUser = (storedUser: Profile) =>
@@ -26,3 +28,5 @@ export const loginAsync = createAsyncAction(
 
 export const storeUserToLocalStorage = (user: Profile) =>
   action(STORE_USER_TO_LOCAL_STORAGE, { ...user });
+
+export const goToLoginPage = () => action(GO_TO_LOGIN_PAGE);

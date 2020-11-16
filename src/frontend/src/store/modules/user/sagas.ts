@@ -1,12 +1,15 @@
-import { call, put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery, getContext } from 'redux-saga/effects';
 import store from 'store2';
 
 import * as userAPI from '../../../lib/api/user';
 import {
   LOGIN_REQUEST,
+  LOGOUT,
   STORE_USER_TO_LOCAL_STORAGE,
+  GO_TO_LOGIN_PAGE,
   loginAsync,
   storeUserToLocalStorage,
+  goToLoginPage,
 } from './actions';
 
 function* loginSaga() {
@@ -19,6 +22,11 @@ function* loginSaga() {
   }
 }
 
+function* logoutSaga() {
+  yield store.remove('snowball-user');
+  yield put(goToLoginPage());
+}
+
 function* storeUserToLocalStorageSaga(
   action: ReturnType<typeof storeUserToLocalStorage>
 ) {
@@ -29,7 +37,14 @@ function* storeUserToLocalStorageSaga(
   });
 }
 
+function* goToLoginPageSaga() {
+  const history = yield getContext('history');
+  history.push('/login');
+}
+
 export function* userSaga() {
   yield takeEvery(LOGIN_REQUEST, loginSaga);
+  yield takeEvery(LOGOUT, logoutSaga);
   yield takeEvery(STORE_USER_TO_LOCAL_STORAGE, storeUserToLocalStorageSaga);
+  yield takeEvery(GO_TO_LOGIN_PAGE, goToLoginPageSaga);
 }
