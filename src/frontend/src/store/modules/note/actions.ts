@@ -78,4 +78,4 @@ export const deleteNoteAsync = createAsyncAction(
 )<number, undefined, AxiosError>();
 
 export const goToNoteDetailPage = (id: number) =>
-  action(GO_TO_NOTE_DETAIL_PAGE, { id });
+  action(GO_TO_NOTE_DETAIL_PAGE, id);
