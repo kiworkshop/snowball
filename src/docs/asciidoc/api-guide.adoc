@@ -47,7 +47,7 @@ operation::/user/get-user[snippets='http-request,path-parameters,http-response,r
 
 === Login
 
-operation::/user/login[snippets='http-request,request-fields,http-response,response-fields']
+operation::/user/login[snippets='http-request,http-response,response-fields']
 
 = Package: Note
 
@@ -59,19 +59,19 @@ operation::/note/create-note[snippets='http-request,request-fields,http-response
 
 === Get notes
 
-operation::/note/get-notes[snippets='http-request,request-fields,http-response,response-fields-content']
+operation::/note/get-notes[snippets='http-request,request-parameters,http-response,response-fields-content']
 
 === Get a note
 
-operation::/note/get-note[snippets='http-request,request-fields,http-response,response-fields']
+operation::/note/get-note[snippets='http-request,path-parameters,http-response,response-fields']
 
 === Update a note
 
-operation::/note/update-note[snippets='http-request,request-fields,http-response,response-fields']
+operation::/note/update-note[snippets='http-request,path-parameters,request-fields,http-response']
 
 === Delete a note
 
-operation::/note/delete-note[snippets='http-request,request-fields,http-response,response-fields']
+operation::/note/delete-note[snippets='http-request,path-parameters,http-response']
 
 
 = Package: StockDetail
