@@ -25,7 +25,8 @@ public class PortfolioSummaryService {
         for (Map.Entry<StockDetail, List<StockTransaction>> stockTransactionGroup : stockTransactionGroups) {
             int[] buyingPrices = getBuyingPrices(stockTransactionGroup);
             double averageBuyingPrice = getAverageBuyingPrice(buyingPrices);
-            double earningRate = getEarningRate(stockTransactions, buyingPrices, averageBuyingPrice);
+            Long currentPrice = getCurrentPrice(stockTransactions);
+            double earningRate = getEarningRate(averageBuyingPrice, currentPrice);
 
             PortfolioStockResponseDto portfolioStockResponseDto = getPortfolioStockResponseDto(stockTransactionGroup, (long) averageBuyingPrice, earningRate);
 
@@ -33,6 +34,14 @@ public class PortfolioSummaryService {
         }
 
         return portfolioStockResponseDtos;
+    }
+
+    private double getEarningRate(double averageBuyingPrice, Long currentPrice) {
+        return (currentPrice - averageBuyingPrice) / averageBuyingPrice;
+    }
+
+    private Long getCurrentPrice(List<StockTransaction> stockTransactions) {
+        return stockTransactions.get(stockTransactions.size() - 1).getTradedPrice();
     }
 
     private Set<Map.Entry<StockDetail, List<StockTransaction>>> createStockTransactionGroups(List<StockTransaction> stockTransactions) {
@@ -49,13 +58,6 @@ public class PortfolioSummaryService {
 
     private double getAverageBuyingPrice(int[] buyingPrices) {
         return Arrays.stream(buyingPrices).average().orElseThrow();
-    }
-
-    private double getEarningRate(List<StockTransaction> stockTransactions, int[] buyingPrices, double averageBuyingPrice) {
-        StockTransaction lastTransaction = stockTransactions.get(stockTransactions.size() - 1);
-        Long currentPrice = lastTransaction.getTradedPrice();
-        long numberOfBuyingPrices = Arrays.stream(buyingPrices).count();
-        return (currentPrice - averageBuyingPrice) / numberOfBuyingPrices;
     }
 
     private PortfolioStockResponseDto getPortfolioStockResponseDto(Map.Entry<StockDetail, List<StockTransaction>> stockTransactionGroup, long averageBuyingPrice, double earningRate) {
