@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import { RootState } from '../../store/modules';
 import {
   initializeForm,
-  setForm,
   setFormForUpdateAsync,
   updateNoteAsync,
 } from '../../store/modules/note';
@@ -42,7 +41,7 @@ const UpdateNoteTemplate: React.FC<UpdateNoteTemplateProps> = ({ id }) => {
 
   const onSave = useCallback(() => {
     dispatch(updateNoteAsync.request({ id, form }));
-  }, [dispatch, id, form, investmentDate]);
+  }, [dispatch, id, form]);
 
   useEffect(() => {
     dispatch(setFormForUpdateAsync.request(id));

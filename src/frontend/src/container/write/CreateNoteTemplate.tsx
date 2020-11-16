@@ -32,7 +32,7 @@ const CreateNoteTemplate = () => {
 
   const onSave = useCallback(() => {
     dispatch(createNoteAsync.request(form));
-  }, [dispatch, form, investmentDate]);
+  }, [dispatch, form]);
 
   useEffect(() => {
     dispatch(setForm({ investmentDate: TODAY }));
