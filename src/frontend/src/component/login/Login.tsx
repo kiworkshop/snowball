@@ -2,6 +2,8 @@ import React from 'react';
 import { Layout, Typography, Button, Spin, message } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 
+import logo from '../../static/images/logo.png';
+
 interface LoginProps {
   loading: boolean;
   error: Error | null;
@@ -37,7 +39,7 @@ const Login: React.FC<LoginProps> = ({
         }}
       >
         <Title style={{ fontSize: '6rem', marginBottom: '16px' }}>
-          SNOWBALL
+          <img src={logo} alt="logo" width="500" />
         </Title>
 
         <Title level={4} style={{ color: '#595959', margin: '0 0 80px 0' }}>

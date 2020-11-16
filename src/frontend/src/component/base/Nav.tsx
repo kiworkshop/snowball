@@ -6,6 +6,7 @@ import styled from 'styled-components';
 
 import routes from '../../routes';
 import { Profile } from '../../store/modules/user';
+import logo from '../../static/images/logo.png';
 
 import Container from './Container';
 
@@ -35,15 +36,6 @@ const HeaderInner = styled(Container)`
   justify-content: space-between;
 `;
 
-const BrandTitle = styled(Link)`
-  color: #13c2c2;
-  font-size: 1.6rem;
-  font-weight: bold;
-  &:hover {
-    color: #36cfc9;
-  }
-`;
-
 const Nav: React.FC<NavProps> = ({
   user,
   onLogout,
@@ -61,9 +53,15 @@ const Nav: React.FC<NavProps> = ({
   return (
     <StyledHeader>
       <HeaderInner>
-        <BrandTitle to={routes.home()}>SNOWBALL</BrandTitle>
+        <Link to={routes.home()}>
+          <img src={logo} alt="logo" width="180" />
+        </Link>
 
-        <Menu mode="horizontal" selectedKeys={selectedKeys}>
+        <Menu
+          mode="horizontal"
+          selectedKeys={selectedKeys}
+          style={{ borderBottom: 'none' }}
+        >
           <Menu.Item key="home" onClick={onClickNavLink(routes.home())}>
             홈
           </Menu.Item>
