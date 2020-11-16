@@ -19,7 +19,7 @@ const NoteListContainer = () => {
   } = useSelector((state: RootState) => state.note);
 
   const getNotesOfUser = useCallback(
-    () => dispatch(getNotesAsync.request({ page: 1, size: 1 })),
+    () => dispatch(getNotesAsync.request({ page: 0, size: 10 })),
     [dispatch]
   );
 

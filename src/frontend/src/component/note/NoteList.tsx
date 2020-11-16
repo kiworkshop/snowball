@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { List, Collapse, Button, Typography, Spin, Alert } from 'antd';
+import { List, Collapse, Button, Spin, Alert } from 'antd';
 import { FolderOpenOutlined, RightOutlined } from '@ant-design/icons';
 
 import { setDate } from '../../lib/date';
@@ -56,7 +56,11 @@ const NoteList: React.FC<NoteListProps> = ({
                 `${setDate(note.investmentDate)} 투자노트`
               }
             >
-              <Typography.Paragraph>{note.content}</Typography.Paragraph>
+              <p
+                style={{ height: '20px', overflow: 'hidden' }}
+                dangerouslySetInnerHTML={{ __html: note.content }}
+              />
+
               <MoreInfoButton
                 type="text"
                 onClick={onClickMoreInfoButton(note.id!)}
