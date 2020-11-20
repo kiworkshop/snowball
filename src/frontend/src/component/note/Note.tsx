@@ -23,7 +23,8 @@ interface NoteProps {
 const { Title, Text } = Typography;
 
 const NoteContainer = styled(Container)`
-  padding: 50px 0;
+  background: #fff;
+  padding: 30px;
 `;
 
 const StockTransactionTableContainer = styled(Space)`
