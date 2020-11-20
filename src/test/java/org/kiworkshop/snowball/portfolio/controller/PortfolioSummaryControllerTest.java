@@ -2,13 +2,17 @@ package org.kiworkshop.snowball.portfolio.controller;
 
 import org.junit.jupiter.api.Test;
 import org.kiworkshop.snowball.ControllerTest;
+import org.kiworkshop.snowball.common.config.auth.SecurityConfig;
 import org.kiworkshop.snowball.portfolio.controller.dto.PortfolioStockResponseDtoFixture;
 import org.kiworkshop.snowball.portfolio.service.PortfolioSummaryService;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import static org.kiworkshop.snowball.util.ApiDocumentUtils.getDocumentRequest;
 import static org.kiworkshop.snowball.util.ApiDocumentUtils.getDocumentResponse;
@@ -22,12 +26,14 @@ import static org.springframework.restdocs.snippet.Attributes.key;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(PortfolioSummaryController.class)
+@WebMvcTest(controllers = PortfolioSummaryController.class,
+        excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class)})
 class PortfolioSummaryControllerTest extends ControllerTest{
 
     @MockBean
     private PortfolioSummaryService portfolioSummaryService;
 
+    @WithMockUser(roles = "USER")
     @Test
     void getStockDetails() throws Exception {
         Long userId = 1L;

@@ -2,16 +2,20 @@ package org.kiworkshop.snowball.stockdetail.controller;
 
 import org.junit.jupiter.api.Test;
 import org.kiworkshop.snowball.ControllerTest;
+import org.kiworkshop.snowball.common.config.auth.SecurityConfig;
 import org.kiworkshop.snowball.stockdetail.entity.StockDetail;
 import org.kiworkshop.snowball.stockdetail.entity.StockDetailFixture;
 import org.kiworkshop.snowball.stockdetail.entity.StockDetailRepository;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,12 +31,14 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(StockDetailController.class)
+@WebMvcTest(controllers = StockDetailController.class,
+        excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class)})
 class StockDetailControllerTest extends ControllerTest {
 
     @MockBean
     private StockDetailRepository stockDetailRepository;
 
+    @WithMockUser(roles = "USER")
     @Test
     void getStockDetailByName() throws Exception {
         //given
@@ -55,6 +61,7 @@ class StockDetailControllerTest extends ControllerTest {
                 );
     }
 
+    @WithMockUser(roles = "USER")
     @Test
     void getStockDetails() throws Exception {
 
