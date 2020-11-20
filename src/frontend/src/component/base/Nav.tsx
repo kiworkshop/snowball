@@ -73,10 +73,6 @@ const Nav: React.FC<NavProps> = ({
             투자노트 작성
           </Menu.Item>
 
-          <Menu.Item key="portfolio" onClick={onClickNavLink(routes.home())}>
-            포트폴리오
-          </Menu.Item>
-
           <Dropdown overlay={ProfileMenus} trigger={['click']}>
             <Button style={{ marginLeft: '20px' }}>
               {user.name} 님 <DownOutlined />

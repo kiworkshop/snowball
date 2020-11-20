@@ -49,15 +49,13 @@ const NoteContainer: React.FC<NoteContainerProps> = ({ id }) => {
   }, [getNote, id]);
 
   return (
-    <>
-      <Note
-        note={note}
-        onClickUpdateButton={onClickUpdateButton}
-        onClickDeleteButton={onClickDeleteButton}
-        loading={loading.getNote}
-        error={error.getNote}
-      />
-    </>
+    <Note
+      note={note}
+      onClickUpdateButton={onClickUpdateButton}
+      onClickDeleteButton={onClickDeleteButton}
+      loading={loading.getNote}
+      error={error.getNote}
+    />
   );
 };
 

@@ -15,7 +15,7 @@ const MainPage = () => {
   const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
 
   return (
-    <Layout style={{ height: '100%', paddingTop: '64px' }}>
+    <Layout style={{ minHeight: '100%', paddingTop: '64px' }}>
       <NavContainer selectedMenu={['home']} />
 
       <Container style={{ padding: '30px 0' }}>

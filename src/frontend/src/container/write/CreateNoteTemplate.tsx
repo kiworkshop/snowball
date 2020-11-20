@@ -10,7 +10,6 @@ import {
   setForm,
 } from '../../store/modules/note';
 
-import Container from '../../component/base/Container';
 import EditorContainer from './EditorContainer';
 import CalendarContainer from './CalendarContainer';
 import StockTransactionContainer from './StockTransactionContainer';
@@ -50,9 +49,9 @@ const CreateNoteTemplate = () => {
   }, [dispatch, TODAY]);
 
   return (
-    <Container style={{ padding: '50px 0' }}>
+    <>
       {isDateSelected && (
-        <>
+        <div style={{ background: '#fff', padding: '30px' }}>
           <PageHeader
             title="날짜 수정하기"
             subTitle={investmentDate}
@@ -72,13 +71,13 @@ const CreateNoteTemplate = () => {
           <StockTransactionContainer />
 
           <EditorContainer loading={!!loading} error={error} onSave={onSave} />
-        </>
+        </div>
       )}
 
       {!isDateSelected && (
         <CalendarContainer setIsDateSelected={setIsDateSelected} />
       )}
-    </Container>
+    </>
   );
 };
 
