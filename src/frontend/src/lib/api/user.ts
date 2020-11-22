@@ -1,4 +1,4 @@
-import axios from '../axios';
+import axiosClient from '../axiosClient';
 import { Profile } from '../../store/modules/user';
 
-export const login = () => axios.get<Profile>('/login');
+export const login = () => axiosClient.get<Profile>('/login');

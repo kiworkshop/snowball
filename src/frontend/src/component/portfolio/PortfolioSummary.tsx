@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, Pagination } from 'antd';
+import { Typography, Pagination, Empty } from 'antd';
 import styled from 'styled-components';
 
 interface PortfolioSummaryProps {
@@ -10,6 +10,7 @@ interface PortfolioSummaryProps {
     earningsRate: number;
     targetEarningsRate: number;
   }>;
+  onPageChange: (page: number) => void;
 }
 
 interface PortfolioRowProps {
@@ -99,7 +100,10 @@ const PortfolioRow: React.FC<PortfolioRowProps> = ({ portfolio }) => {
   );
 };
 
-const PortfolioSummary: React.FC<PortfolioSummaryProps> = ({ portfolios }) => {
+const PortfolioSummary: React.FC<PortfolioSummaryProps> = ({
+  portfolios,
+  onPageChange,
+}) => {
   return (
     <PortfolioSummaryContainer>
       <Title level={3} style={{ color: '#27496d', marginBottom: '30px' }}>
@@ -117,14 +121,18 @@ const PortfolioSummary: React.FC<PortfolioSummaryProps> = ({ portfolios }) => {
           </tr>
         </TableHeader>
         <tbody>
-          {portfolios.map((portfolio, index) => (
-            <PortfolioRow key={index} portfolio={portfolio} />
-          ))}
+          {portfolios.length > 0 ? (
+            portfolios.map((portfolio, index) => (
+              <PortfolioRow key={index} portfolio={portfolio} />
+            ))
+          ) : (
+            <Empty style={{ padding: '50px 0' }} />
+          )}
         </tbody>
       </Table>
 
       <PaginationWrapper>
-        <Pagination total={100} simple />
+        <Pagination total={portfolios.length} onChange={onPageChange} simple />
       </PaginationWrapper>
     </PortfolioSummaryContainer>
   );
