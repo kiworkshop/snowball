@@ -6,7 +6,7 @@ import axios from 'axios';
 //     : 'http://localhost:8080';
 
 const axiosClient = axios.create({
-  baseURL: 'http://develop.snowball.live',
+  baseURL: 'http://localhost:8080',
 });
 
 export default axiosClient;
