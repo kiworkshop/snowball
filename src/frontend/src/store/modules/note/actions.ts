@@ -1,5 +1,6 @@
 import { action, createAsyncAction } from 'typesafe-actions';
 import { AxiosError } from 'axios';
+
 import { ChangedPartsOfForm } from './types';
 import { Notes, Note, Form } from '../../../lib/api/note';
 
