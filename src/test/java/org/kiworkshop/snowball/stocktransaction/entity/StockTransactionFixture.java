@@ -14,14 +14,12 @@ public class StockTransactionFixture {
     private static long id = 0;
 
     public static StockTransaction create(TransactionType type){
-        id++;
         StockTransaction stockTransaction = StockTransaction.builder()
                 .quantity(1L)
                 .tradedPrice(1000L)
                 .transactionType(type)
                 .stockDetail(StockDetailFixture.create())
                 .build();
-        ReflectionTestUtils.setField(stockTransaction, "id", id);
         ReflectionTestUtils.setField(stockTransaction, "createdDate", LocalDateTime.now());
         ReflectionTestUtils.setField(stockTransaction, "modifiedDate", LocalDateTime.now());
         return stockTransaction;

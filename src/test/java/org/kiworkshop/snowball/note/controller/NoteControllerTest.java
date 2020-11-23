@@ -60,7 +60,6 @@ class NoteControllerTest extends ControllerTest {
                 .build();
 
         given(noteService.createNote(any())).willReturn(responseDto);
-
         // when & then
         mvc.perform(RestDocumentationRequestBuilders.post("/notes")
                 .with(csrf())

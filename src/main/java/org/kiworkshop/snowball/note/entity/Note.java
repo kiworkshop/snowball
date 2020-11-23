@@ -24,7 +24,7 @@ public class Note extends BaseTimeEntity {
     private LocalDate investmentDate;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "note")
+    @OneToMany(mappedBy = "note", cascade = CascadeType.PERSIST)
     private List<StockTransaction> stockTransactions;
 
     @Builder
