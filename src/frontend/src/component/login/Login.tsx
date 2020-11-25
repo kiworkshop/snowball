@@ -1,23 +1,41 @@
 import React from 'react';
-import { Layout, Typography, Button, Spin, message } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+import { Layout, Typography, Spin, message } from 'antd';
+import styled from 'styled-components';
 
+import routes from '../../routes';
 import logo from '../../static/images/logo.png';
+import googleLogo from '../../static/images/google.png';
 
 interface LoginProps {
   loading: boolean;
   error: Error | null;
-  onClickLoginButton: () => void;
 }
+
+const GoogleLoginButton = styled.a`
+  align-items: center;
+  border: 1px solid #d9d9d9;
+  color: #434343;
+  display: flex;
+  font-size: 1.1rem;
+  font-weight: bold;
+  height: 56px;
+  justify-content: center;
+  padding: 4px 100px;
+
+  &:hover {
+    color: #000;
+  }
+
+  img {
+    margin: 10px;
+    width: 30px;
+  }
+`;
 
 const { Content, Footer } = Layout;
 const { Title } = Typography;
 
-const Login: React.FC<LoginProps> = ({
-  onClickLoginButton,
-  loading,
-  error,
-}) => {
+const Login: React.FC<LoginProps> = ({ loading, error }) => {
   if (error) {
     message.error(error);
   }
@@ -47,17 +65,10 @@ const Login: React.FC<LoginProps> = ({
         </Title>
 
         <Spin tip="로딩중..." spinning={!!loading}>
-          <Button
-            icon={<UserOutlined />}
-            style={{
-              fontSize: '1.2rem',
-              fontWeight: 800,
-              height: '56px',
-            }}
-            onClick={onClickLoginButton}
-          >
-            테스트 유저 로그인
-          </Button>
+          <GoogleLoginButton href={routes.oauth2.google}>
+            <img src={googleLogo} alt="google login" />
+            구글 로그인
+          </GoogleLoginButton>
         </Spin>
       </Content>
 
