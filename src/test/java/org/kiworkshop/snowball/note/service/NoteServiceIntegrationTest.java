@@ -29,7 +29,7 @@ public class NoteServiceIntegrationTest extends IntegrationTest {
 
     @BeforeEach
     void setUp() {
-        user = userRepository.save(User.builder().email("snowman").name("snowman").pictureUrl("example.picture-snowman.com").build());
+        user = userRepository.save(UserFixture.create());
     }
 
     @Test

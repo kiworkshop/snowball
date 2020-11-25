@@ -3,6 +3,7 @@ package org.kiworkshop.snowball.note.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 import org.kiworkshop.snowball.ControllerTest;
+import org.kiworkshop.snowball.common.config.auth.SecurityConfig;
 import org.kiworkshop.snowball.common.exception.DomainServiceException;
 import org.kiworkshop.snowball.note.controller.dto.NoteCreateResponseDto;
 import org.kiworkshop.snowball.note.controller.dto.NoteRequestDto;
@@ -12,11 +13,14 @@ import org.kiworkshop.snowball.note.service.NoteService;
 import org.kiworkshop.snowball.stocktransaction.entity.StockTransactionFixture;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -35,15 +39,18 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.restdocs.snippet.Attributes.key;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(NoteController.class)
+@WebMvcTest(controllers = NoteController.class,
+        excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class)})
 class NoteControllerTest extends ControllerTest {
 
     @MockBean
     private NoteService noteService;
 
+    @WithMockUser(roles = "USER")
     @Test
     void createNoteTest() throws Exception {
         // given
@@ -56,6 +63,7 @@ class NoteControllerTest extends ControllerTest {
 
         // when & then
         mvc.perform(RestDocumentationRequestBuilders.post("/notes")
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(requestDto)))
                 .andExpect(status().isOk())
@@ -80,6 +88,7 @@ class NoteControllerTest extends ControllerTest {
                 ));
     }
 
+    @WithMockUser(roles = "USER")
     @Test
     void getNotesTest() throws Exception {
         // given
@@ -140,6 +149,7 @@ class NoteControllerTest extends ControllerTest {
                 ));
     }
 
+    @WithMockUser(roles = "USER")
     @Test
     void getNoteTest() throws Exception {
         // given
@@ -185,6 +195,7 @@ class NoteControllerTest extends ControllerTest {
 
     }
 
+    @WithMockUser(roles = "USER")
     @Test
     void updateNoteTest() throws Exception {
         // given
@@ -194,6 +205,7 @@ class NoteControllerTest extends ControllerTest {
 
         // when
         mvc.perform(RestDocumentationRequestBuilders.put("/notes/{id}", noteId)
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody))
                 .andExpect(status().isOk())
@@ -229,6 +241,7 @@ class NoteControllerTest extends ControllerTest {
         then(noteService).should().updateNote(anyLong(), any(NoteRequestDto.class));
     }
 
+    @WithMockUser(roles = "USER")
     @Test
     void deleteNoteTest() throws Exception {
         // given
@@ -237,6 +250,7 @@ class NoteControllerTest extends ControllerTest {
 
         // when
         mvc.perform(RestDocumentationRequestBuilders.delete("/notes/{id}", noteId)
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").doesNotExist())
@@ -253,6 +267,7 @@ class NoteControllerTest extends ControllerTest {
         then(noteService).should().deleteNote(anyLong());
     }
 
+    @WithMockUser(roles = "USER")
     @Test
     void getNoteNotFoundExceptionTest() throws Exception {
         // given
