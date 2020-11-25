@@ -25,7 +25,7 @@ public class UserController {
         return userService.getUser(id);
     }
 
-    @GetMapping("/login")
+    @GetMapping("/api/v1/login")
     public UserResponseDto login(@Valid @RequestBody(required = false) UserLoginRequestDto userLoginRequestDto) {
         return userService.login(userLoginRequestDto);
     }
