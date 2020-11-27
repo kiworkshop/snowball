@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.kiworkshop.snowball.IntegrationTest;
 import org.kiworkshop.snowball.note.controller.dto.NoteRequestDto;
 import org.kiworkshop.snowball.note.controller.dto.NoteRequestDtoFixture;
+import org.kiworkshop.snowball.note.controller.dto.NoteResponseDto;
 import org.kiworkshop.snowball.stocktransaction.entity.StockTransactionRepository;
 import org.kiworkshop.snowball.user.Entity.UserFixture;
 import org.kiworkshop.snowball.user.controller.dto.UserCreateRequestDto;
@@ -13,6 +14,10 @@ import org.kiworkshop.snowball.user.entity.User;
 import org.kiworkshop.snowball.user.entity.UserRepository;
 import org.kiworkshop.snowball.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

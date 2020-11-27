@@ -48,9 +48,8 @@ class NoteServiceTest {
     void createTest() {
         //given
         given(noteRepository.save(any(Note.class))).willReturn(NoteFixture.create());
-        given(stockTransactionRepository.saveAll(any())).willReturn(StockTransactionFixture.createList());
         //when
-        NoteCreateResponseDto noteCreateResponseDto = dut.createNote(NoteRequestDto.builder().build());
+        NoteCreateResponseDto noteCreateResponseDto = dut.createNote(NoteRequestDtoFixture.create());
         //then
         assertThat(noteCreateResponseDto.getId()).isEqualTo(1L);
         then(noteRepository).should().save(any(Note.class));

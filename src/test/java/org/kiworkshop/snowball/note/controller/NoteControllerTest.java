@@ -60,7 +60,6 @@ class NoteControllerTest extends ControllerTest {
                 .build();
 
         given(noteService.createNote(any())).willReturn(responseDto);
-
         // when & then
         mvc.perform(RestDocumentationRequestBuilders.post("/notes")
                 .with(csrf())
@@ -141,7 +140,6 @@ class NoteControllerTest extends ControllerTest {
                                 fieldWithPath("createdDate").type(JsonFieldType.STRING).description("투자노트가 생성된 날짜"),
                                 fieldWithPath("modifiedDate").type(JsonFieldType.STRING).description("투자노트가 수정된 날짜"),
                                 subsectionWithPath("stockTransactions").type(JsonFieldType.ARRAY).description("주식 거래내역 목록"),
-                                subsectionWithPath("stockTransactions[].id").type(JsonFieldType.NUMBER).description("주식 거래내역 id"),
                                 subsectionWithPath("stockTransactions[].quantity").type(JsonFieldType.NUMBER).description("주식 거래내역 수량"),
                                 subsectionWithPath("stockTransactions[].tradedPrice").type(JsonFieldType.NUMBER).description("주식 거래내역 매매가격"),
                                 subsectionWithPath("stockTransactions[].transactionType").type(JsonFieldType.STRING).description("주식 거래내역 종류")
@@ -186,7 +184,6 @@ class NoteControllerTest extends ControllerTest {
                                 fieldWithPath("createdDate").type(JsonFieldType.STRING).description("투자노트가 생성된 날짜"),
                                 fieldWithPath("modifiedDate").type(JsonFieldType.STRING).description("투자노트가 수정된 날짜"),
                                 subsectionWithPath("stockTransactions").type(JsonFieldType.ARRAY).description("주식 거래내역 목록"),
-                                subsectionWithPath("stockTransactions[].id").type(JsonFieldType.NUMBER).description("주식 거래내역 id"),
                                 subsectionWithPath("stockTransactions[].quantity").type(JsonFieldType.NUMBER).description("주식 거래내역 수량"),
                                 subsectionWithPath("stockTransactions[].tradedPrice").type(JsonFieldType.NUMBER).description("주식 거래내역 매매가격"),
                                 subsectionWithPath("stockTransactions[].transactionType").type(JsonFieldType.STRING).description("주식 거래내역 종류")
@@ -219,7 +216,8 @@ class NoteControllerTest extends ControllerTest {
                                 fieldWithPath("investmentDate").type(JsonFieldType.STRING).description("투자한 날짜"),
                                 subsectionWithPath("user").type(JsonFieldType.OBJECT).description("투자노트 작성자"),
                                 subsectionWithPath("stockTransactions").type(JsonFieldType.ARRAY).description("주식 거래내역 목록"),
-                                subsectionWithPath("stockTransactions[].id").type(JsonFieldType.NUMBER).description("주식 거래내역 id"),
+                                // TO DO: stockTransaction id가 필요한지 고민해보기
+                                //subsectionWithPath("stockTransactions[].id").type(JsonFieldType.NUMBER).description("주식 거래내역 id"),
                                 subsectionWithPath("stockTransactions[].quantity").type(JsonFieldType.NUMBER).description("주식 거래내역 수량"),
                                 subsectionWithPath("stockTransactions[].tradedPrice").type(JsonFieldType.NUMBER).description("주식 거래내역 매매가격"),
                                 subsectionWithPath("stockTransactions[].transactionType").type(JsonFieldType.STRING).description("주식 거래내역 종류")

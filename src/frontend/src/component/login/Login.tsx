@@ -58,6 +58,9 @@ const Login: React.FC<LoginProps> = ({
           >
             테스트 유저 로그인
           </Button>
+            <a href="/oauth2/authorization/google">
+                구글 로그인
+            </a>
         </Spin>
       </Content>
 
