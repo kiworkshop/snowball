@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Collapse, Button, Spin, Typography, Tag, Empty } from 'antd';
+import { Collapse, Button, Spin, Typography, Tag, Empty, Alert } from 'antd';
 import { RightOutlined } from '@ant-design/icons';
 
 import { Notes } from '../../store/modules/note';
@@ -111,6 +111,16 @@ const NoteList: React.FC<NoteListProps> = ({
           </Spin>
         ) : (
           <Empty style={{ padding: '50px 0' }} />
+        )}
+
+        {error && (
+          <Alert
+            message="Error"
+            description="투자노트 목록을 불러오는 중 오류가 발생했습니다."
+            type="error"
+            closable
+            style={{ marginTop: '30px' }}
+          />
         )}
       </NoteListWrapper>
     </>
