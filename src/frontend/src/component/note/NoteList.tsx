@@ -49,56 +49,64 @@ const NoteList: React.FC<NoteListProps> = ({
         {notes.length > 0 ? (
           <Spin spinning={loading}>
             <Collapse ghost>
-              {notes.map((note) => (
-                <Panel
-                  key={note.id!}
-                  header={
-                    <PanelHeader>
-                      <span>{note.title}</span>
-                      <span>{note.investmentDate?.format('YYYY-MM-DD')}</span>
-                    </PanelHeader>
-                  }
-                >
-                  <ul style={{ margin: 0 }}>
-                    {note.stockTransactions.length > 0 ? (
-                      note.stockTransactions.map((stockTransaction) => (
-                        <li key={stockTransaction.id}>
-                          {stockTransaction.transactionType === 'BUY' ? (
-                            <Tag color="processing">매수</Tag>
-                          ) : (
-                            <Tag color="error">매도</Tag>
-                          )}
-                          <Tag>{stockTransaction.stockDetail.companyName}</Tag>
-                          <Tag>
-                            {addCommaToNumber(stockTransaction.quantity)}주
-                          </Tag>
-                          <Tag>
-                            {addCommaToNumber(stockTransaction.tradedPrice)}원
-                          </Tag>
-                          <Tag color="success">
-                            총{' '}
-                            {addCommaToNumber(
-                              stockTransaction.quantity *
-                                stockTransaction.tradedPrice
-                            )}
-                            원
-                          </Tag>
-                        </li>
-                      ))
-                    ) : (
-                      <li>거래내역이 없습니다.</li>
-                    )}
-                  </ul>
-
-                  <MoreInfoButton
-                    type="text"
-                    size="small"
-                    onClick={onClickMoreInfoButton(note.id!)}
+              {notes
+                .sort(
+                  (note1, note2) =>
+                    note2.investmentDate!.valueOf() -
+                    note1.investmentDate!.valueOf()
+                )
+                .map((note) => (
+                  <Panel
+                    key={note.id!}
+                    header={
+                      <PanelHeader>
+                        <span>{note.title}</span>
+                        <span>{note.investmentDate?.format('YYYY-MM-DD')}</span>
+                      </PanelHeader>
+                    }
                   >
-                    더보기 <RightOutlined />
-                  </MoreInfoButton>
-                </Panel>
-              ))}
+                    <ul style={{ margin: 0 }}>
+                      {note.stockTransactions.length > 0 ? (
+                        note.stockTransactions.map((stockTransaction) => (
+                          <li key={stockTransaction.id}>
+                            {stockTransaction.transactionType === 'BUY' ? (
+                              <Tag color="processing">매수</Tag>
+                            ) : (
+                              <Tag color="error">매도</Tag>
+                            )}
+                            <Tag>
+                              {stockTransaction.stockDetail.companyName}
+                            </Tag>
+                            <Tag>
+                              {addCommaToNumber(stockTransaction.quantity)}주
+                            </Tag>
+                            <Tag>
+                              {addCommaToNumber(stockTransaction.tradedPrice)}원
+                            </Tag>
+                            <Tag color="success">
+                              총{' '}
+                              {addCommaToNumber(
+                                stockTransaction.quantity *
+                                  stockTransaction.tradedPrice
+                              )}
+                              원
+                            </Tag>
+                          </li>
+                        ))
+                      ) : (
+                        <li>거래내역이 없습니다.</li>
+                      )}
+                    </ul>
+
+                    <MoreInfoButton
+                      type="text"
+                      size="small"
+                      onClick={onClickMoreInfoButton(note.id!)}
+                    >
+                      더보기 <RightOutlined />
+                    </MoreInfoButton>
+                  </Panel>
+                ))}
             </Collapse>
           </Spin>
         ) : (
