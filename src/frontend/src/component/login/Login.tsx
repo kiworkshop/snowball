@@ -60,7 +60,7 @@ const Login: React.FC<LoginProps> = ({ loading, error }) => {
           <img src={logo} alt="logo" width="500" />
         </Title>
 
-        <Title level={4} style={{ color: '#595959', margin: '0 0 80px 0' }}>
+        <Title level={4} style={{ color: '#25476A', margin: '0 0 80px 0' }}>
           매일매일 굴러가는 당신의 자산을 관리하세요!
         </Title>
 
