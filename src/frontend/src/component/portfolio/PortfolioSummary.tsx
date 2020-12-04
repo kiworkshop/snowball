@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, Pagination, Empty } from 'antd';
+import { Typography, Pagination, Empty, Alert } from 'antd';
 import styled from 'styled-components';
 
 interface PortfolioSummaryProps {
@@ -10,7 +10,9 @@ interface PortfolioSummaryProps {
     earningsRate: number;
     targetEarningsRate: number;
   }>;
+  page: number;
   onPageChange: (page: number) => void;
+  error: Error | null;
 }
 
 interface PortfolioRowProps {
@@ -102,7 +104,9 @@ const PortfolioRow: React.FC<PortfolioRowProps> = ({ portfolio }) => {
 
 const PortfolioSummary: React.FC<PortfolioSummaryProps> = ({
   portfolios,
+  page,
   onPageChange,
+  error,
 }) => {
   return (
     <PortfolioSummaryContainer>
@@ -120,20 +124,35 @@ const PortfolioSummary: React.FC<PortfolioSummaryProps> = ({
             <th>목표수익률</th>
           </tr>
         </TableHeader>
+
         <tbody>
-          {portfolios.length > 0 ? (
+          {portfolios.length > 0 &&
             portfolios.map((portfolio, index) => (
               <PortfolioRow key={index} portfolio={portfolio} />
-            ))
-          ) : (
-            <Empty style={{ padding: '50px 0' }} />
-          )}
+            ))}
         </tbody>
       </Table>
 
+      {portfolios.length === 0 && <Empty style={{ padding: '50px 0' }} />}
+
       <PaginationWrapper>
-        <Pagination total={portfolios.length} onChange={onPageChange} simple />
+        <Pagination
+          total={portfolios.length}
+          onChange={onPageChange}
+          current={page}
+          simple
+        />
       </PaginationWrapper>
+
+      {error && (
+        <Alert
+          message="Error"
+          description="포트폴리오 요약 정보를 불러오는 중 오류가 발생했습니다."
+          type="error"
+          closable
+          style={{ marginTop: '30px' }}
+        />
+      )}
     </PortfolioSummaryContainer>
   );
 };

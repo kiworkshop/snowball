@@ -7,4 +7,7 @@ export default {
     update: (id: number) => `/update/note/${id}`,
     delete: (id: number) => `/delete/note/${id}`,
   },
+  oauth2: {
+    google: '/oauth2/authorization/google',
+  },
 };

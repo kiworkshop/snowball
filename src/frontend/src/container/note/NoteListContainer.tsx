@@ -12,11 +12,9 @@ const NoteListContainer = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const {
-    notes,
-    loading: { getNotes: loading },
-    error: { getNotes: error },
-  } = useSelector((state: RootState) => state.note);
+  const { notes, loading, error } = useSelector(
+    (state: RootState) => state.note
+  );
 
   const getNotesOfUser = useCallback(
     () => dispatch(getNotesAsync.request({ page: 0, size: 10 })),
@@ -35,8 +33,8 @@ const NoteListContainer = () => {
     <NoteList
       notes={notes}
       onClickMoreInfoButton={onClickMoreInfoButton}
-      loading={loading}
-      error={error}
+      loading={loading.getNotes}
+      error={error.getNotes}
     />
   );
 };
