@@ -2,6 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Layout } from 'antd';
+import styled from 'styled-components';
 
 import { RootState } from '../store/modules';
 import routes from '../routes';
@@ -11,6 +12,14 @@ import NavContainer from '../container/base/NavContainer';
 import NoteListContainer from '../container/note/NoteListContainer';
 import PortfolioSummaryContainer from '../container/portfolio/PortfolioSummaryContainer';
 
+const MainPageContentContainer = styled(Container)`
+  padding: 30px 0;
+
+  @media (max-width: 575px) {
+    padding: 30px 20px;
+  }
+`;
+
 const MainPage = () => {
   const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
 
@@ -18,10 +27,10 @@ const MainPage = () => {
     <Layout style={{ minHeight: '100%', paddingTop: '64px' }}>
       <NavContainer selectedMenu={['home']} />
 
-      <Container style={{ padding: '30px 0' }}>
+      <MainPageContentContainer>
         <PortfolioSummaryContainer />
         <NoteListContainer />
-      </Container>
+      </MainPageContentContainer>
 
       {!isLoggedIn && <Redirect to={routes.login()} />}
     </Layout>

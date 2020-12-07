@@ -22,12 +22,28 @@ const NoteListWrapper = styled.div`
 const MoreInfoButton = styled(Button)`
   float: right;
   margin-bottom: 10px;
+  padding: 0;
 `;
 
 const PanelHeader = styled.div`
   align-items: center;
   display: flex;
   justify-content: space-between;
+
+  @media (max-width: 575px) {
+    span:last-child {
+      display: none;
+    }
+  }
+`;
+
+const UnorderedNoteList = styled.ul`
+  overflow-x: scroll;
+  white-space: nowrap;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const { Panel } = Collapse;
@@ -65,7 +81,7 @@ const NoteList: React.FC<NoteListProps> = ({
                       </PanelHeader>
                     }
                   >
-                    <ul style={{ margin: 0 }}>
+                    <UnorderedNoteList>
                       {note.stockTransactions.length > 0 ? (
                         note.stockTransactions.map((stockTransaction) => (
                           <li key={stockTransaction.id}>
@@ -96,7 +112,7 @@ const NoteList: React.FC<NoteListProps> = ({
                       ) : (
                         <li>거래내역이 없습니다.</li>
                       )}
-                    </ul>
+                    </UnorderedNoteList>
 
                     <MoreInfoButton
                       type="text"
