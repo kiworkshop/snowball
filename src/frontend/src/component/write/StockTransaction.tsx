@@ -32,6 +32,26 @@ interface StockTransactionFormProps {
   onSubmit: (values: any) => Promise<void>;
 }
 
+interface StockTransactionTableProps {
+  dataSource: Array<StockTransactionDataSource>;
+  type: 'BUY' | 'SELL';
+  onDelete: (index: number) => () => void;
+}
+
+interface StockTransactionProps {
+  stockTransactionDataSource: (
+    type: 'BUY' | 'SELL'
+  ) => Array<StockTransactionDataSource>;
+  formInstance: { BUY: FormInstance<any>; SELL: FormInstance<any> };
+  transactionAmount: { BUY: number; SELL: number };
+  setTransactionAmount: {
+    BUY: React.Dispatch<React.SetStateAction<number>>;
+    SELL: React.Dispatch<React.SetStateAction<number>>;
+  };
+  onDelete: (index: number) => () => void;
+  onSubmit: (type: 'BUY' | 'SELL') => (values: any) => Promise<void>;
+}
+
 const { Text } = Typography;
 
 const StockTransactionForm: React.FC<StockTransactionFormProps> = ({
@@ -108,12 +128,6 @@ const StockTransactionForm: React.FC<StockTransactionFormProps> = ({
   );
 };
 
-interface StockTransactionTableProps {
-  dataSource: Array<StockTransactionDataSource>;
-  type: 'BUY' | 'SELL';
-  onDelete: (index: number) => () => void;
-}
-
 const StockTransactionTable: React.FC<StockTransactionTableProps> = ({
   dataSource,
   type,
@@ -156,37 +170,21 @@ const StockTransactionTable: React.FC<StockTransactionTableProps> = ({
         });
 
         return (
-          <>
-            <Table.Summary.Row>
-              <Table.Summary.Cell index={0}>총 거래금액</Table.Summary.Cell>
-              <Table.Summary.Cell index={1} />
-              <Table.Summary.Cell index={2} />
-              <Table.Summary.Cell index={3}>
-                <Text type={type === 'BUY' ? 'success' : 'danger'}>
-                  {addCommaToNumber(totalPrice)}
-                </Text>
-              </Table.Summary.Cell>
-            </Table.Summary.Row>
-          </>
+          <Table.Summary.Row>
+            <Table.Summary.Cell index={0}>총 거래금액</Table.Summary.Cell>
+            <Table.Summary.Cell index={1} />
+            <Table.Summary.Cell index={2} />
+            <Table.Summary.Cell index={3}>
+              <Text type={type === 'BUY' ? 'success' : 'danger'}>
+                {addCommaToNumber(totalPrice)}
+              </Text>
+            </Table.Summary.Cell>
+          </Table.Summary.Row>
         );
       }}
     />
   );
 };
-
-interface StockTransactionProps {
-  stockTransactionDataSource: (
-    type: 'BUY' | 'SELL'
-  ) => Array<StockTransactionDataSource>;
-  formInstance: { BUY: FormInstance<any>; SELL: FormInstance<any> };
-  transactionAmount: { BUY: number; SELL: number };
-  setTransactionAmount: {
-    BUY: React.Dispatch<React.SetStateAction<number>>;
-    SELL: React.Dispatch<React.SetStateAction<number>>;
-  };
-  onDelete: (index: number) => () => void;
-  onSubmit: (type: 'BUY' | 'SELL') => (values: any) => Promise<void>;
-}
 
 const StockTransaction: React.FC<StockTransactionProps> = ({
   stockTransactionDataSource,
@@ -197,8 +195,8 @@ const StockTransaction: React.FC<StockTransactionProps> = ({
   onSubmit,
 }) => {
   return (
-    <Row style={{ marginBottom: '20px' }}>
-      <Col span={24} md={12}>
+    <Row>
+      <Col span={24} md={12} style={{ marginBottom: '20px' }}>
         <Popover
           content={
             <StockTransactionForm
@@ -226,7 +224,7 @@ const StockTransaction: React.FC<StockTransactionProps> = ({
         )}
       </Col>
 
-      <Col span={24} md={12}>
+      <Col span={24} md={12} style={{ marginBottom: '20px' }}>
         <Popover
           content={
             <StockTransactionForm

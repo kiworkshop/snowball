@@ -17,6 +17,7 @@ interface EditorProps {
 
 const StyledEditor = styled(ReactQuill)`
   margin-bottom: 30px;
+
   .ql-editor {
     min-height: 500px;
   }
