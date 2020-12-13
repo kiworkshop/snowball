@@ -2,6 +2,8 @@ package org.kiworkshop.snowball.common.config.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.kiworkshop.snowball.common.config.auth.dto.SessionUser;
+import org.kiworkshop.snowball.user.entity.User;
+import org.kiworkshop.snowball.user.entity.UserRepository;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -9,23 +11,28 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+import javax.mail.Session;
+import javax.management.AttributeNotFoundException;
 import javax.servlet.http.HttpSession;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Component
 public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver {
 
     private final HttpSession httpSession;
+    private final UserRepository userRepository;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         boolean isLoginUserAnnotation = parameter.getParameterAnnotation(LoginUser.class) != null;
-        boolean isUserClass = SessionUser.class.equals(parameter.getParameterType());
+        boolean isUserClass = User.class.equals(parameter.getParameterType());
         return isLoginUserAnnotation && isUserClass;
     }
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-        return httpSession.getAttribute("user");
+        SessionUser user = (SessionUser) httpSession.getAttribute("user");
+        return userRepository.findByEmail(user.getEmail()).orElseThrow(() -> new IllegalStateException("유저 attribute가 존재하지 않습니다."));
     }
 }
