@@ -1,6 +1,7 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Layout } from 'antd';
+import styled from 'styled-components';
 
 import NavContainer from '../container/base/NavContainer';
 import NoteContainer from '../container/note/NoteContainer';
@@ -10,15 +11,23 @@ interface MatchProps {
   id: string;
 }
 
+const NoteDetailPageContentContainer = styled(Container)`
+  padding: 30px 0;
+  
+  @media (max-width: 767px) {
+    padding: 30px 20px;
+  }
+`
+
 const NoteDetailPage: React.FC<RouteComponentProps<MatchProps>> = ({
   match,
 }) => {
   return (
     <Layout style={{ minHeight: '100%', paddingTop: '64px' }}>
       <NavContainer />
-      <Container style={{ padding: '30px 0' }}>
+      <NoteDetailPageContentContainer>
         <NoteContainer id={Number(match.params.id)} />
-      </Container>
+      </NoteDetailPageContentContainer>
     </Layout>
   );
 };
