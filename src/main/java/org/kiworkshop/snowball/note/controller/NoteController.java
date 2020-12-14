@@ -27,6 +27,7 @@ public class NoteController {
     @GetMapping("/notes")
     public Page<NoteResponseDto> getNotes(
             @PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
+        // limit + timeout
         return noteService.getNotes(pageable);
     }
 

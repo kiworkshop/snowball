@@ -1,6 +1,5 @@
 package org.kiworkshop.snowball.user.entity;
 
-import org.kiworkshop.snowball.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

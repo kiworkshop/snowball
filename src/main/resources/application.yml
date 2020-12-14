@@ -1,3 +1,9 @@
 spring:
   profiles:
     active: dev
+    include: oauth
+  session:
+    store-type: jdbc
+
+  jpa:
+    open-in-view: false # getNote가 터질 것

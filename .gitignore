@@ -36,3 +36,5 @@ out/
 /src/frontend/nodejs/
 /src/frontend/yarn/
 /src/frontend/package-lock.json
+
+/src/main/resources/application-oauth.yml

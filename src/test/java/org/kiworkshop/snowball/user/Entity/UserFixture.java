@@ -1,5 +1,6 @@
 package org.kiworkshop.snowball.user.Entity;
 
+import org.kiworkshop.snowball.user.entity.Role;
 import org.kiworkshop.snowball.user.entity.User;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -12,6 +13,7 @@ public class UserFixture {
                 .email("snowman")
                 .name("snowman")
                 .pictureUrl("example.snowman-picture.com")
+                .role(Role.USER)
                 .build();
         ReflectionTestUtils.setField(user, "id", 1L);
         ReflectionTestUtils.setField(user, "createdDate", LocalDateTime.now());

@@ -1,6 +1,7 @@
 package org.kiworkshop.snowball.note.entity;
 
 import org.junit.jupiter.api.Test;
+import org.kiworkshop.snowball.user.entity.Role;
 import org.kiworkshop.snowball.user.entity.User;
 import org.kiworkshop.snowball.user.entity.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ class NoteTest {
     @Test
     public void BaseTimeEntityTest(){
         //given
-        User user = User.builder().email("test@kiworkshop.com").build();
+        User user = User.builder().email("test@kiworkshop.com").role(Role.USER).build();
         Note note = Note.builder().investmentDate(LocalDate.now()).user(user).content("test").build();
         userRepository.save(user);
         noteRepository.save(note);
@@ -42,7 +43,7 @@ class NoteTest {
     @Transactional
     public void BaseTimeEntityUpdateTest(){
         //given
-        User user = User.builder().email("test@kiworkshop.com").build();
+        User user = User.builder().email("test@kiworkshop.com").role(Role.USER).build();
         Note note = Note.builder().investmentDate(LocalDate.now()).user(user).content("test").build();
         userRepository.save(user);
         noteRepository.save(note);

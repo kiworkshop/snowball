@@ -60,10 +60,11 @@ class StockTransactionServiceTest {
         // given
         StockTransaction stockTransaction = StockTransactionFixture.create(TransactionType.BUY);
         StockTransactionRequestDto requestDto = StockTransactionRequestDtoFixture.create();
-        given(stockTransactionRepository.findById(anyLong())).willReturn(Optional.of(stockTransaction));
+        Long stockTransactionId = 1L;
+        given(stockTransactionRepository.findById(stockTransactionId)).willReturn(Optional.of(stockTransaction));
 
         // when
-        dut.update(stockTransaction.getId(), requestDto);
+        dut.update(stockTransactionId, requestDto);
 
         // then
         assertThat(stockTransaction.getQuantity()).isEqualTo(requestDto.getQuantity());
