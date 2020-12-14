@@ -1,7 +1,7 @@
 package org.kiworkshop.snowball.common.advice;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import org.kiworkshop.snowball.ControllerTest;
 import org.kiworkshop.snowball.common.config.auth.SecurityConfig;
 import org.kiworkshop.snowball.note.controller.NoteController;
 import org.kiworkshop.snowball.note.controller.dto.NoteRequestDto;
@@ -11,7 +11,6 @@ import org.kiworkshop.snowball.user.controller.UserController;
 import org.kiworkshop.snowball.user.controller.dto.UserCreateRequestDto;
 import org.kiworkshop.snowball.user.controller.dto.UserCreateRequestDtoFixture;
 import org.kiworkshop.snowball.user.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
@@ -20,7 +19,6 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -28,13 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(controllers = {UserController.class, NoteController.class},
         excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class)})
-class ControllerExceptionAdviceTest {
-
-    @Autowired
-    private MockMvc mvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
+class ControllerExceptionAdviceTest extends ControllerTest {
 
     @MockBean
     private UserService userService;

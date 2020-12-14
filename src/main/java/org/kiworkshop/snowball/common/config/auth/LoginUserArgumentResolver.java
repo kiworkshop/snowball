@@ -11,10 +11,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import javax.mail.Session;
-import javax.management.AttributeNotFoundException;
 import javax.servlet.http.HttpSession;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Component
