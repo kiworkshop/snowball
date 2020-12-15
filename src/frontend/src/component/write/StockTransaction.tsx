@@ -1,5 +1,6 @@
 import React from 'react';
 import { CloseCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import styled from 'styled-components';
 import {
   Button,
   Col,
@@ -128,6 +129,14 @@ const StockTransactionForm: React.FC<StockTransactionFormProps> = ({
   );
 };
 
+const StockTransactionTableWrapper = styled.div`
+  overflow-x: scroll;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
 const StockTransactionTable: React.FC<StockTransactionTableProps> = ({
   dataSource,
   type,
@@ -157,32 +166,35 @@ const StockTransactionTable: React.FC<StockTransactionTableProps> = ({
   ];
 
   return (
-    <Table
-      dataSource={dataSource}
-      columns={columns}
-      pagination={false}
-      style={{ marginTop: '20px', padding: '0 15px' }}
-      summary={(pageData) => {
-        let totalPrice = 0;
+    <StockTransactionTableWrapper>
+      <Table
+        dataSource={dataSource}
+        columns={columns}
+        pagination={false}
+        style={{ marginTop: '20px', padding: '0 15px', whiteSpace: 'nowrap' }}
+        rowKey="index"
+        summary={(pageData) => {
+          let totalPrice = 0;
 
-        pageData.forEach(({ transactionAmount }) => {
-          totalPrice += Number(transactionAmount.replaceAll(',', ''));
-        });
+          pageData.forEach(({ transactionAmount }) => {
+            totalPrice += Number(transactionAmount.replaceAll(',', ''));
+          });
 
-        return (
-          <Table.Summary.Row>
-            <Table.Summary.Cell index={0}>총 거래금액</Table.Summary.Cell>
-            <Table.Summary.Cell index={1} />
-            <Table.Summary.Cell index={2} />
-            <Table.Summary.Cell index={3}>
-              <Text type={type === 'BUY' ? 'success' : 'danger'}>
-                {addCommaToNumber(totalPrice)}
-              </Text>
-            </Table.Summary.Cell>
-          </Table.Summary.Row>
-        );
-      }}
-    />
+          return (
+            <Table.Summary.Row>
+              <Table.Summary.Cell index={0}>총 거래금액</Table.Summary.Cell>
+              <Table.Summary.Cell index={1} />
+              <Table.Summary.Cell index={2} />
+              <Table.Summary.Cell index={3}>
+                <Text type={type === 'BUY' ? 'success' : 'danger'}>
+                  {addCommaToNumber(totalPrice)}
+                </Text>
+              </Table.Summary.Cell>
+            </Table.Summary.Row>
+          );
+        }}
+      />
+    </StockTransactionTableWrapper>
   );
 };
 
