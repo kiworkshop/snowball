@@ -5,9 +5,9 @@ import { Form, message } from 'antd';
 import { RootState } from '../../store/modules';
 import { addCommaToNumber } from '../../lib/transform';
 import { getSingleStockDetail } from '../../lib/api/stockDetail';
+import { setForm } from '../../store/modules/note';
 
 import StockTransaction from '../../component/write/StockTransaction';
-import { setForm } from '../../store/modules/note';
 
 const StockTransactionContainer = () => {
   const { form } = useSelector((state: RootState) => state.note);

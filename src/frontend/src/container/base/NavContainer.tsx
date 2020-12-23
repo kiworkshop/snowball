@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
@@ -16,11 +16,23 @@ const NavContainer: React.FC<NavContainerProps> = ({ selectedMenu }) => {
   const dispatch = useDispatch();
 
   const onLogout = useCallback(() => {
-    dispatch(logout());
+    const willLogout = window.confirm('로그아웃 하시겠습니까?');
+
+    if (willLogout) {
+      dispatch(logout());
+    }
   }, [dispatch]);
 
   const history = useHistory();
   const onClickNavLink = (link: string) => () => history.push(link);
+
+  const [isDrawerVisible, setIsDrawerVisible] = useState(false);
+  const showDrawer = useCallback(() => {
+    setIsDrawerVisible(true);
+  }, []);
+  const hideDrawer = useCallback(() => {
+    setIsDrawerVisible(false);
+  }, []);
 
   return (
     <Nav
@@ -28,6 +40,9 @@ const NavContainer: React.FC<NavContainerProps> = ({ selectedMenu }) => {
       onLogout={onLogout}
       onClickNavLink={onClickNavLink}
       selectedKeys={selectedMenu}
+      isDrawerVisible={isDrawerVisible}
+      showDrawer={showDrawer}
+      hideDrawer={hideDrawer}
     />
   );
 };

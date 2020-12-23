@@ -1,5 +1,6 @@
 import React from 'react';
 import { CloseCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import styled from 'styled-components';
 import {
   Button,
   Col,
@@ -30,6 +31,26 @@ interface StockTransactionFormProps {
   transactionAmount: number;
   setTransactionAmount: React.Dispatch<React.SetStateAction<number>>;
   onSubmit: (values: any) => Promise<void>;
+}
+
+interface StockTransactionTableProps {
+  dataSource: Array<StockTransactionDataSource>;
+  type: 'BUY' | 'SELL';
+  onDelete: (index: number) => () => void;
+}
+
+interface StockTransactionProps {
+  stockTransactionDataSource: (
+    type: 'BUY' | 'SELL'
+  ) => Array<StockTransactionDataSource>;
+  formInstance: { BUY: FormInstance<any>; SELL: FormInstance<any> };
+  transactionAmount: { BUY: number; SELL: number };
+  setTransactionAmount: {
+    BUY: React.Dispatch<React.SetStateAction<number>>;
+    SELL: React.Dispatch<React.SetStateAction<number>>;
+  };
+  onDelete: (index: number) => () => void;
+  onSubmit: (type: 'BUY' | 'SELL') => (values: any) => Promise<void>;
 }
 
 const { Text } = Typography;
@@ -108,11 +129,13 @@ const StockTransactionForm: React.FC<StockTransactionFormProps> = ({
   );
 };
 
-interface StockTransactionTableProps {
-  dataSource: Array<StockTransactionDataSource>;
-  type: 'BUY' | 'SELL';
-  onDelete: (index: number) => () => void;
-}
+const StockTransactionTableWrapper = styled.div`
+  overflow-x: scroll;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
 
 const StockTransactionTable: React.FC<StockTransactionTableProps> = ({
   dataSource,
@@ -143,20 +166,21 @@ const StockTransactionTable: React.FC<StockTransactionTableProps> = ({
   ];
 
   return (
-    <Table
-      dataSource={dataSource}
-      columns={columns}
-      pagination={false}
-      style={{ marginTop: '20px', padding: '0 15px' }}
-      summary={(pageData) => {
-        let totalPrice = 0;
+    <StockTransactionTableWrapper>
+      <Table
+        dataSource={dataSource}
+        columns={columns}
+        pagination={false}
+        style={{ marginTop: '20px', padding: '0 15px', whiteSpace: 'nowrap' }}
+        rowKey="index"
+        summary={(pageData) => {
+          let totalPrice = 0;
 
-        pageData.forEach(({ transactionAmount }) => {
-          totalPrice += Number(transactionAmount.replaceAll(',', ''));
-        });
+          pageData.forEach(({ transactionAmount }) => {
+            totalPrice += Number(transactionAmount.replaceAll(',', ''));
+          });
 
-        return (
-          <>
+          return (
             <Table.Summary.Row>
               <Table.Summary.Cell index={0}>총 거래금액</Table.Summary.Cell>
               <Table.Summary.Cell index={1} />
@@ -167,26 +191,12 @@ const StockTransactionTable: React.FC<StockTransactionTableProps> = ({
                 </Text>
               </Table.Summary.Cell>
             </Table.Summary.Row>
-          </>
-        );
-      }}
-    />
+          );
+        }}
+      />
+    </StockTransactionTableWrapper>
   );
 };
-
-interface StockTransactionProps {
-  stockTransactionDataSource: (
-    type: 'BUY' | 'SELL'
-  ) => Array<StockTransactionDataSource>;
-  formInstance: { BUY: FormInstance<any>; SELL: FormInstance<any> };
-  transactionAmount: { BUY: number; SELL: number };
-  setTransactionAmount: {
-    BUY: React.Dispatch<React.SetStateAction<number>>;
-    SELL: React.Dispatch<React.SetStateAction<number>>;
-  };
-  onDelete: (index: number) => () => void;
-  onSubmit: (type: 'BUY' | 'SELL') => (values: any) => Promise<void>;
-}
 
 const StockTransaction: React.FC<StockTransactionProps> = ({
   stockTransactionDataSource,
@@ -197,8 +207,8 @@ const StockTransaction: React.FC<StockTransactionProps> = ({
   onSubmit,
 }) => {
   return (
-    <Row style={{ marginBottom: '20px' }}>
-      <Col span={24} md={12}>
+    <Row>
+      <Col span={24} md={12} style={{ marginBottom: '20px' }}>
         <Popover
           content={
             <StockTransactionForm
@@ -226,7 +236,7 @@ const StockTransaction: React.FC<StockTransactionProps> = ({
         )}
       </Col>
 
-      <Col span={24} md={12}>
+      <Col span={24} md={12} style={{ marginBottom: '20px' }}>
         <Popover
           content={
             <StockTransactionForm

@@ -12,7 +12,6 @@ import {
 } from '../../store/modules/note';
 
 import Page404 from '../../pages/Page404';
-import Container from '../../component/base/Container';
 import EditorContainer from './EditorContainer';
 import CalendarContainer from './CalendarContainer';
 import StockTransactionContainer from './StockTransactionContainer';
@@ -20,6 +19,11 @@ import StockTransactionContainer from './StockTransactionContainer';
 interface UpdateNoteTemplateProps {
   id: number;
 }
+
+const UpdateNoteTemplateContainer = styled.div`
+  background: #fff;
+  padding: 30px;
+`;
 
 const StyledSkeleton = styled(Skeleton)`
   .ant-skeleton-paragraph li {
@@ -64,7 +68,7 @@ const UpdateNoteTemplate: React.FC<UpdateNoteTemplateProps> = ({ id }) => {
   }
 
   return (
-    <Container style={{ padding: '50px 0' }}>
+    <UpdateNoteTemplateContainer>
       {isDateSelected && (
         <StyledSkeleton
           loading={loading.setFormForUpdate}
@@ -100,7 +104,7 @@ const UpdateNoteTemplate: React.FC<UpdateNoteTemplateProps> = ({ id }) => {
       {!isDateSelected && (
         <CalendarContainer setIsDateSelected={setIsDateSelected} />
       )}
-    </Container>
+    </UpdateNoteTemplateContainer>
   );
 };
 

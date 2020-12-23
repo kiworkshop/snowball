@@ -1,6 +1,6 @@
 import React from 'react';
-import { Layout, Dropdown, Menu, Button } from 'antd';
-import { DownOutlined } from '@ant-design/icons';
+import { Layout, Dropdown, Menu, Button, Drawer } from 'antd';
+import { DownOutlined, MenuOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -15,6 +15,9 @@ interface NavProps {
   onLogout: () => void;
   onClickNavLink: (link: string) => () => void;
   selectedKeys?: Array<string>;
+  isDrawerVisible: boolean;
+  showDrawer: () => void;
+  hideDrawer: () => void;
 }
 
 const { Header } = Layout;
@@ -27,13 +30,41 @@ const StyledHeader = styled(Header)`
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 2;
+  z-index: 1000;
 `;
 
 const HeaderInner = styled(Container)`
   align-items: center;
   display: flex;
   justify-content: space-between;
+
+  @media (max-width: 575px) {
+    padding: 0 20px;
+  }
+`;
+
+const DesktopMenu = styled(Menu)`
+  border-bottom: none;
+
+  @media (max-width: 767px) {
+    display: none;
+  }
+`;
+
+const MobileAndTabletDrawer = styled(Drawer)`
+  @media (min-width: 768px) {
+    display: none;
+  }
+`;
+
+const MobileAndTabletMenu = styled(Menu)`
+  border-right: none;
+`;
+
+const MobileAndTabletDrawerTrigger = styled(Button)`
+  @media (min-width: 768px) {
+    display: none;
+  }
 `;
 
 const Nav: React.FC<NavProps> = ({
@@ -41,6 +72,9 @@ const Nav: React.FC<NavProps> = ({
   onLogout,
   onClickNavLink,
   selectedKeys,
+  isDrawerVisible,
+  showDrawer,
+  hideDrawer,
 }) => {
   const ProfileMenus = (
     <Menu>
@@ -57,11 +91,7 @@ const Nav: React.FC<NavProps> = ({
           <img src={logo} alt="logo" width="180" />
         </Link>
 
-        <Menu
-          mode="horizontal"
-          selectedKeys={selectedKeys}
-          style={{ borderBottom: 'none' }}
-        >
+        <DesktopMenu mode="horizontal" selectedKeys={selectedKeys}>
           <Menu.Item key="home" onClick={onClickNavLink(routes.home())}>
             홈
           </Menu.Item>
@@ -78,7 +108,37 @@ const Nav: React.FC<NavProps> = ({
               {user.name} 님 <DownOutlined />
             </Button>
           </Dropdown>
-        </Menu>
+        </DesktopMenu>
+
+        <MobileAndTabletDrawerTrigger
+          size="large"
+          icon={<MenuOutlined />}
+          onClick={showDrawer}
+        />
+
+        <MobileAndTabletDrawer
+          title={`${user.name} 님`}
+          visible={isDrawerVisible}
+          placement="right"
+          onClose={hideDrawer}
+        >
+          <MobileAndTabletMenu mode="vertical" selectedKeys={selectedKeys}>
+            <Menu.Item key="home" onClick={onClickNavLink(routes.home())}>
+              홈
+            </Menu.Item>
+
+            <Menu.Item
+              key="createNote"
+              onClick={onClickNavLink(routes.note.create())}
+            >
+              투자노트 작성
+            </Menu.Item>
+
+            <Menu.Item key="0" onClick={onLogout}>
+              로그아웃
+            </Menu.Item>
+          </MobileAndTabletMenu>
+        </MobileAndTabletDrawer>
       </HeaderInner>
     </StyledHeader>
   );
