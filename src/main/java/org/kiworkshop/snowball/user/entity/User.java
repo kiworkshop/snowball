@@ -19,10 +19,25 @@ public class User extends BaseTimeEntity {
     private String name;
     private String pictureUrl;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+
     @Builder
-    public User(String email, String name, String pictureUrl) {
+    public User(String email, String name, String pictureUrl, Role role) {
+        this.name = name;
         this.email = email;
+        this.pictureUrl = pictureUrl;
+        this.role = role;
+    }
+
+    public User update(String name, String pictureUrl) {
         this.name = name;
         this.pictureUrl = pictureUrl;
+        return this;
+    }
+
+    public String getRoleKey() {
+        return this.role.getKey();
     }
 }

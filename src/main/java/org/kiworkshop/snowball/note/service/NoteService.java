@@ -26,10 +26,14 @@ public class NoteService {
 
     @Transactional
     public NoteCreateResponseDto createNote(NoteRequestDto noteRequestDto) {
-        Note note = noteRepository.save(NoteAssembler.getNote(noteRequestDto));
 
-        List<StockTransaction> stockTransactions = stockTransactionRepository.saveAll(note.getStockTransactions());
-        stockTransactions.forEach(stockTransaction -> stockTransaction.addNote(note));
+        Note note1 = NoteAssembler.getNote(noteRequestDto);
+        // stockTransaction을 명시적으로 저장해주기
+
+        //List<StockTransaction> stockTransactions = stockTransactionRepository.saveAll(note.getStockTransactions());
+        note1.getStockTransactions().forEach(stockTransaction -> stockTransaction.addNote(note1));
+
+        Note note = noteRepository.save(note1);
 
         return NoteAssembler.getNoteCreateResponseDto(note);
     }
