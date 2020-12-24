@@ -1,28 +1,23 @@
 import React from 'react';
-import { Layout, Dropdown, Menu, Button, Drawer } from 'antd';
-import { DownOutlined, MenuOutlined } from '@ant-design/icons';
+import { Layout, Dropdown, Menu, Button } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-
 import routes from '../../routes';
 import { Profile } from '../../store/modules/user';
+import { MAX_MEDIUM } from '../../constants/screen';
 import logo from '../../static/images/logo.png';
-
 import Container from './Container';
 
 interface NavProps {
-  user: Profile;
+  profile: Profile;
+  selectedMenu?: Array<string>;
   onLogout: () => void;
   onClickNavLink: (link: string) => () => void;
-  selectedKeys?: Array<string>;
-  isDrawerVisible: boolean;
-  showDrawer: () => void;
-  hideDrawer: () => void;
 }
 
-const { Header } = Layout;
 
-const StyledHeader = styled(Header)`
+const Header = styled(Layout.Header)`
   background: #fff;
   box-shadow: 0 2px 8px #f0f1f2;
   left: 0;
@@ -31,50 +26,30 @@ const StyledHeader = styled(Header)`
   top: 0;
   width: 100%;
   z-index: 1000;
+
+  @media (max-width: ${MAX_MEDIUM}px) {
+    display: none;
+  }
 `;
 
-const HeaderInner = styled(Container)`
+
+const InnerWrapper = styled(Container)`
   align-items: center;
   display: flex;
   justify-content: space-between;
-
-  @media (max-width: 575px) {
-    padding: 0 20px;
-  }
 `;
 
-const DesktopMenu = styled(Menu)`
+
+const NavMenu = styled(Menu)`
   border-bottom: none;
-
-  @media (max-width: 767px) {
-    display: none;
-  }
 `;
 
-const MobileAndTabletDrawer = styled(Drawer)`
-  @media (min-width: 768px) {
-    display: none;
-  }
-`;
-
-const MobileAndTabletMenu = styled(Menu)`
-  border-right: none;
-`;
-
-const MobileAndTabletDrawerTrigger = styled(Button)`
-  @media (min-width: 768px) {
-    display: none;
-  }
-`;
 
 const Nav: React.FC<NavProps> = ({
-  user,
+  profile,
   onLogout,
   onClickNavLink,
-  selectedKeys,
-  isDrawerVisible,
-  showDrawer,
-  hideDrawer,
+  selectedMenu,
 }) => {
   const ProfileMenus = (
     <Menu>
@@ -85,13 +60,13 @@ const Nav: React.FC<NavProps> = ({
   );
 
   return (
-    <StyledHeader>
-      <HeaderInner>
+    <Header>
+      <InnerWrapper>
         <Link to={routes.home()}>
           <img src={logo} alt="logo" width="180" />
         </Link>
 
-        <DesktopMenu mode="horizontal" selectedKeys={selectedKeys}>
+        <NavMenu mode="horizontal" selectedKeys={selectedMenu}>
           <Menu.Item key="home" onClick={onClickNavLink(routes.home())}>
             홈
           </Menu.Item>
@@ -105,42 +80,12 @@ const Nav: React.FC<NavProps> = ({
 
           <Dropdown overlay={ProfileMenus} trigger={['click']}>
             <Button style={{ marginLeft: '20px' }}>
-              {user.name} 님 <DownOutlined />
+              {profile.name} 님 <DownOutlined />
             </Button>
           </Dropdown>
-        </DesktopMenu>
-
-        <MobileAndTabletDrawerTrigger
-          size="large"
-          icon={<MenuOutlined />}
-          onClick={showDrawer}
-        />
-
-        <MobileAndTabletDrawer
-          title={`${user.name} 님`}
-          visible={isDrawerVisible}
-          placement="right"
-          onClose={hideDrawer}
-        >
-          <MobileAndTabletMenu mode="vertical" selectedKeys={selectedKeys}>
-            <Menu.Item key="home" onClick={onClickNavLink(routes.home())}>
-              홈
-            </Menu.Item>
-
-            <Menu.Item
-              key="createNote"
-              onClick={onClickNavLink(routes.note.create())}
-            >
-              투자노트 작성
-            </Menu.Item>
-
-            <Menu.Item key="0" onClick={onLogout}>
-              로그아웃
-            </Menu.Item>
-          </MobileAndTabletMenu>
-        </MobileAndTabletDrawer>
-      </HeaderInner>
-    </StyledHeader>
+        </NavMenu>
+      </InnerWrapper>
+    </Header>
   );
 };
 

@@ -1,49 +1,47 @@
 import React, { useCallback, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-
 import { RootState } from '../../store/modules';
 import { logout } from '../../store/modules/user';
-
 import Nav from '../../component/base/Nav';
+import MobileNav from '../../component/base/MobileNav';
 
 interface NavContainerProps {
   selectedMenu?: Array<string>;
 }
 
+
 const NavContainer: React.FC<NavContainerProps> = ({ selectedMenu }) => {
-  const user = useSelector((state: RootState) => state.user.profile);
+  const history  = useHistory();
   const dispatch = useDispatch();
-
-  const onLogout = useCallback(() => {
-    const willLogout = window.confirm('로그아웃 하시겠습니까?');
-
-    if (willLogout) {
-      dispatch(logout());
-    }
-  }, [dispatch]);
-
-  const history = useHistory();
-  const onClickNavLink = (link: string) => () => history.push(link);
+  const profile  = useSelector((state: RootState) => state.user.profile);
 
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
-  const showDrawer = useCallback(() => {
-    setIsDrawerVisible(true);
-  }, []);
-  const hideDrawer = useCallback(() => {
-    setIsDrawerVisible(false);
-  }, []);
+
+  const onLogout       = useCallback(() => window.confirm('로그아웃 하시겠습니까?') && dispatch(logout()), [dispatch]);
+  const onClickNavLink = useCallback((link: string) => () => history.push(link), [history]);
+  const showDrawer     = useCallback(() => setIsDrawerVisible(true), []);
+  const hideDrawer     = useCallback(() => setIsDrawerVisible(false), []);
 
   return (
-    <Nav
-      user={user}
-      onLogout={onLogout}
-      onClickNavLink={onClickNavLink}
-      selectedKeys={selectedMenu}
-      isDrawerVisible={isDrawerVisible}
-      showDrawer={showDrawer}
-      hideDrawer={hideDrawer}
-    />
+    <>
+      <Nav
+        profile={profile}
+        onLogout={onLogout}
+        onClickNavLink={onClickNavLink}
+        selectedMenu={selectedMenu}
+      />
+
+      <MobileNav
+        profile={profile}
+        onLogout={onLogout}
+        onClickNavLink={onClickNavLink}
+        selectedMenu={selectedMenu}
+        isDrawerVisible={isDrawerVisible}
+        showDrawer={showDrawer}
+        hideDrawer={hideDrawer}
+      />
+    </>
   );
 };
 
