@@ -4,7 +4,7 @@ import { Layout } from 'antd';
 import styled from 'styled-components';
 
 import NavContainer from '../container/base/NavContainer';
-import NoteContainer from '../container/note/NoteContainer';
+import NoteDetailContainer from '../container/note/NoteDetailContainer';
 import Container from '../component/base/Container';
 
 interface MatchProps {
@@ -26,7 +26,7 @@ const NoteDetailPage: React.FC<RouteComponentProps<MatchProps>> = ({
     <Layout style={{ minHeight: '100%', paddingTop: '64px' }}>
       <NavContainer />
       <NoteDetailPageContentContainer>
-        <NoteContainer id={Number(match.params.id)} />
+        <NoteDetailContainer id={Number(match.params.id)} />
       </NoteDetailPageContentContainer>
     </Layout>
   );
