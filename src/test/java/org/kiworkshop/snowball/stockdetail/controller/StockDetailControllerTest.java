@@ -2,7 +2,7 @@ package org.kiworkshop.snowball.stockdetail.controller;
 
 import org.junit.jupiter.api.Test;
 import org.kiworkshop.snowball.ControllerTest;
-import org.kiworkshop.snowball.common.config.auth.SecurityConfig;
+import org.kiworkshop.snowball.auth.SecurityConfig;
 import org.kiworkshop.snowball.stockdetail.entity.StockDetail;
 import org.kiworkshop.snowball.stockdetail.entity.StockDetailFixture;
 import org.kiworkshop.snowball.stockdetail.entity.StockDetailRepository;

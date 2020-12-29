@@ -1,10 +1,9 @@
 package org.kiworkshop.snowball.common.config;
 
 import lombok.RequiredArgsConstructor;
-import org.kiworkshop.snowball.common.config.auth.LoginUserArgumentResolver;
+import org.kiworkshop.snowball.auth.LoginUserArgumentResolver;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;

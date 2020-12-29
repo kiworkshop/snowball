@@ -1,4 +1,4 @@
-package org.kiworkshop.snowball.common.config.auth;
+package org.kiworkshop.snowball.auth;
 
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;

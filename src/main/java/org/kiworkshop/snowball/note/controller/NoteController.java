@@ -1,14 +1,13 @@
 package org.kiworkshop.snowball.note.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.kiworkshop.snowball.common.config.auth.LoginUser;
+import org.kiworkshop.snowball.auth.LoginUser;
 import org.kiworkshop.snowball.note.controller.dto.NoteCreateResponseDto;
 import org.kiworkshop.snowball.note.controller.dto.NoteRequestDto;
 import org.kiworkshop.snowball.note.controller.dto.NoteResponseDto;
 import org.kiworkshop.snowball.note.service.NoteService;
 import org.kiworkshop.snowball.user.entity.User;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;

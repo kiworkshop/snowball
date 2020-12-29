@@ -1,4 +1,4 @@
-package org.kiworkshop.snowball.common.config.auth;
+package org.kiworkshop.snowball.auth;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

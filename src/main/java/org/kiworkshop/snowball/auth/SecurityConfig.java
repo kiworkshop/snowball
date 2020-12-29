@@ -1,7 +1,6 @@
-package org.kiworkshop.snowball.common.config.auth;
+package org.kiworkshop.snowball.auth;
 
 import lombok.RequiredArgsConstructor;
-import org.kiworkshop.snowball.user.entity.Role;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;

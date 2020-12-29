@@ -1,7 +1,7 @@
-package org.kiworkshop.snowball.common.config.auth;
+package org.kiworkshop.snowball.auth;
 
 import lombok.RequiredArgsConstructor;
-import org.kiworkshop.snowball.common.config.auth.dto.SessionUser;
+import org.kiworkshop.snowball.auth.dto.SessionUser;
 import org.kiworkshop.snowball.user.entity.User;
 import org.kiworkshop.snowball.user.entity.UserRepository;
 import org.springframework.core.MethodParameter;

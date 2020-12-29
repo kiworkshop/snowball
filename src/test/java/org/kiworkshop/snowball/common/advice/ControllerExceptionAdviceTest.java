@@ -2,7 +2,7 @@ package org.kiworkshop.snowball.common.advice;
 
 import org.junit.jupiter.api.Test;
 import org.kiworkshop.snowball.ControllerTest;
-import org.kiworkshop.snowball.common.config.auth.SecurityConfig;
+import org.kiworkshop.snowball.auth.SecurityConfig;
 import org.kiworkshop.snowball.note.controller.NoteController;
 import org.kiworkshop.snowball.note.controller.dto.NoteRequestDto;
 import org.kiworkshop.snowball.note.controller.dto.NoteRequestDtoFixture;
