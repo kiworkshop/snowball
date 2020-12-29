@@ -1,18 +1,15 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Form, message } from 'antd';
-
 import { RootState } from '../../store/modules';
 import { addCommaToNumber } from '../../lib/transform';
 import { getSingleStockDetail } from '../../lib/api/stockDetail';
 import { setForm } from '../../store/modules/note';
-
 import StockTransaction from '../../component/write/StockTransaction';
 
 const StockTransactionContainer = () => {
-  const { form } = useSelector((state: RootState) => state.note);
-
   const dispatch = useDispatch();
+  const { form } = useSelector((state: RootState) => state.note);
 
   const stockTransactionDataSource = useCallback(
     (type: 'BUY' | 'SELL') =>
@@ -45,33 +42,29 @@ const StockTransactionContainer = () => {
     [dispatch, form.stockTransactions]
   );
 
-  const [buyTypeFormInstance] = Form.useForm();
-  const [sellTypeFormInstance] = Form.useForm();
-
-  const formInstance = {
+  const [buyTypeFormInstance]  = useMemo(() => Form.useForm(), []);
+  const [sellTypeFormInstance] = useMemo(() => Form.useForm(), []);
+  const formInstance           = useMemo(() => ({
     BUY: buyTypeFormInstance,
     SELL: sellTypeFormInstance,
-  };
+  }), [buyTypeFormInstance, sellTypeFormInstance]);
 
-  const [buyTypeTransactionAmount, setBuyTypeTransactionAmount] = useState(0);
+  const [buyTypeTransactionAmount, setBuyTypeTransactionAmount]   = useState(0);
   const [sellTypeTransactionAmount, setSellTypeTransactionAmount] = useState(0);
 
-  const transactionAmount = {
+  const transactionAmount = useMemo(() => ({
     BUY: buyTypeTransactionAmount,
     SELL: sellTypeTransactionAmount,
-  };
+  }), [buyTypeTransactionAmount, sellTypeTransactionAmount]);
 
-  const setTransactionAmount = {
+  const setTransactionAmount = useMemo(() => ({
     BUY: setBuyTypeTransactionAmount,
     SELL: setSellTypeTransactionAmount,
-  };
+  }), [setBuyTypeTransactionAmount, setSellTypeTransactionAmount]);
 
-  const onSubmit = useCallback(
-    (type: 'BUY' | 'SELL') => async (values: any) => {
+  const onSubmit = useCallback((type: 'BUY' | 'SELL') => async (values: any) => {
       try {
-        const {
-          data: { id: companyId },
-        } = await getSingleStockDetail(values.companyName);
+        const { data: { id: companyId } } = await getSingleStockDetail(values.companyName);
 
         dispatch(
           setForm({

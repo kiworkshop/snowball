@@ -2,9 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Button, Alert, Spin } from 'antd';
 import ReactQuill from 'react-quill';
-
 import { Form } from '../../store/modules/note';
-
 import 'react-quill/dist/quill.snow.css';
 
 interface EditorProps {
@@ -15,6 +13,7 @@ interface EditorProps {
   error: Error | null;
 }
 
+
 const StyledEditor = styled(ReactQuill)`
   margin-bottom: 30px;
 
@@ -22,6 +21,7 @@ const StyledEditor = styled(ReactQuill)`
     min-height: 500px;
   }
 `;
+
 
 const Editor: React.FC<EditorProps> = ({
   formData,

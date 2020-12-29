@@ -2,43 +2,29 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { Input, PageHeader } from 'antd';
-
 import { RootState } from '../../store/modules';
-import {
-  createNoteAsync,
-  initializeForm,
-  setForm,
-} from '../../store/modules/note';
-
+import { createNoteAsync, initializeForm, setForm } from '../../store/modules/note';
+import { $white } from '../../constants/colors';
 import EditorContainer from './EditorContainer';
 import CalendarContainer from './CalendarContainer';
 import StockTransactionContainer from './StockTransactionContainer';
 
 const CreateNoteTemplate = () => {
-  const dispatch = useDispatch();
   const [isDateSelected, setIsDateSelected] = useState(false);
 
-  const {
-    form,
-    loading: { createNote: loading },
-    error: { createNote: error },
-  } = useSelector((state: RootState) => state.note);
+  const dispatch                 = useDispatch();
+  const { form, loading, error } = useSelector((state: RootState) => state.note);
 
-  const TODAY = useMemo(() => moment(Date.now()), []);
-  const investmentDate = form.investmentDate?.format('YYYY-MM-DD');
+  const TODAY          = useMemo(() => moment(Date.now()), []);
+  const investmentDate = useMemo(() => form.investmentDate?.format('YYYY-MM-DD'), [form.investmentDate]);
 
-  const onClickBackButton = () => setIsDateSelected(false);
+  const onClickBackButton = useCallback(() => setIsDateSelected(false), [setIsDateSelected]);
+  const onSave            = useCallback(() => dispatch(createNoteAsync.request(form)), [dispatch, form]);
 
   const onTitleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       dispatch(setForm({ title: e.target.value }));
-    },
-    [dispatch]
-  );
-
-  const onSave = useCallback(() => {
-    dispatch(createNoteAsync.request(form));
-  }, [dispatch, form]);
+    }, [dispatch]);
 
   useEffect(() => {
     dispatch(setForm({ investmentDate: TODAY }));
@@ -51,7 +37,7 @@ const CreateNoteTemplate = () => {
   return (
     <>
       {isDateSelected && (
-        <div style={{ background: '#fff', padding: '30px' }}>
+        <div style={{ background: $white, padding: '30px' }}>
           <PageHeader
             title="날짜 수정하기"
             subTitle={investmentDate}
@@ -70,7 +56,7 @@ const CreateNoteTemplate = () => {
 
           <StockTransactionContainer />
 
-          <EditorContainer loading={!!loading} error={error} onSave={onSave} />
+          <EditorContainer loading={!!loading.createNote} error={error.createNote} onSave={onSave} />
         </div>
       )}
 
