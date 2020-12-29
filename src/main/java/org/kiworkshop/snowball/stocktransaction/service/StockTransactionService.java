@@ -23,17 +23,21 @@ public class StockTransactionService {
         return StockTransactionAssembler.getStockTransactionCreateResponseDto(stockTransaction);
     }
 
-    public void update(Long id, StockTransactionRequestDto stockTransactionRequestDto) {
-        StockTransaction stockTransaction = getStockTransaction(id);
-        stockTransaction.update(StockTransactionAssembler.getStockTransaction(stockTransactionRequestDto));
-    }
-
     public StockTransaction get(Long id) {
         return getStockTransaction(id);
     }
 
     private StockTransaction getStockTransaction(Long id) {
         return stockTransactionRepository.findById(id).orElseThrow(() -> new DomainServiceException(id + "번의 StockTransaction을 찾을 수 없습니다."));
+    }
+
+    public List<StockTransaction> getStockTransactionByMonth(Long month){
+        return stock
+    }
+
+    public void update(Long id, StockTransactionRequestDto stockTransactionRequestDto) {
+        StockTransaction stockTransaction = getStockTransaction(id);
+        stockTransaction.update(StockTransactionAssembler.getStockTransaction(stockTransactionRequestDto));
     }
 
     public void delete(Long id) {

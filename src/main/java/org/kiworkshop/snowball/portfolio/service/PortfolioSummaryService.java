@@ -22,6 +22,7 @@ public class PortfolioSummaryService {
         Set<Map.Entry<StockDetail, List<StockTransaction>>> stockTransactionGroups = createStockTransactionGroups(stockTransactions);
         List<PortfolioStockResponseDto> portfolioStockResponseDtos = new ArrayList<>();
 
+        // 연산을 위한 일급컬렉션, 서비스에서는 이것을 사용
         for (Map.Entry<StockDetail, List<StockTransaction>> stockTransactionGroup : stockTransactionGroups) {
             int[] buyingPrices = getBuyingPrices(stockTransactionGroup);
             double averageBuyingPrice = getAverageBuyingPrice(buyingPrices);
