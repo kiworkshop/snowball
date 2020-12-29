@@ -1,14 +1,15 @@
 package org.kiworkshop.snowball.note.controller.dto;
 
 import org.kiworkshop.snowball.note.entity.Note;
+import org.kiworkshop.snowball.user.entity.User;
 
 public class NoteAssembler {
 
-    public static Note getNote(NoteRequestDto noteRequestDto){
+    public static Note getNote(NoteRequestDto noteRequestDto, User user){
         return Note.builder()
                 .title(noteRequestDto.getTitle())
                 .content(noteRequestDto.getContent())
-                .user(noteRequestDto.getUser())
+                .user(user)
                 .investmentDate(noteRequestDto.getInvestmentDate())
                 .stockTransactions(noteRequestDto.getStockTransactions())
                 .build();

@@ -12,14 +12,17 @@ import org.kiworkshop.snowball.note.entity.NoteFixture;
 import org.kiworkshop.snowball.note.entity.NoteRepository;
 import org.kiworkshop.snowball.note.entity.PageNoteFixture;
 import org.kiworkshop.snowball.stocktransaction.entity.StockTransaction;
-import org.kiworkshop.snowball.stocktransaction.entity.StockTransactionFixture;
 import org.kiworkshop.snowball.stocktransaction.entity.StockTransactionRepository;
+import org.kiworkshop.snowball.user.Entity.UserFixture;
+import org.kiworkshop.snowball.user.entity.User;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.mock.web.MockHttpSession;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -44,12 +47,15 @@ class NoteServiceTest {
     @InjectMocks
     private NoteService dut;
 
+    private MockHttpSession mockHttpSession;
+    private User user;
+
     @Test
     void createTest() {
         //given
         given(noteRepository.save(any(Note.class))).willReturn(NoteFixture.create());
         //when
-        NoteCreateResponseDto noteCreateResponseDto = dut.createNote(NoteRequestDtoFixture.create());
+        NoteCreateResponseDto noteCreateResponseDto = dut.createNote(NoteRequestDtoFixture.create(), UserFixture.create());
         //then
         assertThat(noteCreateResponseDto.getId()).isEqualTo(1L);
         then(noteRepository).should().save(any(Note.class));
@@ -117,13 +123,14 @@ class NoteServiceTest {
     @Test
     void updateNoteTest() {
         // given
-        Long noteId = 1L;
         NoteRequestDto requestDto = NoteRequestDtoFixture.create();
         Note note = NoteFixture.create();
+        User user = UserFixture.create();
+        ReflectionTestUtils.setField(note, "user", user);
         given(noteRepository.findById(anyLong())).willReturn(Optional.of(note));
 
         // when
-        dut.updateNote(noteId, requestDto);
+        dut.updateNote(note.getId(), requestDto, user);
 
         // then
         assertThat(note.getContent()).isEqualTo(requestDto.getContent());
