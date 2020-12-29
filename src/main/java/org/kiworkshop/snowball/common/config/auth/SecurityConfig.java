@@ -15,20 +15,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
-                .headers().frameOptions().disable()
-                    .and()
                 .authorizeRequests()
-                .antMatchers("/", "/static/**", "/h2-console/**").permitAll()
-                .anyRequest().permitAll()
-                    .and()
-                .logout()
-                .logoutSuccessUrl("/")
-                    .and()
-                .oauth2Login()
-                .loginPage("/login")
-                .defaultSuccessUrl("/")
-                .userInfoEndpoint()
-                .userService(customOAuth2UserService);
+                    .antMatchers("/", "oauth2/**", "login",
+                            "/static/**", "/h2-console/**").permitAll()
+                    .anyRequest().authenticated()
+                .and()
+                    .csrf().disable()
+                    .headers().frameOptions().disable()
+                .and()
+                    .logout()
+                    .logoutSuccessUrl("/")
+                    .invalidateHttpSession(true)
+                .and()
+                    .formLogin()
+                .and()
+                    .oauth2Login()
+                    .loginPage("/login")
+                    .defaultSuccessUrl("/")
+                    .userInfoEndpoint()
+                    .userService(customOAuth2UserService);
     }
+    // 로그인했는지 안했는지 판단을 프론트에서 어떻게 할 수 있을까?
+    // 401이 떨어질 수 있는 요청이 최소 한번은 필요할 것
+    // 401(ex.자기 정보 가져오는 요청) -> login 페이지 -> 구글 로그인 버튼 클릭
 }
