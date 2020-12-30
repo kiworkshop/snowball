@@ -27,12 +27,17 @@ const Header = styled(Layout.Header)`
   top: 0;
   width: 100%;
   z-index: 1000;
+
+  @media (min-width: ${MIN_MEDIUM}px) {
+    display: none;
+  }
 `;
 
 
 const InnerWrapper = styled(Container)`
   align-items: center;
   display: flex;
+  height: 100%;
   justify-content: space-between;
 
   @media (max-width: ${MAX_SMALL}px) {

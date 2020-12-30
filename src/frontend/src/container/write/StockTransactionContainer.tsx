@@ -42,8 +42,9 @@ const StockTransactionContainer = () => {
     [dispatch, form.stockTransactions]
   );
 
-  const [buyTypeFormInstance]  = useMemo(() => Form.useForm(), []);
-  const [sellTypeFormInstance] = useMemo(() => Form.useForm(), []);
+  const [buyTypeFormInstance]  = Form.useForm();
+  const [sellTypeFormInstance] = Form.useForm();
+
   const formInstance           = useMemo(() => ({
     BUY: buyTypeFormInstance,
     SELL: sellTypeFormInstance,

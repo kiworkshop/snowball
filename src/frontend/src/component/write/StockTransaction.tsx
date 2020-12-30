@@ -53,7 +53,7 @@ const StockTransaction: React.FC<StockTransactionProps> = ({
   return (
     <Row>
       {typeArray.map((type) => (
-        <StyledColumn span={24} md={12}>
+        <StyledColumn key={type} span={24} md={12}>
           <Popover
             content={
               <StockTransactionForm
