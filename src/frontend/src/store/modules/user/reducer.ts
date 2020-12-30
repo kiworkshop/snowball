@@ -14,7 +14,6 @@ const initialState: UserState = {
     name: '',
     pictureUrl: '',
   },
-  isLoggedIn: false,
   loading: {},
   error: {},
 };
@@ -32,7 +31,6 @@ const user = createReducer<UserState, UserAction>(initialState, {
       name: action.payload.name,
       pictureUrl: action.payload.pictureUrl,
     },
-    isLoggedIn: true,
     loading: { ...state.loading, login: false },
     error: { ...state.error, login: null },
   }),
@@ -48,7 +46,6 @@ const user = createReducer<UserState, UserAction>(initialState, {
       name: '',
       pictureUrl: '',
     },
-    isLoggedIn: false,
   }),
   [LOGIN_STORED_USER]: (state, action) => ({
     ...state,
@@ -57,7 +54,6 @@ const user = createReducer<UserState, UserAction>(initialState, {
       name: action.payload.name,
       pictureUrl: action.payload.pictureUrl,
     },
-    isLoggedIn: true,
   }),
 });
 

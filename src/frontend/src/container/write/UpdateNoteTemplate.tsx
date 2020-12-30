@@ -2,15 +2,8 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Input, PageHeader, Skeleton } from 'antd';
 import styled from 'styled-components';
-
 import { RootState } from '../../store/modules';
-import {
-  initializeForm,
-  setForm,
-  setFormForUpdateAsync,
-  updateNoteAsync,
-} from '../../store/modules/note';
-
+import { initializeForm, setForm, setFormForUpdateAsync, updateNoteAsync } from '../../store/modules/note';
 import Page404 from '../../pages/Page404';
 import EditorContainer from './EditorContainer';
 import CalendarContainer from './CalendarContainer';
@@ -20,10 +13,12 @@ interface UpdateNoteTemplateProps {
   id: number;
 }
 
+
 const UpdateNoteTemplateContainer = styled.div`
   background: #fff;
   padding: 30px;
 `;
+
 
 const StyledSkeleton = styled(Skeleton)`
   .ant-skeleton-paragraph li {
@@ -31,25 +26,19 @@ const StyledSkeleton = styled(Skeleton)`
   }
 `;
 
+
 const UpdateNoteTemplate: React.FC<UpdateNoteTemplateProps> = ({ id }) => {
-  const dispatch = useDispatch();
   const [isDateSelected, setIsDateSelected] = useState(true);
 
-  const { form, loading, error } = useSelector(
-    (state: RootState) => state.note
-  );
+  const dispatch                 = useDispatch();
+  const { form, loading, error } = useSelector((state: RootState) => state.note);
 
-  const investmentDate = useMemo(
-    () => form.investmentDate?.format('YYYY-MM-DD'),
-    [form.investmentDate]
-  );
+  const investmentDate = useMemo(() => form.investmentDate?.format('YYYY-MM-DD'), [form.investmentDate]);
 
   const onTitleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       dispatch(setForm({ title: e.target.value }));
-    },
-    [dispatch]
-  );
+    }, [dispatch]);
 
   const onSave = useCallback(() => {
     dispatch(updateNoteAsync.request({ id, form }));

@@ -1,18 +1,11 @@
 import moment from 'moment';
 import axiosClient from '../axiosClient';
 
-export const getNotes = (size: number, page: number) =>
-  axiosClient.get<Notes>(`/notes?size=${size}&page=${page}`);
-
-export const getNote = (id: number) => axiosClient.get<Note>(`/notes/${id}`);
-
-export const createNote = (form: Form) =>
-  axiosClient.post<{ id: number }>('/notes', form);
-
-export const updateNote = (id: number, form: Form) =>
-  axiosClient.put(`/notes/${id}`, form);
-
-export const deleteNote = (id: number) => axiosClient.delete(`/notes/${id}`);
+export const getNotes   = (size: number, page: number) => axiosClient.get<Notes>(`/notes?size=${size}&page=${page}`);
+export const getNote    = (id: number)                 => axiosClient.get<Note>(`/notes/${id}`);
+export const createNote = (form: Form)                 => axiosClient.post<{ id: number }>('/notes', form);
+export const updateNote = (id: number, form: Form)     => axiosClient.put(`/notes/${id}`, form);
+export const deleteNote = (id: number)                 => axiosClient.delete(`/notes/${id}`);
 
 export interface Notes {
   content: Array<Note>;
