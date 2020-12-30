@@ -5,7 +5,6 @@ export type UserAction = ActionType<typeof actions>;
 
 export interface UserState {
   profile: Profile;
-  isLoggedIn: boolean;
   loading: {
     [action: string]: boolean;
   };

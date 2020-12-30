@@ -1,11 +1,9 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { Space, Button, Typography } from 'antd';
 import { useHistory } from 'react-router-dom';
 import snowmanImage from '../static/images/snowman.svg';
 import routes from '../routes';
-
-const { Title, Paragraph } = Typography;
 
 const PageContainer = styled.div`
   align-items: center;
@@ -15,26 +13,27 @@ const PageContainer = styled.div`
   width: 100%;
 `;
 
+
 const SnowmanImg = styled.img`
   margin-right: 30px;
   width: 180px;
 `;
 
-const MainMessage = styled(Title)`
+
+const MainMessage = styled(Typography.Title)`
   color: #4e89ae !important;
   text-shadow: 4px 4px 8px rgba(150, 150, 150, 0.35);
 `;
 
-const SubMessage = styled(Paragraph)`
+
+const SubMessage = styled(Typography.Paragraph)`
   color: rgba(78, 137, 174, 0.9);
 `;
 
+
 const Page404 = () => {
   const history = useHistory();
-
-  const onClick = () => {
-    history.push(routes.home());
-  };
+  const onClick = useCallback(() => history.push(routes.home()), [history]);
 
   return (
     <PageContainer>
@@ -42,12 +41,8 @@ const Page404 = () => {
         <SnowmanImg src={snowmanImage} />
         <div>
           <MainMessage>404 Not Found</MainMessage>
-          <SubMessage>
-            페이지를 찾을 수 없습니다. 올바른 주소를 입력해주세요.
-          </SubMessage>
-          <Button size="large" onClick={onClick}>
-            홈으로
-          </Button>
+          <SubMessage>페이지를 찾을 수 없습니다. 올바른 주소를 입력해주세요.</SubMessage>
+          <Button size="large" onClick={onClick}>홈으로</Button>
         </div>
       </Space>
     </PageContainer>
