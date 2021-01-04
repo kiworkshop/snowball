@@ -15,8 +15,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/", "oauth2/**", "login",
-                            "/static/**", "/h2-console/**").permitAll()
+                    .antMatchers(
+                        "/login", "/oauth2/**",
+                        "/actuator/**",
+                        "/static/**",
+                        "/h2-console/**")
+                        .permitAll()
                     .anyRequest().authenticated()
                 .and()
                     .csrf().disable()
@@ -25,8 +29,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .logout()
                     .logoutSuccessUrl("/")
                     .invalidateHttpSession(true)
-                .and()
-                    .formLogin()
                 .and()
                     .oauth2Login()
                     .loginPage("/login")
