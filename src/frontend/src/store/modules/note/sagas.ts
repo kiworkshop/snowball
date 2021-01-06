@@ -1,12 +1,6 @@
 import moment from 'moment';
-import {
-  call,
-  put,
-  takeEvery,
-  takeLatest,
-  getContext,
-} from 'redux-saga/effects';
-
+import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
+import * as history from '../../../lib/history';
 import * as noteAPI from '../../../lib/api/note';
 import {
   GET_NOTES_REQUEST,
@@ -15,17 +9,16 @@ import {
   SET_FORM_FOR_UPDATE_REQUEST,
   UPDATE_NOTE_REQUEST,
   DELETE_NOTE_REQUEST,
-  GO_TO_NOTE_DETAIL_PAGE,
   getNoteAsync,
   createNoteAsync,
   setFormForUpdateAsync,
   updateNoteAsync,
   deleteNoteAsync,
   getNotesAsync,
-  goToNoteDetailPage,
   setForm,
 } from './actions';
 import { Note } from '../../../lib/api/note';
+import routes from '../../../routes';
 
 function* getNotesSaga(action: ReturnType<typeof getNotesAsync.request>) {
   try {
@@ -56,7 +49,7 @@ function* createNoteSaga(action: ReturnType<typeof createNoteAsync.request>) {
 
     const response = yield call(noteAPI.createNote, form);
     yield put(createNoteAsync.success());
-    yield put(goToNoteDetailPage(response.data.id));
+    history.push(routes.note.detail(response.data.id));
   } catch (e) {
     yield put(createNoteAsync.failure(e));
   }
@@ -101,7 +94,7 @@ function* updateNoteSaga(action: ReturnType<typeof updateNoteAsync.request>) {
 
     yield call(noteAPI.updateNote, id, form);
     yield put(updateNoteAsync.success());
-    yield put(goToNoteDetailPage(id));
+    history.push(routes.note.detail(id));
   } catch (e) {
     yield put(updateNoteAsync.failure(e));
   }
@@ -116,13 +109,6 @@ function* deleteNoteSaga(action: ReturnType<typeof deleteNoteAsync.request>) {
   }
 }
 
-export function* goToNoteDetailPageSaga(
-  action: ReturnType<typeof goToNoteDetailPage>
-) {
-  const history = yield getContext('history');
-  history.push(`/note/${action.payload}`);
-}
-
 export function* noteSaga() {
   yield takeEvery(GET_NOTES_REQUEST, getNotesSaga);
   yield takeEvery(GET_NOTE_REQUEST, getNoteSaga);
@@ -130,5 +116,4 @@ export function* noteSaga() {
   yield takeEvery(SET_FORM_FOR_UPDATE_REQUEST, setFormForUpdateSaga);
   yield takeLatest(UPDATE_NOTE_REQUEST, updateNoteSaga);
   yield takeLatest(DELETE_NOTE_REQUEST, deleteNoteSaga);
-  yield takeEvery(GO_TO_NOTE_DETAIL_PAGE, goToNoteDetailPageSaga);
 }

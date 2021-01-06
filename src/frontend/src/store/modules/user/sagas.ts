@@ -1,6 +1,5 @@
 import { call, put, takeEvery, getContext } from 'redux-saga/effects';
 import store from 'store2';
-
 import * as userAPI from '../../../lib/api/user';
 import {
   LOGIN_REQUEST,
