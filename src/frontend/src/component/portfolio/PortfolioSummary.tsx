@@ -17,7 +17,6 @@ interface PortfolioSummaryProps {
   error: Error | null;
 }
 
-
 const Wrapper = styled.div`
   background: #fff;
   border-radius: 16px;
@@ -25,12 +24,10 @@ const Wrapper = styled.div`
   padding: 20px;
 `;
 
-
 const TableTitle = styled(Typography.Title)`
   color: ${$mainColor};
   margin-bottom: 30px;
-`
-
+`;
 
 const Table = styled.table`
   display: block;
@@ -48,7 +45,6 @@ const Table = styled.table`
     width: 100%;
   }
 `;
-
 
 const TableHeader = styled.thead`
   background: #27496d;
@@ -68,17 +64,14 @@ const TableHeader = styled.thead`
   }
 `;
 
-
 const PaginationWrapper = styled.div`
   margin-top: 20px;
   text-align: right;
 `;
 
-
 const ErrorAlert = styled(Alert)`
   margin-top: 30px;
-`
-
+`;
 
 const PortfolioSummary: React.FC<PortfolioSummaryProps> = ({
   portfolios,

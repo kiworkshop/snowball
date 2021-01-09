@@ -9,24 +9,20 @@ interface DatePickerProps {
   onSelectDate: (date: moment.Moment) => void;
 }
 
-
 const Wrapper = styled.div`
   background: #fff;
   padding: 20px;
 `;
 
-
 const CalendarTitle = styled(Typography.Title)`
   color: ${$mainColor};
-`
-
+`;
 
 const StyledCalendar = styled(AntdCalendar)`
   .ant-radio-group {
     display: none;
   }
 `;
-
 
 const Calendar: React.FC<DatePickerProps> = ({ onSelectDate, currentDate }) => {
   const firstDateOfCalendar = moment('1990-01-01');
@@ -35,7 +31,11 @@ const Calendar: React.FC<DatePickerProps> = ({ onSelectDate, currentDate }) => {
   return (
     <Wrapper>
       <CalendarTitle level={3}>투자노트 날짜 선택</CalendarTitle>
-      <StyledCalendar validRange={[firstDateOfCalendar, lastDateOfCalendar]} onSelect={onSelectDate} value={currentDate} />
+      <StyledCalendar
+        validRange={[firstDateOfCalendar, lastDateOfCalendar]}
+        onSelect={onSelectDate}
+        value={currentDate}
+      />
     </Wrapper>
   );
 };

@@ -15,9 +15,10 @@ interface StockTransactionDataSource {
   transactionType: 'BUY' | 'SELL';
 }
 
-
 interface StockTransactionProps {
-  stockTransactionDataSource: (type: 'BUY' | 'SELL') => Array<StockTransactionDataSource>;
+  stockTransactionDataSource: (
+    type: 'BUY' | 'SELL'
+  ) => Array<StockTransactionDataSource>;
   formInstance: {
     BUY: FormInstance<any>;
     SELL: FormInstance<any>;
@@ -34,11 +35,9 @@ interface StockTransactionProps {
   onSubmit: (type: 'BUY' | 'SELL') => (values: any) => Promise<void>;
 }
 
-
 const StyledColumn = styled(Col)`
   margin-bottom: 20px;
 `;
-
 
 const StockTransaction: React.FC<StockTransactionProps> = ({
   stockTransactionDataSource,

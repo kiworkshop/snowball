@@ -14,13 +14,11 @@ interface StockTransactionDataSource {
   transactionType: 'BUY' | 'SELL';
 }
 
-
 interface StockTransactionTableProps {
   type: 'BUY' | 'SELL';
   dataSource: Array<StockTransactionDataSource>;
   onDelete: (index: number) => () => void;
 }
-
 
 const StockTransactionTableWrapper = styled.div`
   overflow-x: scroll;
@@ -30,11 +28,9 @@ const StockTransactionTableWrapper = styled.div`
   }
 `;
 
-
 const CloseIcon = styled(CloseCircleOutlined)`
   color: ${$red};
-`
-
+`;
 
 const StockTransactionTable: React.FC<StockTransactionTableProps> = ({
   type,
@@ -45,12 +41,19 @@ const StockTransactionTable: React.FC<StockTransactionTableProps> = ({
     { title: '종목', dataIndex: 'companyName', key: 'companyName' },
     { title: '수량(주)', dataIndex: 'quantity', key: 'quantity' },
     { title: '단가(원)', dataIndex: 'tradedPrice', key: 'tradedPrice' },
-    { title: '거래금액(원)', dataIndex: 'transactionAmount', key: 'transactionAmount' },
+    {
+      title: '거래금액(원)',
+      dataIndex: 'transactionAmount',
+      key: 'transactionAmount',
+    },
     {
       title: '',
       dataIndex: 'delete',
       render: (_: any, item: StockTransactionDataSource) => (
-        <Popconfirm title="정말 삭제하시겠습니까?" onConfirm={onDelete(item.index)}>
+        <Popconfirm
+          title="정말 삭제하시겠습니까?"
+          onConfirm={onDelete(item.index)}
+        >
           <CloseIcon />
         </Popconfirm>
       ),

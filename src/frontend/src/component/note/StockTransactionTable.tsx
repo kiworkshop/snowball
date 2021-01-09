@@ -19,15 +19,16 @@ const StockTransactionTable: React.FC<StockTransactionTableProps> = ({
     { title: '거래금액(원)', dataIndex: 'transactionAmount' },
   ];
 
-  const stockTransactionsOfType =
-    note.stockTransactions
-      .filter((stockTransaction) => stockTransaction.transactionType === type)
-      .map((stockTransaction) => ({
-        ...stockTransaction,
-        quantity: addCommaToNumber(stockTransaction.quantity),
-        tradedPrice: addCommaToNumber(stockTransaction.tradedPrice),
-        transactionAmount: addCommaToNumber(stockTransaction.quantity * stockTransaction.tradedPrice),
-      }));
+  const stockTransactionsOfType = note.stockTransactions
+    .filter((stockTransaction) => stockTransaction.transactionType === type)
+    .map((stockTransaction) => ({
+      ...stockTransaction,
+      quantity: addCommaToNumber(stockTransaction.quantity),
+      tradedPrice: addCommaToNumber(stockTransaction.tradedPrice),
+      transactionAmount: addCommaToNumber(
+        stockTransaction.quantity * stockTransaction.tradedPrice
+      ),
+    }));
 
   return (
     <Table

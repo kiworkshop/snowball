@@ -11,18 +11,15 @@ interface StockTransactionFormProps {
   onSubmit: (values: any) => Promise<void>;
 }
 
-
 const TransactionAmountInput = styled(Input)`
   color: ${$black};
   text-align: right;
   width: 100%;
 `;
 
-
 const StyledInputNumber = styled(InputNumber)`
   width: 100%;
-`
-
+`;
 
 const StockTransactionForm: React.FC<StockTransactionFormProps> = ({
   formInstance,
@@ -31,10 +28,15 @@ const StockTransactionForm: React.FC<StockTransactionFormProps> = ({
   onSubmit,
 }) => {
   const inputNumberFormatter = useCallback(
-    (value: string | number | undefined) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ','), []);
+    (value: string | number | undefined) =>
+      `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ','),
+    []
+  );
 
   const onChangeInputNumber = useCallback(() => {
-    const newTotalPrice = formInstance.getFieldValue('quantity') * formInstance.getFieldValue('tradedPrice');
+    const newTotalPrice =
+      formInstance.getFieldValue('quantity') *
+      formInstance.getFieldValue('tradedPrice');
     setTransactionAmount(isNaN(newTotalPrice) ? 0 : newTotalPrice);
   }, [formInstance, setTransactionAmount]);
 
@@ -56,7 +58,10 @@ const StockTransactionForm: React.FC<StockTransactionFormProps> = ({
           { required: true, message: '수량을 입력해 주세요.' },
         ]}
       >
-        <StyledInputNumber formatter={inputNumberFormatter} onChange={onChangeInputNumber} />
+        <StyledInputNumber
+          formatter={inputNumberFormatter}
+          onChange={onChangeInputNumber}
+        />
       </Form.Item>
 
       <Form.Item
@@ -67,7 +72,10 @@ const StockTransactionForm: React.FC<StockTransactionFormProps> = ({
           { required: true, message: '단가를 입력해 주세요.' },
         ]}
       >
-        <StyledInputNumber formatter={inputNumberFormatter} onChange={onChangeInputNumber} />
+        <StyledInputNumber
+          formatter={inputNumberFormatter}
+          onChange={onChangeInputNumber}
+        />
       </Form.Item>
 
       <Form.Item label="거래금액(원)">
@@ -79,7 +87,9 @@ const StockTransactionForm: React.FC<StockTransactionFormProps> = ({
       </Form.Item>
 
       <Form.Item>
-        <Button type="primary" htmlType="submit" block>추가</Button>
+        <Button type="primary" htmlType="submit" block>
+          추가
+        </Button>
       </Form.Item>
     </Form>
   );

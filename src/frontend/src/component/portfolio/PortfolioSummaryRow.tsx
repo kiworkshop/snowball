@@ -11,7 +11,6 @@ interface PortfolioRowProps {
   };
 }
 
-
 const Row = styled.tr`
   border-bottom: 1px solid #d9d9d9;
   display: flex;
@@ -27,7 +26,6 @@ const Row = styled.tr`
     width: 20%;
   }
 `;
-
 
 const PortfolioSummaryRow: React.FC<PortfolioRowProps> = ({ portfolio }) => {
   return (

@@ -13,7 +13,6 @@ interface EditorProps {
   error: Error | null;
 }
 
-
 const StyledEditor = styled(ReactQuill)`
   margin-bottom: 30px;
 
@@ -21,7 +20,6 @@ const StyledEditor = styled(ReactQuill)`
     min-height: 500px;
   }
 `;
-
 
 const Editor: React.FC<EditorProps> = ({
   formData,

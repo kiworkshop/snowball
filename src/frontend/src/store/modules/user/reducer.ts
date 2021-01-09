@@ -1,12 +1,6 @@
 import { createReducer } from 'typesafe-actions';
 import { UserAction, UserState } from './types';
-import {
-  LOGIN_FAILURE,
-  LOGIN_REQUEST,
-  LOGIN_STORED_USER,
-  LOGIN_SUCCESS,
-  LOGOUT,
-} from './actions';
+import * as actions from './actions';
 
 const initialState: UserState = {
   profile: {
@@ -19,12 +13,12 @@ const initialState: UserState = {
 };
 
 const user = createReducer<UserState, UserAction>(initialState, {
-  [LOGIN_REQUEST]: (state) => ({
+  [actions.LOGIN_REQUEST]: (state) => ({
     ...state,
     loading: { ...state.loading, login: true },
     error: { ...state.error, login: null },
   }),
-  [LOGIN_SUCCESS]: (state, action) => ({
+  [actions.LOGIN_SUCCESS]: (state, action) => ({
     ...state,
     profile: {
       id: action.payload.id,
@@ -34,12 +28,12 @@ const user = createReducer<UserState, UserAction>(initialState, {
     loading: { ...state.loading, login: false },
     error: { ...state.error, login: null },
   }),
-  [LOGIN_FAILURE]: (state, action) => ({
+  [actions.LOGIN_FAILURE]: (state, action) => ({
     ...state,
     loading: { ...state.loading, login: false },
     error: { ...state.error, login: action.payload },
   }),
-  [LOGOUT]: (state) => ({
+  [actions.LOGOUT]: (state) => ({
     ...state,
     profile: {
       id: null,
@@ -47,7 +41,7 @@ const user = createReducer<UserState, UserAction>(initialState, {
       pictureUrl: '',
     },
   }),
-  [LOGIN_STORED_USER]: (state, action) => ({
+  [actions.LOGIN_STORED_USER]: (state, action) => ({
     ...state,
     profile: {
       id: action.payload.id,

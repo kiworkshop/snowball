@@ -10,15 +10,13 @@ interface MatchProps {
   id: string;
 }
 
-
 const NoteDetailPageContentContainer = styled(Container)`
   padding: 30px 0;
-  
+
   @media (max-width: 767px) {
     padding: 30px 20px;
   }
-`
-
+`;
 
 const NoteDetailPage: React.FC<RouteComponentProps<MatchProps>> = ({
   match,

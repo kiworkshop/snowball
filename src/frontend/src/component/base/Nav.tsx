@@ -16,7 +16,6 @@ interface NavProps {
   onClickNavLink: (link: string) => () => void;
 }
 
-
 const Header = styled(Layout.Header)`
   background: #fff;
   box-shadow: 0 2px 8px #f0f1f2;
@@ -32,18 +31,15 @@ const Header = styled(Layout.Header)`
   }
 `;
 
-
 const InnerWrapper = styled(Container)`
   align-items: center;
   display: flex;
   justify-content: space-between;
 `;
 
-
 const NavMenu = styled(Menu)`
   border-bottom: none;
 `;
-
 
 const Nav: React.FC<NavProps> = ({
   profile,

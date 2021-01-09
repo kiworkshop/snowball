@@ -2,29 +2,7 @@ import { createReducer } from 'typesafe-actions';
 import moment from 'moment';
 
 import { NoteAction, NoteState } from './types';
-import {
-  INITIALIZE_FORM,
-  INITIALIZE_NOTE,
-  SET_FORM,
-  GET_NOTES_REQUEST,
-  GET_NOTES_SUCCESS,
-  GET_NOTES_FAILURE,
-  GET_NOTE_REQUEST,
-  GET_NOTE_SUCCESS,
-  GET_NOTE_FAILURE,
-  CREATE_NOTE_REQUEST,
-  CREATE_NOTE_SUCCESS,
-  CREATE_NOTE_FAILURE,
-  SET_FORM_FOR_UPDATE_REQUEST,
-  SET_FORM_FOR_UPDATE_SUCCESS,
-  SET_FORM_FOR_UPDATE_FAILURE,
-  UPDATE_NOTE_REQUEST,
-  UPDATE_NOTE_SUCCESS,
-  UPDATE_NOTE_FAILURE,
-  DELETE_NOTE_REQUEST,
-  DELETE_NOTE_SUCCESS,
-  DELETE_NOTE_FAILURE,
-} from './actions';
+import * as actions from './actions';
 
 const initialState: NoteState = {
   note: {
@@ -48,7 +26,7 @@ const initialState: NoteState = {
 };
 
 const note = createReducer<NoteState, NoteAction>(initialState, {
-  [INITIALIZE_FORM]: (state) => ({
+  [actions.INITIALIZE_FORM]: (state) => ({
     ...state,
     form: {
       title: '',
@@ -57,7 +35,7 @@ const note = createReducer<NoteState, NoteAction>(initialState, {
       stockTransactions: [],
     },
   }),
-  [INITIALIZE_NOTE]: (state) => ({
+  [actions.INITIALIZE_NOTE]: (state) => ({
     ...state,
     note: {
       id: null,
@@ -69,21 +47,21 @@ const note = createReducer<NoteState, NoteAction>(initialState, {
       stockTransactions: [],
     },
   }),
-  [SET_FORM]: (state, action) => ({
+  [actions.SET_FORM]: (state, action) => ({
     ...state,
     form: {
       ...state.form,
       ...action.payload,
     },
   }),
-  [GET_NOTES_REQUEST]: (state) => ({
+  [actions.GET_NOTES_REQUEST]: (state) => ({
     ...state,
     loading: {
       ...state.loading,
       getNotes: true,
     },
   }),
-  [GET_NOTES_SUCCESS]: (state, action) => ({
+  [actions.GET_NOTES_SUCCESS]: (state, action) => ({
     ...state,
     notes: action.payload.content.map((note) => ({
       ...note,
@@ -111,7 +89,7 @@ const note = createReducer<NoteState, NoteAction>(initialState, {
       getNotes: null,
     },
   }),
-  [GET_NOTES_FAILURE]: (state, action) => ({
+  [actions.GET_NOTES_FAILURE]: (state, action) => ({
     ...state,
     loading: {
       ...state.loading,
@@ -122,7 +100,7 @@ const note = createReducer<NoteState, NoteAction>(initialState, {
       getNotes: action.payload,
     },
   }),
-  [GET_NOTE_REQUEST]: (state) => ({
+  [actions.GET_NOTE_REQUEST]: (state) => ({
     ...state,
     loading: {
       ...state.loading,
@@ -133,7 +111,7 @@ const note = createReducer<NoteState, NoteAction>(initialState, {
       getNote: null,
     },
   }),
-  [GET_NOTE_SUCCESS]: (state, action) => ({
+  [actions.GET_NOTE_SUCCESS]: (state, action) => ({
     ...state,
     note: {
       ...action.payload,
@@ -163,7 +141,7 @@ const note = createReducer<NoteState, NoteAction>(initialState, {
       getNote: null,
     },
   }),
-  [GET_NOTE_FAILURE]: (state, action) => ({
+  [actions.GET_NOTE_FAILURE]: (state, action) => ({
     ...state,
     loading: {
       ...state.loading,
@@ -174,7 +152,7 @@ const note = createReducer<NoteState, NoteAction>(initialState, {
       getNote: action.payload,
     },
   }),
-  [CREATE_NOTE_REQUEST]: (state) => ({
+  [actions.CREATE_NOTE_REQUEST]: (state) => ({
     ...state,
     loading: {
       ...state.loading,
@@ -185,7 +163,7 @@ const note = createReducer<NoteState, NoteAction>(initialState, {
       createNote: null,
     },
   }),
-  [CREATE_NOTE_SUCCESS]: (state, action) => ({
+  [actions.CREATE_NOTE_SUCCESS]: (state, action) => ({
     ...state,
     loading: {
       ...state.loading,
@@ -196,7 +174,7 @@ const note = createReducer<NoteState, NoteAction>(initialState, {
       createNote: null,
     },
   }),
-  [CREATE_NOTE_FAILURE]: (state, action) => ({
+  [actions.CREATE_NOTE_FAILURE]: (state, action) => ({
     ...state,
     loading: {
       ...state.loading,
@@ -207,7 +185,7 @@ const note = createReducer<NoteState, NoteAction>(initialState, {
       createNote: action.payload,
     },
   }),
-  [SET_FORM_FOR_UPDATE_REQUEST]: (state) => ({
+  [actions.SET_FORM_FOR_UPDATE_REQUEST]: (state) => ({
     ...state,
     loading: {
       ...state.loading,
@@ -218,7 +196,7 @@ const note = createReducer<NoteState, NoteAction>(initialState, {
       setFormForUpdate: null,
     },
   }),
-  [SET_FORM_FOR_UPDATE_SUCCESS]: (state) => ({
+  [actions.SET_FORM_FOR_UPDATE_SUCCESS]: (state) => ({
     ...state,
     loading: {
       ...state.loading,
@@ -229,7 +207,7 @@ const note = createReducer<NoteState, NoteAction>(initialState, {
       setFormForUpdate: null,
     },
   }),
-  [SET_FORM_FOR_UPDATE_FAILURE]: (state, action) => ({
+  [actions.SET_FORM_FOR_UPDATE_FAILURE]: (state, action) => ({
     ...state,
     loading: {
       ...state.loading,
@@ -240,7 +218,7 @@ const note = createReducer<NoteState, NoteAction>(initialState, {
       setFormForUpdate: action.payload,
     },
   }),
-  [UPDATE_NOTE_REQUEST]: (state) => ({
+  [actions.UPDATE_NOTE_REQUEST]: (state) => ({
     ...state,
     loading: {
       ...state.loading,
@@ -251,7 +229,7 @@ const note = createReducer<NoteState, NoteAction>(initialState, {
       updateNote: null,
     },
   }),
-  [UPDATE_NOTE_SUCCESS]: (state) => ({
+  [actions.UPDATE_NOTE_SUCCESS]: (state) => ({
     ...state,
     loading: {
       ...state.loading,
@@ -262,7 +240,7 @@ const note = createReducer<NoteState, NoteAction>(initialState, {
       updateNote: null,
     },
   }),
-  [UPDATE_NOTE_FAILURE]: (state, action) => ({
+  [actions.UPDATE_NOTE_FAILURE]: (state, action) => ({
     ...state,
     loading: {
       ...state.loading,
@@ -273,7 +251,7 @@ const note = createReducer<NoteState, NoteAction>(initialState, {
       updateNote: action.payload,
     },
   }),
-  [DELETE_NOTE_REQUEST]: (state) => ({
+  [actions.DELETE_NOTE_REQUEST]: (state) => ({
     ...state,
     loading: {
       ...state.loading,
@@ -284,7 +262,7 @@ const note = createReducer<NoteState, NoteAction>(initialState, {
       deleteNote: null,
     },
   }),
-  [DELETE_NOTE_SUCCESS]: (state) => ({
+  [actions.DELETE_NOTE_SUCCESS]: (state) => ({
     ...state,
     loading: {
       ...state.loading,
@@ -295,7 +273,7 @@ const note = createReducer<NoteState, NoteAction>(initialState, {
       deleteNote: null,
     },
   }),
-  [DELETE_NOTE_FAILURE]: (state, action) => ({
+  [actions.DELETE_NOTE_FAILURE]: (state, action) => ({
     ...state,
     loading: {
       ...state.loading,

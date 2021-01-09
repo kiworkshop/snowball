@@ -34,11 +34,7 @@ const StyledContainer = styled.div`
 `;
 
 const Container: React.FC<ContainerProps> = ({ children, ...rest }) => {
-  return (
-    <StyledContainer {...rest}>
-      {children}
-    </StyledContainer>
-  );
+  return <StyledContainer {...rest}>{children}</StyledContainer>;
 };
 
 export default Container;

@@ -13,23 +13,19 @@ const PageContainer = styled.div`
   width: 100%;
 `;
 
-
 const SnowmanImg = styled.img`
   margin-right: 30px;
   width: 180px;
 `;
-
 
 const MainMessage = styled(Typography.Title)`
   color: #4e89ae !important;
   text-shadow: 4px 4px 8px rgba(150, 150, 150, 0.35);
 `;
 
-
 const SubMessage = styled(Typography.Paragraph)`
   color: rgba(78, 137, 174, 0.9);
 `;
-
 
 const Page404 = () => {
   const history = useHistory();
@@ -41,8 +37,12 @@ const Page404 = () => {
         <SnowmanImg src={snowmanImage} />
         <div>
           <MainMessage>404 Not Found</MainMessage>
-          <SubMessage>페이지를 찾을 수 없습니다. 올바른 주소를 입력해주세요.</SubMessage>
-          <Button size="large" onClick={onClick}>홈으로</Button>
+          <SubMessage>
+            페이지를 찾을 수 없습니다. 올바른 주소를 입력해주세요.
+          </SubMessage>
+          <Button size="large" onClick={onClick}>
+            홈으로
+          </Button>
         </div>
       </Space>
     </PageContainer>
