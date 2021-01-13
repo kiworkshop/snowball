@@ -2,7 +2,7 @@ import React from 'react';
 import { Popconfirm, Table, Typography } from 'antd';
 import { CloseCircleOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
-import { addCommaToNumber } from '../../lib/transform';
+import { addCommaToNumber } from '../../lib/number';
 import { $red } from '../../constants/colors';
 
 interface StockTransactionDataSource {

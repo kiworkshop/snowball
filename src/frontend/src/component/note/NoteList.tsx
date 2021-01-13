@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Collapse, Button, Typography, Tag, Empty, Alert } from 'antd';
 import { RightOutlined } from '@ant-design/icons';
 import { Notes } from '../../store/modules/note';
-import { addCommaToNumber } from '../../lib/transform';
+import { addCommaToNumber } from '../../lib/number';
 import { $mainColor } from '../../constants/colors';
 
 interface NoteListProps {
