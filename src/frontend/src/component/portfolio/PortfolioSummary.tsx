@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, Pagination, Empty, Alert } from 'antd';
+import { Typography, Pagination, Empty } from 'antd';
 import styled from 'styled-components';
 import { $mainColor } from '../../constants/colors';
 import PortfolioSummaryRow from './PortfolioSummaryRow';
@@ -14,7 +14,6 @@ interface PortfolioSummaryProps {
   }>;
   page: number;
   onPageChange: (page: number) => void;
-  error: Error | null;
 }
 
 const Wrapper = styled.div`
@@ -69,15 +68,10 @@ const PaginationWrapper = styled.div`
   text-align: right;
 `;
 
-const ErrorAlert = styled(Alert)`
-  margin-top: 30px;
-`;
-
 const PortfolioSummary: React.FC<PortfolioSummaryProps> = ({
   portfolios,
   page,
   onPageChange,
-  error,
 }) => {
   return (
     <Wrapper>
@@ -112,15 +106,6 @@ const PortfolioSummary: React.FC<PortfolioSummaryProps> = ({
           simple
         />
       </PaginationWrapper>
-
-      {error && (
-        <ErrorAlert
-          message="Error"
-          description="포트폴리오 요약 정보를 불러오는 중 오류가 발생했습니다."
-          type="error"
-          closable
-        />
-      )}
     </Wrapper>
   );
 };

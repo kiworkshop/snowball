@@ -19,6 +19,7 @@ import {
 } from './actions';
 import { Note } from '../../../lib/api/note';
 import routes from '../../../routes';
+import errorHandler from '../../../lib/error';
 
 function* getNotesSaga(action: ReturnType<typeof getNotesAsync.request>) {
   try {
@@ -26,6 +27,7 @@ function* getNotesSaga(action: ReturnType<typeof getNotesAsync.request>) {
     const response = yield call(noteAPI.getNotes, size, page);
     yield put(getNotesAsync.success(response.data));
   } catch (e) {
+    errorHandler(e);
     yield put(getNotesAsync.failure(e));
   }
 }
@@ -35,6 +37,7 @@ function* getNoteSaga(action: ReturnType<typeof getNoteAsync.request>) {
     const response = yield call(noteAPI.getNote, action.payload);
     yield put(getNoteAsync.success(response.data));
   } catch (e) {
+    errorHandler(e);
     yield put(getNoteAsync.failure(e));
   }
 }
@@ -51,6 +54,7 @@ function* createNoteSaga(action: ReturnType<typeof createNoteAsync.request>) {
     yield put(createNoteAsync.success());
     history.push(routes.note.detail(response.data.id));
   } catch (e) {
+    errorHandler(e);
     yield put(createNoteAsync.failure(e));
   }
 }
@@ -80,6 +84,7 @@ function* setFormForUpdateSaga(
     );
     yield put(setFormForUpdateAsync.success());
   } catch (e) {
+    errorHandler(e);
     yield put(setFormForUpdateAsync.failure(e));
   }
 }
@@ -96,6 +101,7 @@ function* updateNoteSaga(action: ReturnType<typeof updateNoteAsync.request>) {
     yield put(updateNoteAsync.success());
     history.push(routes.note.detail(id));
   } catch (e) {
+    errorHandler(e);
     yield put(updateNoteAsync.failure(e));
   }
 }
@@ -105,6 +111,7 @@ function* deleteNoteSaga(action: ReturnType<typeof deleteNoteAsync.request>) {
     yield call(noteAPI.deleteNote, action.payload);
     yield put(deleteNoteAsync.success());
   } catch (e) {
+    errorHandler(e);
     yield put(deleteNoteAsync.failure(e));
   }
 }

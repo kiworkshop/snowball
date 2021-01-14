@@ -8,7 +8,7 @@ const PortfolioSummaryContainer = () => {
   const [page, setPage] = useState(1);
   const dispatch = useDispatch();
   const { id } = useSelector((state: RootState) => state.user.profile);
-  const { portfolioSummaries, error } = useSelector(
+  const { portfolioSummaries } = useSelector(
     (state: RootState) => state.portfolio
   );
 
@@ -27,7 +27,6 @@ const PortfolioSummaryContainer = () => {
       page={page}
       onPageChange={onPageChange}
       portfolios={portfolioSummaries}
-      error={error.getPortfolioSummaries}
     />
   );
 };

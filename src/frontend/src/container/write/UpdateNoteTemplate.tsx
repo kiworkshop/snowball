@@ -3,8 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Input, PageHeader, Skeleton } from 'antd';
 import styled from 'styled-components';
 import { RootState } from '../../store/modules';
-import { initializeForm, setForm, setFormForUpdateAsync, updateNoteAsync } from '../../store/modules/note';
-import Page404 from '../../pages/Page404';
+import {
+  initializeForm,
+  setForm,
+  setFormForUpdateAsync,
+  updateNoteAsync,
+} from '../../store/modules/note';
 import EditorContainer from './EditorContainer';
 import CalendarContainer from './CalendarContainer';
 import StockTransactionContainer from './StockTransactionContainer';
@@ -13,12 +17,10 @@ interface UpdateNoteTemplateProps {
   id: number;
 }
 
-
 const UpdateNoteTemplateContainer = styled.div`
   background: #fff;
   padding: 30px;
 `;
-
 
 const StyledSkeleton = styled(Skeleton)`
   .ant-skeleton-paragraph li {
@@ -26,19 +28,23 @@ const StyledSkeleton = styled(Skeleton)`
   }
 `;
 
-
 const UpdateNoteTemplate: React.FC<UpdateNoteTemplateProps> = ({ id }) => {
   const [isDateSelected, setIsDateSelected] = useState(true);
 
-  const dispatch                 = useDispatch();
-  const { form, loading, error } = useSelector((state: RootState) => state.note);
+  const dispatch = useDispatch();
+  const { form, loading } = useSelector((state: RootState) => state.note);
 
-  const investmentDate = useMemo(() => form.investmentDate?.format('YYYY-MM-DD'), [form.investmentDate]);
+  const investmentDate = useMemo(
+    () => form.investmentDate?.format('YYYY-MM-DD'),
+    [form.investmentDate]
+  );
 
   const onTitleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       dispatch(setForm({ title: e.target.value }));
-    }, [dispatch]);
+    },
+    [dispatch]
+  );
 
   const onSave = useCallback(() => {
     dispatch(updateNoteAsync.request({ id, form }));
@@ -51,10 +57,6 @@ const UpdateNoteTemplate: React.FC<UpdateNoteTemplateProps> = ({ id }) => {
       dispatch(initializeForm());
     };
   }, [dispatch, id]);
-
-  if (error.setFormForUpdate) {
-    return <Page404 />;
-  }
 
   return (
     <UpdateNoteTemplateContainer>
@@ -82,11 +84,7 @@ const UpdateNoteTemplate: React.FC<UpdateNoteTemplateProps> = ({ id }) => {
 
           <StockTransactionContainer />
 
-          <EditorContainer
-            loading={!!loading.updateNote}
-            error={error.updateNote}
-            onSave={onSave}
-          />
+          <EditorContainer loading={!!loading.updateNote} onSave={onSave} />
         </StyledSkeleton>
       )}
 

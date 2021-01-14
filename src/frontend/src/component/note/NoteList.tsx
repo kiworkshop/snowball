@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Collapse, Button, Typography, Tag, Empty, Alert } from 'antd';
+import { Collapse, Button, Typography, Tag, Empty } from 'antd';
 import { RightOutlined } from '@ant-design/icons';
 import { Notes } from '../../store/modules/note';
 import { addCommaToNumber } from '../../lib/number';
@@ -9,8 +9,6 @@ import { $mainColor } from '../../constants/colors';
 interface NoteListProps {
   notes: Notes;
   onClickMoreInfoButton: (id: number) => () => void;
-  loading: boolean;
-  error: Error | null;
 }
 
 const NoteListWrapper = styled.div`
@@ -55,15 +53,9 @@ const EmptyNoteList = styled(Empty)`
   padding: 50px 0;
 `;
 
-const ErrorAlert = styled(Alert)`
-  margin-top: 30px;
-`;
-
 const NoteList: React.FC<NoteListProps> = ({
   notes,
   onClickMoreInfoButton,
-  loading,
-  error,
 }) => {
   return (
     <NoteListWrapper>
@@ -130,15 +122,6 @@ const NoteList: React.FC<NoteListProps> = ({
         </Collapse>
       ) : (
         <EmptyNoteList />
-      )}
-
-      {error && (
-        <ErrorAlert
-          message="Error"
-          description="투자노트 목록을 불러오는 중 오류가 발생했습니다."
-          type="error"
-          closable
-        />
       )}
     </NoteListWrapper>
   );

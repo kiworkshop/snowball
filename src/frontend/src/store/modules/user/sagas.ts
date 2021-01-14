@@ -10,6 +10,7 @@ import {
   storeUserToLocalStorage,
   goToLoginPage,
 } from './actions';
+import errorHandler from '../../../lib/error';
 
 function* loginSaga() {
   try {
@@ -17,6 +18,7 @@ function* loginSaga() {
     yield put(loginAsync.success(response.data));
     yield put(storeUserToLocalStorage(response.data));
   } catch (e) {
+    errorHandler(e);
     yield put(loginAsync.failure(e));
   }
 }

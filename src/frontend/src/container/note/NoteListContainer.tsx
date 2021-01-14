@@ -9,9 +9,7 @@ import NoteList from '../../component/note/NoteList';
 const NoteListContainer = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { notes, loading, error } = useSelector(
-    (state: RootState) => state.note
-  );
+  const { notes } = useSelector((state: RootState) => state.note);
 
   const getNotesOfUser = useCallback(
     () => dispatch(getNotesAsync.request({ page: 0, size: 10 })),
@@ -27,12 +25,7 @@ const NoteListContainer = () => {
   }, [getNotesOfUser]);
 
   return (
-    <NoteList
-      notes={notes}
-      onClickMoreInfoButton={onClickMoreInfoButton}
-      loading={loading.getNotes}
-      error={error.getNotes}
-    />
+    <NoteList notes={notes} onClickMoreInfoButton={onClickMoreInfoButton} />
   );
 };
 
