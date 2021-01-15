@@ -49,16 +49,16 @@ class UserControllerTest extends ControllerTest {
     @Test
     void getUserTest() throws Exception {
         // given
-        UserResponse response = UserResponseFixture.create();
+        UserResponse userResponse = UserResponseFixture.create();
 
-        given(userService.getUser(anyLong())).willReturn(response);
+        given(userService.getUser(anyLong())).willReturn(userResponse);
 
         // when & then
-        mvc.perform(RestDocumentationRequestBuilders.get("/users/{id}", response.getId()))
+        mvc.perform(RestDocumentationRequestBuilders.get("/users/{id}", userResponse.getId()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(response.getId()))
-                .andExpect(jsonPath("$.name").value(response.getName()))
-                .andExpect(jsonPath("$.pictureUrl").value(response.getPictureUrl()))
+                .andExpect(jsonPath("$.id").value(userResponse.getId()))
+                .andExpect(jsonPath("$.name").value(userResponse.getName()))
+                .andExpect(jsonPath("$.pictureUrl").value(userResponse.getPictureUrl()))
                 .andDo(document("user/get-user",
                         getDocumentRequest(),
                         getDocumentResponse(),
@@ -72,9 +72,35 @@ class UserControllerTest extends ControllerTest {
                 ));
     }
 
+    @WithMockUser
+    @DisplayName("로그인 기본 페이지 요청 - 200 반환")
     @Test
+    void getMeReturnSuccess() throws Exception {
+        // given
+        UserResponse userResponse = UserResponseFixture.create();
+
+        given(userService.getMe()).willReturn(userResponse);
+
+        // when & then
+        mvc.perform(RestDocumentationRequestBuilders.get("/me"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(userResponse.getId()))
+                .andExpect(jsonPath("$.name").value(userResponse.getName()))
+                .andExpect(jsonPath("$.pictureUrl").value(userResponse.getPictureUrl()))
+                .andDo(document("user/get-me-success",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        responseFields(
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("유저 id"),
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("유저 이름"),
+                                fieldWithPath("pictureUrl").type(JsonFieldType.STRING).description("프로필 사진의 url 주소")
+                        )
+                ));
+    }
+
     @DisplayName("로그인 기본 페이지 요청 - 401 반환")
-    void login_GET_ReturnUnauthorized() throws Exception {
+    @Test
+    void getMeReturnUnauthorized() throws Exception {
         // given
         doCallRealMethod().when(restAuthenticationEntryPoint)
                 .commence(any(HttpServletRequest.class), any(HttpServletResponse.class), any(AuthenticationException.class));
@@ -82,7 +108,7 @@ class UserControllerTest extends ControllerTest {
         // when & then
         mvc.perform(RestDocumentationRequestBuilders.get("/me"))
                 .andExpect(status().isUnauthorized())
-                .andDo(document("user/me",
+                .andDo(document("user/get-me-failure",
                         getDocumentRequest(),
                         getDocumentResponse())
                 );
