@@ -17,7 +17,7 @@ import java.util.List;
 @Entity
 public class Note extends BaseTimeEntity {
 
-    @ManyToOne(fetch = FetchType.LAZY) // lazy?
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
     private String title;
     private String content;
@@ -42,5 +42,10 @@ public class Note extends BaseTimeEntity {
         this.investmentDate = note.getInvestmentDate();
         this.user = note.getUser();
         this.stockTransactions = note.getStockTransactions();
+    }
+
+    public void addStockTransactions(List<StockTransaction> stockTransactions) {
+        this.stockTransactions = stockTransactions;
+        stockTransactions.forEach(stockTransaction -> stockTransaction.addNote(this));
     }
 }

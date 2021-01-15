@@ -1,4 +1,4 @@
-package org.kiworkshop.snowball.stocktransaction.dto;
+package org.kiworkshop.snowball.stocktransaction.controller.dto;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -10,18 +10,17 @@ import org.kiworkshop.snowball.user.entity.User;
 
 @Getter
 @NoArgsConstructor
-public class StockTransactionRequestDto {
+public class StockTransactionRequest {
+
     private Note note;
-    private User user;
-    private Long quantity;
     private StockDetail stockDetail;
+    private Long quantity;
     private Long tradedPrice;
     private TransactionType transactionType;
 
     @Builder
-    public StockTransactionRequestDto(Note note, User user, Long quantity, StockDetail stockDetail, Long tradedPrice, TransactionType transactionType) {
+    public StockTransactionRequest(Note note, Long quantity, StockDetail stockDetail, Long tradedPrice, TransactionType transactionType) {
         this.note = note;
-        this.user = user;
         this.quantity = quantity;
         this.stockDetail = stockDetail;
         this.tradedPrice = tradedPrice;

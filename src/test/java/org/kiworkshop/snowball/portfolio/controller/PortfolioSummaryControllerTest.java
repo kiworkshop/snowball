@@ -45,7 +45,7 @@ class PortfolioSummaryControllerTest extends ControllerTest{
         userFixture = UserFixture.create();
     }
 
-    @WithMockUser(roles = "USER")
+/*    @WithMockUser(roles = "USER")
     @Test
     void getStockDetails() throws Exception {
         Long userId = 1L;
@@ -67,5 +67,5 @@ class PortfolioSummaryControllerTest extends ControllerTest{
                                 fieldWithPath("[].targetEarningsRate").type(JsonFieldType.NUMBER).description("목표수익률")                        )
                         )
                 );
-    }
+    }*/
 }

@@ -1,7 +1,6 @@
 package org.kiworkshop.snowball.portfolio.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.kiworkshop.snowball.auth.LoginUser;
 import org.kiworkshop.snowball.portfolio.controller.dto.PortfolioStockResponseDto;
 import org.kiworkshop.snowball.portfolio.service.PortfolioSummaryService;
 import org.kiworkshop.snowball.user.entity.User;
@@ -17,7 +16,7 @@ public class PortfolioSummaryController {
     private final PortfolioSummaryService portfolioSummaryService;
 
     @GetMapping("/portfolio-summary")
-    public List<PortfolioStockResponseDto> getPortfolioSummary(@LoginUser User user) {
+    public List<PortfolioStockResponseDto> getPortfolioSummary(User user) {
         return portfolioSummaryService.getPortfolioSummary(user.getId());
     }
 }

@@ -28,7 +28,8 @@ public class StockDetail extends BaseTimeEntity {
     private MarketType marketType;
 
     @Builder
-    public StockDetail(String companyName, String itemCode, String category, String mainProduct, LocalDate listingDate, String settlementMonth, String representative, MarketType marketType) {
+    public StockDetail(String companyName, String itemCode, String category, String mainProduct, LocalDate listingDate,
+                       String settlementMonth, String representative, MarketType marketType) {
         this.companyName = companyName;
         this.itemCode = itemCode;
         this.category = category;
