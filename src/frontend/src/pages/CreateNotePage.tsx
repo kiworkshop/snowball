@@ -13,7 +13,6 @@ const CreateNotePageContentContainer = styled(Container)`
   }
 `;
 
-
 const CreateNotePage = () => {
   return (
     <Layout style={{ minHeight: '100%', paddingTop: '64px' }}>

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Button, Alert, Spin } from 'antd';
+import { Button, Spin } from 'antd';
 import ReactQuill from 'react-quill';
 import { Form } from '../../store/modules/note';
 import 'react-quill/dist/quill.snow.css';
@@ -10,7 +10,6 @@ interface EditorProps {
   onChange: (content: string) => void;
   onSave: () => void;
   loading: boolean;
-  error: Error | null;
 }
 
 
@@ -28,7 +27,6 @@ const Editor: React.FC<EditorProps> = ({
   onChange,
   onSave,
   loading,
-  error,
 }) => {
   const toolbarOptions = [
     ['bold', 'italic', 'underline', 'strike'],
@@ -64,15 +62,6 @@ const Editor: React.FC<EditorProps> = ({
           저장하기
         </Button>
       </Spin>
-
-      {error && (
-        <Alert
-          message="노트를 작성하는 도중 오류가 발생했습니다."
-          type="error"
-          closable
-          style={{ position: 'relative', top: '-40px' }}
-        />
-      )}
     </>
   );
 };

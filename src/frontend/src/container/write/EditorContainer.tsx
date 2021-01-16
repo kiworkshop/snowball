@@ -7,14 +7,12 @@ import Editor from '../../component/write/Editor';
 interface EditorContainerProps {
   onSave: () => void;
   loading: boolean;
-  error: Error | null;
 }
 
 
 const EditorContainer: React.FC<EditorContainerProps> = ({
   onSave,
   loading,
-  error,
 }) => {
   const dispatch = useDispatch();
   const { form } = useSelector((state: RootState) => state.note);
@@ -30,7 +28,6 @@ const EditorContainer: React.FC<EditorContainerProps> = ({
       onChange={onChange}
       onSave={onSave}
       loading={loading}
-      error={error}
     />
   );
 };

@@ -12,12 +12,10 @@ interface NoteProps {
   error: Error | null;
 }
 
-
 const NoteContainer = styled.div`
   background: #fff;
   padding: 30px;
 `;
-
 
 const NoteHeader = styled(Space)`
   border-bottom: 1px solid #f5f5f5;
@@ -30,7 +28,6 @@ const NoteHeader = styled(Space)`
     flex-direction: column;
   }
 `;
-
 
 const StockTransactionTableContainer = styled.div`
   display: flex;
@@ -51,7 +48,6 @@ const StockTransactionTableContainer = styled.div`
     flex-direction: column;
   }
 `;
-
 
 const NoteDetail: React.FC<NoteProps> = ({
   note,

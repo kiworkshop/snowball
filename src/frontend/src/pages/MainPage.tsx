@@ -15,7 +15,6 @@ const MainPageContentContainer = styled(Container)`
   }
 `;
 
-
 const MainPage = () => {
   return (
     <Layout style={{ minHeight: '100%', paddingTop: '64px' }}>

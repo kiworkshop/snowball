@@ -1,6 +1,5 @@
 import { call, put, takeEvery, getContext } from 'redux-saga/effects';
 import store from 'store2';
-
 import * as userAPI from '../../../lib/api/user';
 import {
   LOGIN_REQUEST,
@@ -11,6 +10,7 @@ import {
   storeUserToLocalStorage,
   goToLoginPage,
 } from './actions';
+import errorHandler from '../../../lib/error';
 
 function* loginSaga() {
   try {
@@ -18,6 +18,7 @@ function* loginSaga() {
     yield put(loginAsync.success(response.data));
     yield put(storeUserToLocalStorage(response.data));
   } catch (e) {
+    errorHandler(e);
     yield put(loginAsync.failure(e));
   }
 }

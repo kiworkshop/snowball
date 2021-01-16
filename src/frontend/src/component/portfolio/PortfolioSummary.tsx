@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, Pagination, Empty, Alert } from 'antd';
+import { Typography, Pagination, Empty } from 'antd';
 import styled from 'styled-components';
 import { $mainColor } from '../../constants/colors';
 import PortfolioSummaryRow from './PortfolioSummaryRow';
@@ -14,9 +14,7 @@ interface PortfolioSummaryProps {
   }>;
   page: number;
   onPageChange: (page: number) => void;
-  error: Error | null;
 }
-
 
 const Wrapper = styled.div`
   background: #fff;
@@ -25,12 +23,10 @@ const Wrapper = styled.div`
   padding: 20px;
 `;
 
-
 const TableTitle = styled(Typography.Title)`
   color: ${$mainColor};
   margin-bottom: 30px;
-`
-
+`;
 
 const Table = styled.table`
   display: block;
@@ -48,7 +44,6 @@ const Table = styled.table`
     width: 100%;
   }
 `;
-
 
 const TableHeader = styled.thead`
   background: #27496d;
@@ -68,23 +63,15 @@ const TableHeader = styled.thead`
   }
 `;
 
-
 const PaginationWrapper = styled.div`
   margin-top: 20px;
   text-align: right;
 `;
 
-
-const ErrorAlert = styled(Alert)`
-  margin-top: 30px;
-`
-
-
 const PortfolioSummary: React.FC<PortfolioSummaryProps> = ({
   portfolios,
   page,
   onPageChange,
-  error,
 }) => {
   return (
     <Wrapper>
@@ -119,15 +106,6 @@ const PortfolioSummary: React.FC<PortfolioSummaryProps> = ({
           simple
         />
       </PaginationWrapper>
-
-      {error && (
-        <ErrorAlert
-          message="Error"
-          description="포트폴리오 요약 정보를 불러오는 중 오류가 발생했습니다."
-          type="error"
-          closable
-        />
-      )}
     </Wrapper>
   );
 };

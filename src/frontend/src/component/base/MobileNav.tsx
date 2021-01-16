@@ -17,7 +17,6 @@ interface MobileNavProps {
   onClickNavLink: (link: string) => () => void;
 }
 
-
 const Header = styled(Layout.Header)`
   background: #fff;
   box-shadow: 0 2px 8px #f0f1f2;
@@ -33,7 +32,6 @@ const Header = styled(Layout.Header)`
   }
 `;
 
-
 const InnerWrapper = styled(Container)`
   align-items: center;
   display: flex;
@@ -45,18 +43,15 @@ const InnerWrapper = styled(Container)`
   }
 `;
 
-
 const MenuDrawer = styled(Drawer)`
   @media (min-width: ${MIN_MEDIUM}px) {
     display: none;
   }
 `;
 
-
 const MobileAndTabletMenu = styled(Menu)`
   border-right: none;
 `;
-
 
 const DrawerTrigger = styled(Button)`
   @media (min-width: ${MIN_MEDIUM}px) {
@@ -64,8 +59,7 @@ const DrawerTrigger = styled(Button)`
   }
 `;
 
-
-const MobileNav:React.FC<MobileNavProps> = ({
+const MobileNav: React.FC<MobileNavProps> = ({
   profile,
   onLogout,
   onClickNavLink,

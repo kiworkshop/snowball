@@ -3,7 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { Input, PageHeader } from 'antd';
 import { RootState } from '../../store/modules';
-import { createNoteAsync, initializeForm, setForm } from '../../store/modules/note';
+import {
+  createNoteAsync,
+  initializeForm,
+  setForm,
+} from '../../store/modules/note';
 import { $white } from '../../constants/colors';
 import EditorContainer from './EditorContainer';
 import CalendarContainer from './CalendarContainer';
@@ -12,19 +16,29 @@ import StockTransactionContainer from './StockTransactionContainer';
 const CreateNoteTemplate = () => {
   const [isDateSelected, setIsDateSelected] = useState(false);
 
-  const dispatch                 = useDispatch();
-  const { form, loading, error } = useSelector((state: RootState) => state.note);
+  const dispatch = useDispatch();
+  const { form, loading } = useSelector((state: RootState) => state.note);
 
-  const TODAY          = useMemo(() => moment(Date.now()), []);
-  const investmentDate = useMemo(() => form.investmentDate?.format('YYYY-MM-DD'), [form.investmentDate]);
+  const TODAY = useMemo(() => moment(Date.now()), []);
+  const investmentDate = useMemo(
+    () => form.investmentDate?.format('YYYY-MM-DD'),
+    [form.investmentDate]
+  );
 
-  const onClickBackButton = useCallback(() => setIsDateSelected(false), [setIsDateSelected]);
-  const onSave            = useCallback(() => dispatch(createNoteAsync.request(form)), [dispatch, form]);
+  const onClickBackButton = useCallback(() => setIsDateSelected(false), [
+    setIsDateSelected,
+  ]);
+  const onSave = useCallback(() => dispatch(createNoteAsync.request(form)), [
+    dispatch,
+    form,
+  ]);
 
   const onTitleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       dispatch(setForm({ title: e.target.value }));
-    }, [dispatch]);
+    },
+    [dispatch]
+  );
 
   useEffect(() => {
     dispatch(setForm({ investmentDate: TODAY }));
@@ -56,7 +70,7 @@ const CreateNoteTemplate = () => {
 
           <StockTransactionContainer />
 
-          <EditorContainer loading={!!loading.createNote} error={error.createNote} onSave={onSave} />
+          <EditorContainer loading={!!loading.createNote} onSave={onSave} />
         </div>
       )}
 

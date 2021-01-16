@@ -1,12 +1,6 @@
 import moment from 'moment';
-import {
-  call,
-  put,
-  takeEvery,
-  takeLatest,
-  getContext,
-} from 'redux-saga/effects';
-
+import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
+import * as history from '../../../lib/history';
 import * as noteAPI from '../../../lib/api/note';
 import {
   GET_NOTES_REQUEST,
@@ -15,17 +9,17 @@ import {
   SET_FORM_FOR_UPDATE_REQUEST,
   UPDATE_NOTE_REQUEST,
   DELETE_NOTE_REQUEST,
-  GO_TO_NOTE_DETAIL_PAGE,
   getNoteAsync,
   createNoteAsync,
   setFormForUpdateAsync,
   updateNoteAsync,
   deleteNoteAsync,
   getNotesAsync,
-  goToNoteDetailPage,
   setForm,
 } from './actions';
 import { Note } from '../../../lib/api/note';
+import routes from '../../../routes';
+import errorHandler from '../../../lib/error';
 
 function* getNotesSaga(action: ReturnType<typeof getNotesAsync.request>) {
   try {
@@ -33,6 +27,7 @@ function* getNotesSaga(action: ReturnType<typeof getNotesAsync.request>) {
     const response = yield call(noteAPI.getNotes, size, page);
     yield put(getNotesAsync.success(response.data));
   } catch (e) {
+    errorHandler(e);
     yield put(getNotesAsync.failure(e));
   }
 }
@@ -42,6 +37,7 @@ function* getNoteSaga(action: ReturnType<typeof getNoteAsync.request>) {
     const response = yield call(noteAPI.getNote, action.payload);
     yield put(getNoteAsync.success(response.data));
   } catch (e) {
+    errorHandler(e);
     yield put(getNoteAsync.failure(e));
   }
 }
@@ -56,8 +52,9 @@ function* createNoteSaga(action: ReturnType<typeof createNoteAsync.request>) {
 
     const response = yield call(noteAPI.createNote, form);
     yield put(createNoteAsync.success());
-    yield put(goToNoteDetailPage(response.data.id));
+    history.push(routes.note.detail(response.data.id));
   } catch (e) {
+    errorHandler(e);
     yield put(createNoteAsync.failure(e));
   }
 }
@@ -87,6 +84,7 @@ function* setFormForUpdateSaga(
     );
     yield put(setFormForUpdateAsync.success());
   } catch (e) {
+    errorHandler(e);
     yield put(setFormForUpdateAsync.failure(e));
   }
 }
@@ -101,8 +99,9 @@ function* updateNoteSaga(action: ReturnType<typeof updateNoteAsync.request>) {
 
     yield call(noteAPI.updateNote, id, form);
     yield put(updateNoteAsync.success());
-    yield put(goToNoteDetailPage(id));
+    history.push(routes.note.detail(id));
   } catch (e) {
+    errorHandler(e);
     yield put(updateNoteAsync.failure(e));
   }
 }
@@ -112,15 +111,9 @@ function* deleteNoteSaga(action: ReturnType<typeof deleteNoteAsync.request>) {
     yield call(noteAPI.deleteNote, action.payload);
     yield put(deleteNoteAsync.success());
   } catch (e) {
+    errorHandler(e);
     yield put(deleteNoteAsync.failure(e));
   }
-}
-
-export function* goToNoteDetailPageSaga(
-  action: ReturnType<typeof goToNoteDetailPage>
-) {
-  const history = yield getContext('history');
-  history.push(`/note/${action.payload}`);
 }
 
 export function* noteSaga() {
@@ -130,5 +123,4 @@ export function* noteSaga() {
   yield takeEvery(SET_FORM_FOR_UPDATE_REQUEST, setFormForUpdateSaga);
   yield takeLatest(UPDATE_NOTE_REQUEST, updateNoteSaga);
   yield takeLatest(DELETE_NOTE_REQUEST, deleteNoteSaga);
-  yield takeEvery(GO_TO_NOTE_DETAIL_PAGE, goToNoteDetailPageSaga);
 }

@@ -7,24 +7,25 @@ import { getNotesAsync } from '../../store/modules/note';
 import NoteList from '../../component/note/NoteList';
 
 const NoteListContainer = () => {
-  const history                   = useHistory();
-  const dispatch                  = useDispatch();
-  const { notes, loading, error } = useSelector((state: RootState) => state.note);
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const { notes } = useSelector((state: RootState) => state.note);
 
-  const getNotesOfUser        = useCallback(() => dispatch(getNotesAsync.request({ page: 0, size: 10 })), [dispatch]);
-  const onClickMoreInfoButton = useCallback((noteId: number) => () => history.push(routes.note.detail(noteId)), [history]);
+  const getNotesOfUser = useCallback(
+    () => dispatch(getNotesAsync.request({ page: 0, size: 10 })),
+    [dispatch]
+  );
+  const onClickMoreInfoButton = useCallback(
+    (noteId: number) => () => history.push(routes.note.detail(noteId)),
+    [history]
+  );
 
   useEffect(() => {
     getNotesOfUser();
   }, [getNotesOfUser]);
 
   return (
-    <NoteList
-      notes={notes}
-      onClickMoreInfoButton={onClickMoreInfoButton}
-      loading={loading.getNotes}
-      error={error.getNotes}
-    />
+    <NoteList notes={notes} onClickMoreInfoButton={onClickMoreInfoButton} />
   );
 };
 

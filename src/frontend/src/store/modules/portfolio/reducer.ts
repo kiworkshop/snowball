@@ -1,11 +1,7 @@
 import { createReducer } from 'typesafe-actions';
 
 import { PortfolioAction, PortfolioState } from './types';
-import {
-  GET_PORTFOLIO_SUMMARIES_REQUEST,
-  GET_PORTFOLIO_SUMMARIES_SUCCESS,
-  GET_PORTFOLIO_SUMMARIES_FAILURE,
-} from './actions';
+import * as actions from './actions';
 
 const initialState: PortfolioState = {
   portfolioSummaries: [],
@@ -14,7 +10,7 @@ const initialState: PortfolioState = {
 };
 
 const portfolio = createReducer<PortfolioState, PortfolioAction>(initialState, {
-  [GET_PORTFOLIO_SUMMARIES_REQUEST]: (state) => ({
+  [actions.GET_PORTFOLIO_SUMMARIES_REQUEST]: (state) => ({
     ...state,
     loading: {
       ...state.loading,
@@ -25,7 +21,7 @@ const portfolio = createReducer<PortfolioState, PortfolioAction>(initialState, {
       getPortfolioSummaries: null,
     },
   }),
-  [GET_PORTFOLIO_SUMMARIES_SUCCESS]: (state, action) => ({
+  [actions.GET_PORTFOLIO_SUMMARIES_SUCCESS]: (state, action) => ({
     ...state,
     portfolioSummaries: action.payload,
     loading: {
@@ -33,7 +29,7 @@ const portfolio = createReducer<PortfolioState, PortfolioAction>(initialState, {
       getPortfolioSummaries: false,
     },
   }),
-  [GET_PORTFOLIO_SUMMARIES_FAILURE]: (state, action) => ({
+  [actions.GET_PORTFOLIO_SUMMARIES_FAILURE]: (state, action) => ({
     ...state,
     loading: {
       ...state.loading,

@@ -10,18 +10,23 @@ interface NavContainerProps {
   selectedMenu?: Array<string>;
 }
 
-
 const NavContainer: React.FC<NavContainerProps> = ({ selectedMenu }) => {
-  const history  = useHistory();
+  const history = useHistory();
   const dispatch = useDispatch();
-  const profile  = useSelector((state: RootState) => state.user.profile);
+  const profile = useSelector((state: RootState) => state.user.profile);
 
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
 
-  const onLogout       = useCallback(() => window.confirm('로그아웃 하시겠습니까?') && dispatch(logout()), [dispatch]);
-  const onClickNavLink = useCallback((link: string) => () => history.push(link), [history]);
-  const showDrawer     = useCallback(() => setIsDrawerVisible(true), []);
-  const hideDrawer     = useCallback(() => setIsDrawerVisible(false), []);
+  const onLogout = useCallback(
+    () => window.confirm('로그아웃 하시겠습니까?') && dispatch(logout()),
+    [dispatch]
+  );
+  const onClickNavLink = useCallback(
+    (link: string) => () => history.push(link),
+    [history]
+  );
+  const showDrawer = useCallback(() => setIsDrawerVisible(true), []);
+  const hideDrawer = useCallback(() => setIsDrawerVisible(false), []);
 
   return (
     <>
