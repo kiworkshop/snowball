@@ -10,6 +10,7 @@ interface MatchProps {
   id: string;
 }
 
+
 const NoteDetailPageContentContainer = styled(Container)`
   padding: 30px 0;
 
@@ -17,6 +18,7 @@ const NoteDetailPageContentContainer = styled(Container)`
     padding: 30px 20px;
   }
 `;
+
 
 const NoteDetailPage: React.FC<RouteComponentProps<MatchProps>> = ({
   match,
