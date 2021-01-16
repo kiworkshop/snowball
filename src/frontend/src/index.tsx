@@ -9,9 +9,12 @@ import { scrollToTop } from './lib/scroll';
 import DevTools from './container/DevTools';
 import App from './App';
 import './index.less';
+import init from './lib/init';
 
 const store = configureStore();
 runSaga(rootSaga);
+
+init(store);
 
 listen(scrollToTop);
 

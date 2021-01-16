@@ -4,6 +4,7 @@ import * as actions from './actions';
 export type UserAction = ActionType<typeof actions>;
 
 export interface UserState {
+  isInit: boolean;
   profile: Profile;
   loading: {
     [action: string]: boolean;

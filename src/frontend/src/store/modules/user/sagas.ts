@@ -1,51 +1,24 @@
-import { call, put, takeEvery, getContext } from 'redux-saga/effects';
-import store from 'store2';
+import { call, put, takeEvery } from 'redux-saga/effects';
 import * as userAPI from '../../../lib/api/user';
-import {
-  LOGIN_REQUEST,
-  LOGOUT,
-  STORE_USER_TO_LOCAL_STORAGE,
-  GO_TO_LOGIN_PAGE,
-  loginAsync,
-  storeUserToLocalStorage,
-  goToLoginPage,
-} from './actions';
+import * as history from '../../../lib/history';
 import errorHandler from '../../../lib/error';
+import { GET_ME_REQUEST, LOGOUT, getMeAsync } from './actions';
 
-function* loginSaga() {
+function* getMeSaga() {
   try {
-    const response = yield call(userAPI.login);
-    yield put(loginAsync.success(response.data));
-    yield put(storeUserToLocalStorage(response.data));
+    const response = yield call(userAPI.getMe);
+    yield put(getMeAsync.success(response.data));
   } catch (e) {
     errorHandler(e);
-    yield put(loginAsync.failure(e));
+    yield put(getMeAsync.failure(e));
   }
 }
 
 function* logoutSaga() {
-  yield store.remove('snowball-user');
-  yield put(goToLoginPage());
-}
-
-function* storeUserToLocalStorageSaga(
-  action: ReturnType<typeof storeUserToLocalStorage>
-) {
-  const DAY_TO_MILLISECONDS = 1000 * 60 * 60 * 24;
-  yield store.set('snowball-user', {
-    profile: { ...action.payload },
-    expired: Date.now() + DAY_TO_MILLISECONDS,
-  });
-}
-
-function* goToLoginPageSaga() {
-  const history = yield getContext('history');
-  history.push('/login');
+  yield history.push('/login');
 }
 
 export function* userSaga() {
-  yield takeEvery(LOGIN_REQUEST, loginSaga);
+  yield takeEvery(GET_ME_REQUEST, getMeSaga);
   yield takeEvery(LOGOUT, logoutSaga);
-  yield takeEvery(STORE_USER_TO_LOCAL_STORAGE, storeUserToLocalStorageSaga);
-  yield takeEvery(GO_TO_LOGIN_PAGE, goToLoginPageSaga);
 }
