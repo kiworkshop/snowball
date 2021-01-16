@@ -3,6 +3,7 @@ import { UserAction, UserState } from './types';
 import * as actions from './actions';
 
 const initialState: UserState = {
+  isInit: false,
   profile: {
     id: null,
     name: '',
@@ -13,40 +14,36 @@ const initialState: UserState = {
 };
 
 const user = createReducer<UserState, UserAction>(initialState, {
-  [actions.LOGIN_REQUEST]: (state) => ({
+  [actions.GET_ME_REQUEST]: (state) => ({
     ...state,
-    loading: { ...state.loading, login: true },
-    error: { ...state.error, login: null },
+    isInit: false,
+    loading: { ...state.loading, getMe: true },
+    error: { ...state.error, getMe: null },
   }),
-  [actions.LOGIN_SUCCESS]: (state, action) => ({
+  [actions.GET_ME_SUCCESS]: (state, action) => ({
     ...state,
+    isInit: true,
     profile: {
       id: action.payload.id,
       name: action.payload.name,
       pictureUrl: action.payload.pictureUrl,
     },
-    loading: { ...state.loading, login: false },
-    error: { ...state.error, login: null },
+    loading: { ...state.loading, getMe: false },
+    error: { ...state.error, getMe: null },
   }),
-  [actions.LOGIN_FAILURE]: (state, action) => ({
+  [actions.GET_ME_FAILURE]: (state, action) => ({
     ...state,
-    loading: { ...state.loading, login: false },
-    error: { ...state.error, login: action.payload },
+    isInit: false,
+    loading: { ...state.loading, getMe: false },
+    error: { ...state.error, getMe: action.payload },
   }),
   [actions.LOGOUT]: (state) => ({
     ...state,
+    isInit: false,
     profile: {
       id: null,
       name: '',
       pictureUrl: '',
-    },
-  }),
-  [actions.LOGIN_STORED_USER]: (state, action) => ({
-    ...state,
-    profile: {
-      id: action.payload.id,
-      name: action.payload.name,
-      pictureUrl: action.payload.pictureUrl,
     },
   }),
 });
