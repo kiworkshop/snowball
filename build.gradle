@@ -9,7 +9,9 @@ plugins {
 group = 'org.kiworkshop'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
-
+springBoot {
+    mainClassName = "org.kiworkshop.snowball.SnowballApplication"
+}
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
