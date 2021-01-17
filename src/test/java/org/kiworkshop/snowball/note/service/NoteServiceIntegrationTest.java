@@ -8,11 +8,8 @@ import org.kiworkshop.snowball.note.controller.dto.NoteRequestDtoFixture;
 import org.kiworkshop.snowball.note.controller.dto.NoteResponseDto;
 import org.kiworkshop.snowball.stocktransaction.entity.StockTransactionRepository;
 import org.kiworkshop.snowball.user.Entity.UserFixture;
-import org.kiworkshop.snowball.user.controller.dto.UserCreateRequestDto;
-import org.kiworkshop.snowball.user.controller.dto.UserCreateRequestDtoFixture;
 import org.kiworkshop.snowball.user.entity.User;
 import org.kiworkshop.snowball.user.entity.UserRepository;
-import org.kiworkshop.snowball.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -42,7 +39,7 @@ public class NoteServiceIntegrationTest extends IntegrationTest {
         //given
         NoteRequestDto noteRequestDto = NoteRequestDtoFixture.create(user);
         //when
-        noteService.createNote(noteRequestDto);
+        noteService.createNote(noteRequestDto, user);
         //then
         //assertThat(stockTransactionRepository.findAll()).isEmpty();
 

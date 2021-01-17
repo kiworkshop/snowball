@@ -1,8 +1,8 @@
-package org.kiworkshop.snowball.common.config.auth;
+package org.kiworkshop.snowball.auth.oauth2;
 
 import lombok.RequiredArgsConstructor;
-import org.kiworkshop.snowball.common.config.auth.dto.OAuthAttributes;
-import org.kiworkshop.snowball.common.config.auth.dto.SessionUser;
+import org.kiworkshop.snowball.auth.dto.OAuthAttributes;
+import org.kiworkshop.snowball.auth.dto.SessionUser;
 import org.kiworkshop.snowball.user.entity.User;
 import org.kiworkshop.snowball.user.entity.UserRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,7 +22,6 @@ import java.util.Collections;
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final UserRepository userRepository;
-    private final HttpSession httpSession;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -37,7 +36,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
         User user = saveOrUpdate(attributes);
-        httpSession.setAttribute("user", new SessionUser(user));
 
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority(user.getRoleKey())),

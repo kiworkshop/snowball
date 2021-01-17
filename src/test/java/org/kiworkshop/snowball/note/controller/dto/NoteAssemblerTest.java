@@ -2,9 +2,9 @@ package org.kiworkshop.snowball.note.controller.dto;
 
 import org.junit.jupiter.api.Test;
 import org.kiworkshop.snowball.note.entity.Note;
+import org.kiworkshop.snowball.user.Entity.UserFixture;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class NoteAssemblerTest {
 
@@ -14,7 +14,7 @@ class NoteAssemblerTest {
         NoteRequestDto requestDto = NoteRequestDtoFixture.create();
 
         // when
-        Note note = NoteAssembler.getNote(requestDto);
+        Note note = NoteAssembler.getNote(requestDto, UserFixture.create());
 
         // then
         assertThat(note.getStockTransactions().size()).isEqualTo(requestDto.getStockTransactions().size());

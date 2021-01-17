@@ -1,4 +1,4 @@
-package org.kiworkshop.snowball.common.config.auth.dto;
+package org.kiworkshop.snowball.auth.dto;
 
 import lombok.Builder;
 import lombok.Getter;

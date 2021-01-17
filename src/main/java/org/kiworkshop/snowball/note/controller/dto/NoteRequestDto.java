@@ -20,8 +20,8 @@ public class NoteRequestDto {
     private String content;
     @NotNull
     private LocalDate investmentDate;
-    @NotNull
     private User user;
+    // dto로 받기
     private List<StockTransaction> stockTransactions;
 
     @Builder

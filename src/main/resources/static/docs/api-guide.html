@@ -447,14 +447,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel1">
 <li><a href="#_user">User</a>
 <ul class="sectlevel2">
-<li><a href="#_create_a_user">Create a user</a>
-<ul class="sectlevel3">
-<li><a href="#_create_a_user_http_request">HTTP request</a></li>
-<li><a href="#_create_a_user_request_fields">Request fields</a></li>
-<li><a href="#_create_a_user_http_response">HTTP response</a></li>
-<li><a href="#_create_a_user_response_fields">Response fields</a></li>
-</ul>
-</li>
 <li><a href="#_get_a_user">Get a user</a>
 <ul class="sectlevel3">
 <li><a href="#_get_a_user_http_request">HTTP request</a></li>
@@ -463,12 +455,17 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_get_a_user_response_fields">Response fields</a></li>
 </ul>
 </li>
-<li><a href="#_login">Login</a>
+<li><a href="#_get_me_authorized_user">Get me (authorized user)</a>
 <ul class="sectlevel3">
-<li><a href="#_login_http_request">HTTP request</a></li>
-<li><a href="#_login_request_fields">Request fields</a></li>
-<li><a href="#_login_http_response">HTTP response</a></li>
-<li><a href="#_login_response_fields">Response fields</a></li>
+<li><a href="#_get_me_authorized_user_http_request">HTTP request</a></li>
+<li><a href="#_get_me_authorized_user_http_response">HTTP response</a></li>
+<li><a href="#_get_me_authorized_user_response_fields">Response fields</a></li>
+</ul>
+</li>
+<li><a href="#_get_me_unauthorized_user">Get me (unauthorized user)</a>
+<ul class="sectlevel3">
+<li><a href="#_get_me_unauthorized_user_http_request">HTTP request</a></li>
+<li><a href="#_get_me_unauthorized_user_http_response">HTTP response</a></li>
 </ul>
 </li>
 </ul>
@@ -490,7 +487,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_get_notes">Get notes</a>
 <ul class="sectlevel3">
 <li><a href="#_get_notes_http_request">HTTP request</a></li>
-<li><a href="#_get_notes_request_fields">Request fields</a></li>
+<li><a href="#_get_notes_request_parameters">Request parameters</a></li>
 <li><a href="#_get_notes_http_response">HTTP response</a></li>
 <li><a href="#_get_notes_response_fields-content">Response fields-content</a></li>
 </ul>
@@ -498,7 +495,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_get_a_note">Get a note</a>
 <ul class="sectlevel3">
 <li><a href="#_get_a_note_http_request">HTTP request</a></li>
-<li><a href="#_get_a_note_request_fields">Request fields</a></li>
+<li><a href="#_get_a_note_path_parameters">Path parameters</a></li>
 <li><a href="#_get_a_note_http_response">HTTP response</a></li>
 <li><a href="#_get_a_note_response_fields">Response fields</a></li>
 </ul>
@@ -506,17 +503,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_update_a_note">Update a note</a>
 <ul class="sectlevel3">
 <li><a href="#_update_a_note_http_request">HTTP request</a></li>
+<li><a href="#_update_a_note_path_parameters">Path parameters</a></li>
 <li><a href="#_update_a_note_request_fields">Request fields</a></li>
 <li><a href="#_update_a_note_http_response">HTTP response</a></li>
-<li><a href="#_update_a_note_response_fields">Response fields</a></li>
 </ul>
 </li>
 <li><a href="#_delete_a_note">Delete a note</a>
 <ul class="sectlevel3">
 <li><a href="#_delete_a_note_http_request">HTTP request</a></li>
-<li><a href="#_delete_a_note_request_fields">Request fields</a></li>
+<li><a href="#_delete_a_note_path_parameters">Path parameters</a></li>
 <li><a href="#_delete_a_note_http_response">HTTP response</a></li>
-<li><a href="#_delete_a_note_response_fields">Response fields</a></li>
 </ul>
 </li>
 </ul>
@@ -527,6 +523,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel1">
 <li><a href="#_stockdetail">StockDetail</a>
 <ul class="sectlevel2">
+<li><a href="#_get_a_stockdetail">Get a StockDetail</a>
+<ul class="sectlevel3">
+<li><a href="#_get_a_stockdetail_http_request">HTTP request</a></li>
+<li><a href="#_get_a_stockdetail_request_parameters">Request parameters</a></li>
+<li><a href="#_get_a_stockdetail_http_response">HTTP response</a></li>
+<li><a href="#_get_a_stockdetail_response_fields">Response fields</a></li>
+</ul>
+</li>
 <li><a href="#_get_stockdetails">Get StockDetails</a>
 <ul class="sectlevel3">
 <li><a href="#_get_stockdetails_http_request">HTTP request</a></li>
@@ -608,110 +612,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_user"><a class="link" href="#_user">User</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_create_a_user"><a class="link" href="#_create_a_user">Create a user</a></h3>
-<div class="sect3">
-<h4 id="_create_a_user_http_request"><a class="link" href="#_create_a_user_http_request">HTTP request</a></h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /users HTTP/1.1
-Content-Type: application/json
-Content-Length: 112
-Host: docs.api.com
-
-{
-  "email" : "snowman@snowball.com",
-  "name" : "snowman",
-  "pictureUrl" : "example.snowman-picture.com"
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_create_a_user_request_fields"><a class="link" href="#_create_a_user_request_fields">Request fields</a></h4>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>email</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">이메일</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">유저 이름</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pictureUrl</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">프로필 사진의 url 주소</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect3">
-<h4 id="_create_a_user_http_response"><a class="link" href="#_create_a_user_http_response">HTTP response</a></h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
-Content-Type: application/json
-Content-Length: 88
-
-{
-  "id" : 1,
-  "name" : "snowman",
-  "pictureUrl" : "example.snowman-picture.com"
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_create_a_user_response_fields"><a class="link" href="#_create_a_user_response_fields">Response fields</a></h4>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">유저 id</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">유저 이름</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pictureUrl</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">프로필 사진의 url 주소</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="sect2">
 <h3 id="_get_a_user"><a class="link" href="#_get_a_user">Get a user</a></h3>
 <div class="sect3">
 <h4 id="_get_a_user_http_request"><a class="link" href="#_get_a_user_http_request">HTTP request</a></h4>
@@ -749,7 +649,18 @@ Host: docs.api.com</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Methods: *
+Access-Control-Max-Age: 3600
+Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Key, Authorization
 Content-Type: application/json
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+Strict-Transport-Security: max-age=31536000 ; includeSubDomains
 Content-Length: 88
 
 {
@@ -796,28 +707,33 @@ Content-Length: 88
 </div>
 </div>
 <div class="sect2">
-<h3 id="_login"><a class="link" href="#_login">Login</a></h3>
+<h3 id="_get_me_authorized_user"><a class="link" href="#_get_me_authorized_user">Get me (authorized user)</a></h3>
 <div class="sect3">
-<h4 id="_login_http_request"><a class="link" href="#_login_http_request">HTTP request</a></h4>
+<h4 id="_get_me_authorized_user_http_request"><a class="link" href="#_get_me_authorized_user_http_request">HTTP request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /login HTTP/1.1
-Host: docs.api.com:8080</code></pre>
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /me HTTP/1.1
+Host: docs.api.com</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_login_request_fields"><a class="link" href="#_login_request_fields">Request fields</a></h4>
-<div class="paragraph">
-<p>Snippet request-fields not found for operation::/user/login</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_login_http_response"><a class="link" href="#_login_http_response">HTTP response</a></h4>
+<h4 id="_get_me_authorized_user_http_response"><a class="link" href="#_get_me_authorized_user_http_response">HTTP response</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Methods: *
+Access-Control-Max-Age: 3600
+Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Key, Authorization
 Content-Type: application/json
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+Strict-Transport-Security: max-age=31536000 ; includeSubDomains
 Content-Length: 88
 
 {
@@ -829,7 +745,7 @@ Content-Length: 88
 </div>
 </div>
 <div class="sect3">
-<h4 id="_login_response_fields"><a class="link" href="#_login_response_fields">Response fields</a></h4>
+<h4 id="_get_me_authorized_user_response_fields"><a class="link" href="#_get_me_authorized_user_response_fields">Response fields</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -863,6 +779,37 @@ Content-Length: 88
 </table>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_get_me_unauthorized_user"><a class="link" href="#_get_me_unauthorized_user">Get me (unauthorized user)</a></h3>
+<div class="sect3">
+<h4 id="_get_me_unauthorized_user_http_request"><a class="link" href="#_get_me_unauthorized_user_http_request">HTTP request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /me HTTP/1.1
+Host: docs.api.com</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_get_me_unauthorized_user_http_response"><a class="link" href="#_get_me_unauthorized_user_http_response">HTTP response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 401 Unauthorized
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Methods: *
+Access-Control-Max-Age: 3600
+Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Key, Authorization
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+Strict-Transport-Security: max-age=31536000 ; includeSubDomains</code></pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 <h1 id="_package_note" class="sect0"><a class="link" href="#_package_note">Package: Note</a></h1>
@@ -875,43 +822,33 @@ Content-Length: 88
 <h4 id="_create_a_note_http_request"><a class="link" href="#_create_a_note_http_request">HTTP request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /notes HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /notes?_csrf=ce2ff182-e4e0-4ceb-b39d-68bedef3d773 HTTP/1.1
 Content-Type: application/json
-Content-Length: 955
+Content-Length: 800
 Host: docs.api.com
 
 {
   "title" : "투자노트 제목입니다.",
   "content" : "투자노트 텍스트입니다.",
-  "investmentDate" : "2020-11-15",
-  "user" : {
-    "id" : 1,
-    "createdDate" : "2020-11-15T08:36:52.2000784",
-    "modifiedDate" : "2020-11-15T08:36:52.2000784",
-    "email" : "snowman",
-    "name" : "snowman",
-    "pictureUrl" : "example.snowman-picture.com"
-  },
-  "stockTransactions" : [ {
-    "id" : 7,
-    "createdDate" : "2020-11-15T08:36:52.2000784",
-    "modifiedDate" : "2020-11-15T08:36:52.2000784",
-    "user" : null,
-    "stockDetail" : null,
+  "investmentDate" : "2021-01-15",
+  "stockTransactionRequests" : [ {
     "note" : null,
-    "quantity" : 1,
+    "stockDetail" : {
+      "id" : 1,
+      "createdDate" : "2021-01-15T17:59:57.4883815",
+      "modifiedDate" : "2021-01-15T17:59:57.4883815",
+      "companyName" : "빅히트",
+      "itemCode" : "352820",
+      "category" : "오디오물 출판 및 원판 녹음업",
+      "mainProduct" : "음악 기획/제작, 퍼블리싱, 아티스트 매니지먼트",
+      "listingDate" : "2020-10-15",
+      "settlementMonth" : "12월",
+      "representative" : "방시혁",
+      "marketType" : "KOSPI"
+    },
+    "quantity" : 39,
     "tradedPrice" : 1000,
     "transactionType" : "BUY"
-  }, {
-    "id" : 8,
-    "createdDate" : "2020-11-15T08:36:52.2000784",
-    "modifiedDate" : "2020-11-15T08:36:52.2000784",
-    "user" : null,
-    "stockDetail" : null,
-    "note" : null,
-    "quantity" : 1,
-    "tradedPrice" : 1000,
-    "transactionType" : "SELL"
   } ]
 }</code></pre>
 </div>
@@ -949,32 +886,27 @@ Host: docs.api.com
 <td class="tableblock halign-left valign-top"><p class="tableblock">투자한 날짜</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>user</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">투자노트 작성자</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stockTransactions</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stockTransactionRequests</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">주식 거래내역 목록</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stockTransactions[].id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stockTransactionRequests[].stockDetail.id</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주식 거래내역 id</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">주식 상세정보 id</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stockTransactions[].quantity</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stockTransactionRequests[].quantity</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">주식 거래내역 수량</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stockTransactions[].tradedPrice</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stockTransactionRequests[].tradedPrice</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">주식 거래내역 매매가격</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stockTransactions[].transactionType</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stockTransactionRequests[].transactionType</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">주식 거래내역 종류</p></td>
 </tr>
@@ -986,7 +918,19 @@ Host: docs.api.com
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Methods: *
+Access-Control-Max-Age: 3600
+Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Key, Authorization
 Content-Type: application/json
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+Strict-Transport-Security: max-age=31536000 ; includeSubDomains
+X-Frame-Options: DENY
 Content-Length: 16
 
 {
@@ -1024,177 +968,27 @@ Content-Length: 16
 <h3 id="_get_notes"><a class="link" href="#_get_notes">Get notes</a></h3>
 <div class="sect3">
 <h4 id="_get_notes_http_request"><a class="link" href="#_get_notes_http_request">HTTP request</a></h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /notes?page=1&amp;size=10 HTTP/1.1
-Content-Type: application/json
-Host: docs.api.com</code></pre>
-</div>
+<div class="paragraph">
+<p>Snippet http-request not found for operation::/note/get-notes</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_get_notes_request_fields"><a class="link" href="#_get_notes_request_fields">Request fields</a></h4>
+<h4 id="_get_notes_request_parameters"><a class="link" href="#_get_notes_request_parameters">Request parameters</a></h4>
 <div class="paragraph">
-<p>Snippet request-fields not found for operation::/note/get-notes</p>
+<p>Snippet request-parameters not found for operation::/note/get-notes</p>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_get_notes_http_response"><a class="link" href="#_get_notes_http_response">HTTP response</a></h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
-Content-Type: application/json
-Content-Length: 2112
-
-{
-  "content" : [ {
-    "id" : 1,
-    "title" : "첫번째 투자노트 제목입니다.",
-    "content" : "첫번째 투자노트 텍스트입니다.",
-    "investmentDate" : "2020-10-08",
-    "stockTransactions" : [ {
-      "id" : 11,
-      "createdDate" : "2020-11-15T08:36:52.3380797",
-      "modifiedDate" : "2020-11-15T08:36:52.3380797",
-      "user" : null,
-      "stockDetail" : null,
-      "note" : null,
-      "quantity" : 1,
-      "tradedPrice" : 1000,
-      "transactionType" : "BUY"
-    }, {
-      "id" : 12,
-      "createdDate" : "2020-11-15T08:36:52.3380797",
-      "modifiedDate" : "2020-11-15T08:36:52.3380797",
-      "user" : null,
-      "stockDetail" : null,
-      "note" : null,
-      "quantity" : 1,
-      "tradedPrice" : 1000,
-      "transactionType" : "SELL"
-    } ],
-    "createdDate" : "2020-11-15T08:36:52.3380797",
-    "modifiedDate" : "2020-11-15T08:36:52.3380797"
-  }, {
-    "id" : 2,
-    "title" : "두번째 투자노트 제목입니다.",
-    "content" : "두번째 투자노트 텍스트입니다.",
-    "investmentDate" : "2020-10-09",
-    "stockTransactions" : [ {
-      "id" : 13,
-      "createdDate" : "2020-11-15T08:36:52.3380797",
-      "modifiedDate" : "2020-11-15T08:36:52.3380797",
-      "user" : null,
-      "stockDetail" : null,
-      "note" : null,
-      "quantity" : 1,
-      "tradedPrice" : 1000,
-      "transactionType" : "BUY"
-    }, {
-      "id" : 14,
-      "createdDate" : "2020-11-15T08:36:52.3380797",
-      "modifiedDate" : "2020-11-15T08:36:52.3380797",
-      "user" : null,
-      "stockDetail" : null,
-      "note" : null,
-      "quantity" : 1,
-      "tradedPrice" : 1000,
-      "transactionType" : "SELL"
-    } ],
-    "createdDate" : "2020-11-15T08:36:52.339085",
-    "modifiedDate" : "2020-11-15T08:36:52.339085"
-  } ],
-  "pageable" : "INSTANCE",
-  "totalElements" : 2,
-  "last" : true,
-  "totalPages" : 1,
-  "size" : 2,
-  "number" : 0,
-  "sort" : {
-    "sorted" : false,
-    "unsorted" : true,
-    "empty" : true
-  },
-  "first" : true,
-  "numberOfElements" : 2,
-  "empty" : false
-}</code></pre>
-</div>
+<div class="paragraph">
+<p>Snippet http-response not found for operation::/note/get-notes</p>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_get_notes_response_fields-content"><a class="link" href="#_get_notes_response_fields-content">Response fields-content</a></h4>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">투자노트 id</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>title</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">투자노트 제목</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">투자노트 텍스트</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>investmentDate</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">투자한 날짜</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>createdDate</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">투자노트가 생성된 날짜</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>modifiedDate</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">투자노트가 수정된 날짜</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stockTransactions</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주식 거래내역 목록</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stockTransactions[].id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주식 거래내역 id</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stockTransactions[].quantity</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주식 거래내역 수량</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stockTransactions[].tradedPrice</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주식 거래내역 매매가격</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stockTransactions[].transactionType</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주식 거래내역 종류</p></td>
-</tr>
-</tbody>
-</table>
+<div class="paragraph">
+<p>Snippet response-fields-content not found for operation::/note/get-notes</p>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -1209,47 +1003,89 @@ Host: docs.api.com</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_get_a_note_request_fields"><a class="link" href="#_get_a_note_request_fields">Request fields</a></h4>
-<div class="paragraph">
-<p>Snippet request-fields not found for operation::/note/get-note</p>
-</div>
+<h4 id="_get_a_note_path_parameters"><a class="link" href="#_get_a_note_path_parameters">Path parameters</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. /notes/{id}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">투자노트 id</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect3">
 <h4 id="_get_a_note_http_response"><a class="link" href="#_get_a_note_http_response">HTTP response</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Methods: *
+Access-Control-Max-Age: 3600
+Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Key, Authorization
 Content-Type: application/json
-Content-Length: 829
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+Strict-Transport-Security: max-age=31536000 ; includeSubDomains
+X-Frame-Options: DENY
+Content-Length: 1503
 
 {
   "id" : 1,
   "title" : "투자노트 제목입니다.",
   "content" : "투자노트 텍스트입니다.",
   "investmentDate" : "2020-10-10",
-  "stockTransactions" : [ {
-    "id" : 9,
-    "createdDate" : "2020-11-15T08:36:52.2560785",
-    "modifiedDate" : "2020-11-15T08:36:52.2560785",
-    "user" : null,
-    "stockDetail" : null,
-    "note" : null,
-    "quantity" : 1,
+  "stockTransactionResponses" : [ {
+    "stockDetail" : {
+      "id" : 1,
+      "createdDate" : "2021-01-15T17:59:57.5373858",
+      "modifiedDate" : "2021-01-15T17:59:57.5373858",
+      "companyName" : "빅히트",
+      "itemCode" : "352820",
+      "category" : "오디오물 출판 및 원판 녹음업",
+      "mainProduct" : "음악 기획/제작, 퍼블리싱, 아티스트 매니지먼트",
+      "listingDate" : "2020-10-15",
+      "settlementMonth" : "12월",
+      "representative" : "방시혁",
+      "marketType" : "KOSPI"
+    },
+    "quantity" : 10,
     "tradedPrice" : 1000,
     "transactionType" : "BUY"
   }, {
-    "id" : 10,
-    "createdDate" : "2020-11-15T08:36:52.2570776",
-    "modifiedDate" : "2020-11-15T08:36:52.2570776",
-    "user" : null,
-    "stockDetail" : null,
-    "note" : null,
-    "quantity" : 1,
+    "stockDetail" : {
+      "id" : 1,
+      "createdDate" : "2021-01-15T17:59:57.5373858",
+      "modifiedDate" : "2021-01-15T17:59:57.5373858",
+      "companyName" : "빅히트",
+      "itemCode" : "352820",
+      "category" : "오디오물 출판 및 원판 녹음업",
+      "mainProduct" : "음악 기획/제작, 퍼블리싱, 아티스트 매니지먼트",
+      "listingDate" : "2020-10-15",
+      "settlementMonth" : "12월",
+      "representative" : "방시혁",
+      "marketType" : "KOSPI"
+    },
+    "quantity" : 10,
     "tradedPrice" : 1000,
-    "transactionType" : "SELL"
+    "transactionType" : "BUY"
   } ],
-  "createdDate" : "2020-11-15T08:36:52.2560785",
-  "modifiedDate" : "2020-11-15T08:36:52.2560785"
+  "createdDate" : "2021-01-15T17:59:57.5363846",
+  "modifiedDate" : "2021-01-15T17:59:57.5363846"
 }</code></pre>
 </div>
 </div>
@@ -1301,27 +1137,27 @@ Content-Length: 829
 <td class="tableblock halign-left valign-top"><p class="tableblock">투자노트가 수정된 날짜</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stockTransactions</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stockTransactionResponses</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">주식 거래내역 목록</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stockTransactions[].id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주식 거래내역 id</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stockTransactionResponses[].stockDetail</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">주식 상세정보</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stockTransactions[].quantity</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stockTransactionResponses[].quantity</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">주식 거래내역 수량</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stockTransactions[].tradedPrice</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stockTransactionResponses[].tradedPrice</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">주식 거래내역 매매가격</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stockTransactions[].transactionType</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stockTransactionResponses[].transactionType</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">주식 거래내역 종류</p></td>
 </tr>
@@ -1335,47 +1171,59 @@ Content-Length: 829
 <h4 id="_update_a_note_http_request"><a class="link" href="#_update_a_note_http_request">HTTP request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /notes/1 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /notes/1?_csrf=80fa5eea-bad3-4dab-a39b-77c2b46a7e51 HTTP/1.1
 Content-Type: application/json
-Content-Length: 955
+Content-Length: 800
 Host: docs.api.com
 
 {
   "title" : "투자노트 제목입니다.",
   "content" : "투자노트 텍스트입니다.",
-  "investmentDate" : "2020-11-15",
-  "user" : {
-    "id" : 1,
-    "createdDate" : "2020-11-15T08:36:51.9891123",
-    "modifiedDate" : "2020-11-15T08:36:51.9891123",
-    "email" : "snowman",
-    "name" : "snowman",
-    "pictureUrl" : "example.snowman-picture.com"
-  },
-  "stockTransactions" : [ {
-    "id" : 5,
-    "createdDate" : "2020-11-15T08:36:51.9891123",
-    "modifiedDate" : "2020-11-15T08:36:51.9891123",
-    "user" : null,
-    "stockDetail" : null,
+  "investmentDate" : "2021-01-15",
+  "stockTransactionRequests" : [ {
     "note" : null,
-    "quantity" : 1,
+    "stockDetail" : {
+      "id" : 1,
+      "createdDate" : "2021-01-15T17:59:57.3333156",
+      "modifiedDate" : "2021-01-15T17:59:57.3333156",
+      "companyName" : "빅히트",
+      "itemCode" : "352820",
+      "category" : "오디오물 출판 및 원판 녹음업",
+      "mainProduct" : "음악 기획/제작, 퍼블리싱, 아티스트 매니지먼트",
+      "listingDate" : "2020-10-15",
+      "settlementMonth" : "12월",
+      "representative" : "방시혁",
+      "marketType" : "KOSPI"
+    },
+    "quantity" : 42,
     "tradedPrice" : 1000,
     "transactionType" : "BUY"
-  }, {
-    "id" : 6,
-    "createdDate" : "2020-11-15T08:36:51.9891123",
-    "modifiedDate" : "2020-11-15T08:36:51.9891123",
-    "user" : null,
-    "stockDetail" : null,
-    "note" : null,
-    "quantity" : 1,
-    "tradedPrice" : 1000,
-    "transactionType" : "SELL"
   } ]
 }</code></pre>
 </div>
 </div>
+</div>
+<div class="sect3">
+<h4 id="_update_a_note_path_parameters"><a class="link" href="#_update_a_note_path_parameters">Path parameters</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. /notes/{id}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">투자노트 id</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect3">
 <h4 id="_update_a_note_request_fields"><a class="link" href="#_update_a_note_request_fields">Request fields</a></h4>
@@ -1409,32 +1257,27 @@ Host: docs.api.com
 <td class="tableblock halign-left valign-top"><p class="tableblock">투자한 날짜</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>user</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">투자노트 작성자</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stockTransactions</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stockTransactionRequests</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">주식 거래내역 목록</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stockTransactions[].id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stockTransactionRequests[].stockDetail.id</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주식 거래내역 id</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">주식 상세정보 id</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stockTransactions[].quantity</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stockTransactionRequests[].quantity</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">주식 거래내역 수량</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stockTransactions[].tradedPrice</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stockTransactionRequests[].tradedPrice</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">주식 거래내역 매매가격</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stockTransactions[].transactionType</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stockTransactionRequests[].transactionType</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">주식 거래내역 종류</p></td>
 </tr>
@@ -1445,14 +1288,20 @@ Host: docs.api.com
 <h4 id="_update_a_note_http_response"><a class="link" href="#_update_a_note_http_response">HTTP response</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK</code></pre>
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Methods: *
+Access-Control-Max-Age: 3600
+Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Key, Authorization
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+Strict-Transport-Security: max-age=31536000 ; includeSubDomains
+X-Frame-Options: DENY</code></pre>
 </div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_update_a_note_response_fields"><a class="link" href="#_update_a_note_response_fields">Response fields</a></h4>
-<div class="paragraph">
-<p>Snippet response-fields not found for operation::/note/update-note</p>
 </div>
 </div>
 </div>
@@ -1462,30 +1311,52 @@ Host: docs.api.com
 <h4 id="_delete_a_note_http_request"><a class="link" href="#_delete_a_note_http_request">HTTP request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /notes/1 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /notes/1?_csrf=e65c9ed0-3859-4fdc-b3ee-d9042ea46fa1 HTTP/1.1
 Content-Type: application/json
 Host: docs.api.com</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_delete_a_note_request_fields"><a class="link" href="#_delete_a_note_request_fields">Request fields</a></h4>
-<div class="paragraph">
-<p>Snippet request-fields not found for operation::/note/delete-note</p>
-</div>
+<h4 id="_delete_a_note_path_parameters"><a class="link" href="#_delete_a_note_path_parameters">Path parameters</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. /notes/{id}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">투자노트 id</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect3">
 <h4 id="_delete_a_note_http_response"><a class="link" href="#_delete_a_note_http_response">HTTP response</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK</code></pre>
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Methods: *
+Access-Control-Max-Age: 3600
+Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Key, Authorization
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+Strict-Transport-Security: max-age=31536000 ; includeSubDomains
+X-Frame-Options: DENY</code></pre>
 </div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_delete_a_note_response_fields"><a class="link" href="#_delete_a_note_response_fields">Response fields</a></h4>
-<div class="paragraph">
-<p>Snippet response-fields not found for operation::/note/delete-note</p>
 </div>
 </div>
 </div>
@@ -1495,6 +1366,90 @@ Host: docs.api.com</code></pre>
 <div class="sect1">
 <h2 id="_stockdetail"><a class="link" href="#_stockdetail">StockDetail</a></h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_get_a_stockdetail"><a class="link" href="#_get_a_stockdetail">Get a StockDetail</a></h3>
+<div class="sect3">
+<h4 id="_get_a_stockdetail_http_request"><a class="link" href="#_get_a_stockdetail_http_request">HTTP request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /stockdetail?companyName=%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90 HTTP/1.1
+Content-Type: application/json
+Host: docs.api.com</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_get_a_stockdetail_request_parameters"><a class="link" href="#_get_a_stockdetail_request_parameters">Request parameters</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>companyName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">주식상세정보 회사명</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_get_a_stockdetail_http_response"><a class="link" href="#_get_a_stockdetail_http_response">HTTP response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Methods: *
+Access-Control-Max-Age: 3600
+Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Key, Authorization
+Content-Type: application/json
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+Strict-Transport-Security: max-age=31536000 ; includeSubDomains
+X-Frame-Options: DENY
+Content-Length: 16
+
+{
+  "id" : 1
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_get_a_stockdetail_response_fields"><a class="link" href="#_get_a_stockdetail_response_fields">Response fields</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">주식상세정보 id</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <div class="sect2">
 <h3 id="_get_stockdetails"><a class="link" href="#_get_stockdetails">Get StockDetails</a></h3>
 <div class="sect3">
@@ -1537,14 +1492,26 @@ Host: docs.api.com</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Methods: *
+Access-Control-Max-Age: 3600
+Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Key, Authorization
 Content-Type: application/json
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+Strict-Transport-Security: max-age=31536000 ; includeSubDomains
+X-Frame-Options: DENY
 Content-Length: 773
 
 {
   "content" : [ {
     "id" : 1,
-    "createdDate" : "2020-11-15T08:36:59.4308337",
-    "modifiedDate" : "2020-11-15T08:36:59.4308337",
+    "createdDate" : "2021-01-15T18:00:05.4776847",
+    "modifiedDate" : "2021-01-15T18:00:05.4776847",
     "companyName" : "빅히트",
     "itemCode" : "352820",
     "category" : "오디오물 출판 및 원판 녹음업",
@@ -1555,9 +1522,9 @@ Content-Length: 773
     "marketType" : "KOSPI"
   } ],
   "pageable" : "INSTANCE",
-  "totalElements" : 1,
-  "last" : true,
   "totalPages" : 1,
+  "last" : true,
+  "totalElements" : 1,
   "size" : 1,
   "number" : 0,
   "sort" : {
@@ -1657,96 +1624,27 @@ Content-Length: 773
 <h3 id="_get_a_portfoliosummary"><a class="link" href="#_get_a_portfoliosummary">Get a PortfolioSummary</a></h3>
 <div class="sect3">
 <h4 id="_get_a_portfoliosummary_http_request"><a class="link" href="#_get_a_portfoliosummary_http_request">HTTP request</a></h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /portfolio-summary/1 HTTP/1.1
-Host: docs.api.com</code></pre>
-</div>
+<div class="paragraph">
+<p>Snippet http-request not found for operation::/portfolio/get-portfolio-summary</p>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_get_a_portfoliosummary_path_parameters"><a class="link" href="#_get_a_portfoliosummary_path_parameters">Path parameters</a></h4>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 1. /portfolio-summary/{userId}</caption>
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Parameter</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>userId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">유저 id</p></td>
-</tr>
-</tbody>
-</table>
+<div class="paragraph">
+<p>Snippet path-parameters not found for operation::/portfolio/get-portfolio-summary</p>
+</div>
 </div>
 <div class="sect3">
 <h4 id="_get_a_portfoliosummary_http_response"><a class="link" href="#_get_a_portfoliosummary_http_response">HTTP response</a></h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
-Content-Type: application/json
-Content-Length: 157
-
-[ {
-  "companyName" : "삼성전자",
-  "averageBuyingPrice" : 1000,
-  "targetPrice" : 2000,
-  "earningsRate" : 10.0,
-  "targetEarningsRate" : 10.0
-} ]</code></pre>
-</div>
+<div class="paragraph">
+<p>Snippet http-response not found for operation::/portfolio/get-portfolio-summary</p>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_get_a_portfoliosummary_response_fields"><a class="link" href="#_get_a_portfoliosummary_response_fields">Response fields</a></h4>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].companyName</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">회사명</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].averageBuyingPrice</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">매수평균가격</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].targetPrice</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">목표가격</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].earningsRate</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">수익률</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].targetEarningsRate</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">목표수익률</p></td>
-</tr>
-</tbody>
-</table>
+<div class="paragraph">
+<p>Snippet response-fields not found for operation::/portfolio/get-portfolio-summary</p>
+</div>
 </div>
 </div>
 </div>
@@ -1754,7 +1652,7 @@ Content-Length: 157
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-11-15 08:36:05 +0900
+Last updated 2021-01-15 17:58:56 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/github.min.css">

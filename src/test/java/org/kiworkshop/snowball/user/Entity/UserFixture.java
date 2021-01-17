@@ -10,12 +10,11 @@ public class UserFixture {
 
     public static User create() {
         User user = User.builder()
-                .email("snowman")
+                .email("snowman@snowball.com")
                 .name("snowman")
                 .pictureUrl("example.snowman-picture.com")
                 .role(Role.USER)
                 .build();
-        ReflectionTestUtils.setField(user, "id", 1L);
         ReflectionTestUtils.setField(user, "createdDate", LocalDateTime.now());
         ReflectionTestUtils.setField(user, "modifiedDate", LocalDateTime.now());
         return user;

@@ -17,7 +17,7 @@ import java.util.List;
 @Entity
 public class Note extends BaseTimeEntity {
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY) // lazy?
     private User user;
     private String title;
     private String content;

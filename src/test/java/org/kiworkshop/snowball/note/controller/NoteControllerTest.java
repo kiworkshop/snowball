@@ -1,9 +1,10 @@
 package org.kiworkshop.snowball.note.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.kiworkshop.snowball.ControllerTest;
-import org.kiworkshop.snowball.common.config.auth.SecurityConfig;
+import org.kiworkshop.snowball.auth.SecurityConfig;
+import org.kiworkshop.snowball.auth.dto.SessionUser;
 import org.kiworkshop.snowball.common.exception.DomainServiceException;
 import org.kiworkshop.snowball.note.controller.dto.NoteCreateResponseDto;
 import org.kiworkshop.snowball.note.controller.dto.NoteRequestDto;
@@ -11,6 +12,8 @@ import org.kiworkshop.snowball.note.controller.dto.NoteRequestDtoFixture;
 import org.kiworkshop.snowball.note.controller.dto.NoteResponseDto;
 import org.kiworkshop.snowball.note.service.NoteService;
 import org.kiworkshop.snowball.stocktransaction.entity.StockTransactionFixture;
+import org.kiworkshop.snowball.user.Entity.UserFixture;
+import org.kiworkshop.snowball.user.entity.User;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
@@ -18,6 +21,7 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -25,8 +29,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.kiworkshop.snowball.util.ApiDocumentUtils.getDocumentRequest;
 import static org.kiworkshop.snowball.util.ApiDocumentUtils.getDocumentResponse;
@@ -50,6 +54,18 @@ class NoteControllerTest extends ControllerTest {
     @MockBean
     private NoteService noteService;
 
+    private MockHttpSession mockHttpSession;
+    private User user;
+
+    @BeforeEach
+    void setUp() {
+        user = UserFixture.create();
+        SessionUser sessionUser = new SessionUser(user);
+
+        mockHttpSession = new MockHttpSession();
+        mockHttpSession.setAttribute("user", sessionUser);
+    }
+
     @WithMockUser(roles = "USER")
     @Test
     void createNoteTest() throws Exception {
@@ -59,10 +75,13 @@ class NoteControllerTest extends ControllerTest {
                 .id(1L)
                 .build();
 
-        given(noteService.createNote(any())).willReturn(responseDto);
+        given(noteService.createNote(any(NoteRequestDto.class), any(User.class))).willReturn(responseDto);
+        given(userRepository.findByEmail(anyString())).willReturn(Optional.ofNullable(UserFixture.create()));
+
         // when & then
         mvc.perform(RestDocumentationRequestBuilders.post("/notes")
                 .with(csrf())
+                .session(mockHttpSession)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(requestDto)))
                 .andExpect(status().isOk())
@@ -80,7 +99,7 @@ class NoteControllerTest extends ControllerTest {
                                 subsectionWithPath("stockTransactions[].quantity").type(JsonFieldType.NUMBER).description("주식 거래내역 수량"),
                                 subsectionWithPath("stockTransactions[].tradedPrice").type(JsonFieldType.NUMBER).description("주식 거래내역 매매가격"),
                                 subsectionWithPath("stockTransactions[].transactionType").type(JsonFieldType.STRING).description("주식 거래내역 종류")
-                                ),
+                        ),
                         responseFields(
                                 fieldWithPath("id").type(JsonFieldType.NUMBER).description("투자노트 id")
                         )
@@ -200,9 +219,12 @@ class NoteControllerTest extends ControllerTest {
         NoteRequestDto requestDto = NoteRequestDtoFixture.create();
         byte[] requestBody = objectMapper.writeValueAsBytes(requestDto);
 
+        given(userRepository.findByEmail(anyString())).willReturn(Optional.ofNullable(UserFixture.create()));
+
         // when
         mvc.perform(RestDocumentationRequestBuilders.put("/notes/{id}", noteId)
                 .with(csrf())
+                .session(mockHttpSession)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody))
                 .andExpect(status().isOk())
@@ -216,8 +238,8 @@ class NoteControllerTest extends ControllerTest {
                                 fieldWithPath("investmentDate").type(JsonFieldType.STRING).description("투자한 날짜"),
                                 subsectionWithPath("user").type(JsonFieldType.OBJECT).description("투자노트 작성자"),
                                 subsectionWithPath("stockTransactions").type(JsonFieldType.ARRAY).description("주식 거래내역 목록"),
-                                // TO DO: stockTransaction id가 필요한지 고민해보기
-                                //subsectionWithPath("stockTransactions[].id").type(JsonFieldType.NUMBER).description("주식 거래내역 id"),
+                                // TODO: stockTransaction id가 필요한지 고민해보기
+                                // subsectionWithPath("stockTransactions[].id").type(JsonFieldType.NUMBER).description("주식 거래내역 id"),
                                 subsectionWithPath("stockTransactions[].quantity").type(JsonFieldType.NUMBER).description("주식 거래내역 수량"),
                                 subsectionWithPath("stockTransactions[].tradedPrice").type(JsonFieldType.NUMBER).description("주식 거래내역 매매가격"),
                                 subsectionWithPath("stockTransactions[].transactionType").type(JsonFieldType.STRING).description("주식 거래내역 종류")
@@ -228,15 +250,7 @@ class NoteControllerTest extends ControllerTest {
                 );
 
         // then
-        verify(noteService).updateNote(eq(noteId), argThat(arg -> {
-            try {
-                return Arrays.equals(requestBody, objectMapper.writeValueAsBytes(arg));
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
-            return false;
-        }));
-        then(noteService).should().updateNote(anyLong(), any(NoteRequestDto.class));
+        then(noteService).should().updateNote(anyLong(), any(NoteRequestDto.class), any(User.class));
     }
 
     @WithMockUser(roles = "USER")
