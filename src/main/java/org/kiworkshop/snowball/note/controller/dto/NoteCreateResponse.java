@@ -4,14 +4,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 @Getter
-public class NoteCreateResponseDto {
+public class NoteCreateResponse {
 
     private Long id;
 
     @Builder
-    public NoteCreateResponseDto(Long id) {
+    public NoteCreateResponse(Long id) {
         this.id = id;
     }
 }
