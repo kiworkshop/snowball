@@ -2,9 +2,6 @@ package org.kiworkshop.snowball.user.service;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.kiworkshop.snowball.user.controller.dto.UserCreateRequestDto;
-import org.kiworkshop.snowball.user.controller.dto.UserCreateRequestDtoFixture;
-import org.kiworkshop.snowball.user.controller.dto.UserLoginRequestDto;
 import org.kiworkshop.snowball.user.controller.dto.UserResponse;
 import org.kiworkshop.snowball.user.entity.User;
 import org.kiworkshop.snowball.user.Entity.UserFixture;
@@ -20,7 +17,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
