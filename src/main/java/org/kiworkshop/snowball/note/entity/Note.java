@@ -43,4 +43,9 @@ public class Note extends BaseTimeEntity {
         this.user = note.getUser();
         this.stockTransactions = note.getStockTransactions();
     }
+
+    public void addStockTransactions(List<StockTransaction> stockTransactions) {
+        this.stockTransactions = stockTransactions;
+        stockTransactions.forEach(stockTransaction -> stockTransaction.addNote(this));
+    }
 }

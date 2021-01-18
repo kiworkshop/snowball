@@ -22,6 +22,7 @@ public class StockTransactionFixture {
         ReflectionTestUtils.setField(stockTransaction, "modifiedDate", LocalDateTime.now());
         return stockTransaction;
     }
+
     public static List<StockTransaction> createList(){
         List<StockTransaction> stockTransactions = new ArrayList<>();
         stockTransactions.add(StockTransactionFixture.create(TransactionType.BUY));
