@@ -11,15 +11,15 @@ class NoteAssemblerTest {
     @Test
     void getNoteTest() {
         // given
-        NoteRequestDto requestDto = NoteRequestDtoFixture.create();
+        NoteRequest noteRequest = NoteRequestFixture.create();
 
         // when
-        Note note = NoteAssembler.getNote(requestDto, UserFixture.create());
+        Note note = NoteAssembler.getNote(noteRequest, UserFixture.create());
 
         // then
-        assertThat(note.getStockTransactions().size()).isEqualTo(requestDto.getStockTransactions().size());
-        assertThat(note.getStockTransactions().get(0)).isEqualToComparingFieldByField(requestDto.getStockTransactions().get(0));
-        assertThat(note.getStockTransactions().get(1)).isEqualToComparingFieldByField(requestDto.getStockTransactions().get(1));
+        assertThat(note.getTitle()).isEqualTo(noteRequest.getTitle());
+        assertThat(note.getContent()).isEqualTo(noteRequest.getContent());
+        assertThat(note.getInvestmentDate()).isEqualTo(noteRequest.getInvestmentDate());
 
     }
 }
