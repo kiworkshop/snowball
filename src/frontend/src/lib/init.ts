@@ -1,7 +1,7 @@
 import { Store } from 'redux';
 import { getMeAsync } from '../store/modules/user';
 
-const init = async (store: Store) => {
+const init = (store: Store) => {
   store.dispatch(getMeAsync.request());
 };
 
