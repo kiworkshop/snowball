@@ -7,6 +7,9 @@ import routes from '../../../routes';
 function* getMeSaga() {
   try {
     const response = yield call(userAPI.getMe);
+    if (history.browserHistory.location.pathname === routes.login()) {
+      history.push(routes.home());
+    }
     yield put(getMeAsync.success(response.data));
   } catch (e) {
     console.error(e);
