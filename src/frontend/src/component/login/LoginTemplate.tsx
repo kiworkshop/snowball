@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'antd';
 import styled from 'styled-components';
-import { MAX_MEDIUM } from '../../constants/screen';
+import Screen from '../../constants/screen';
 import brandLogo from '../../static/images/logo.png';
 import googleLogo from '../../static/images/google.png';
 import Container from '../base/Container';
@@ -17,7 +17,7 @@ const Wrapper = styled(Container)`
   height: 100%;
   justify-content: center;
 
-  @media (max-width: ${MAX_MEDIUM}px) {
+  @media (max-width: ${Screen.MAX_MEDIUM}px) {
     padding: 0 20px;
   }
 `;
@@ -33,7 +33,7 @@ const BrandSlogan = styled.h1`
   text-align: center;
   word-break: keep-all;
 
-  @media (max-width: ${MAX_MEDIUM}px) {
+  @media (max-width: ${Screen.MAX_MEDIUM}px) {
     font-size: 1rem;
   }
 `;

@@ -2,7 +2,7 @@ import React from 'react';
 import { Calendar as AntdCalendar, Typography } from 'antd';
 import moment from 'moment';
 import styled from 'styled-components';
-import { $mainColor } from '../../constants/colors';
+import Colors from '../../constants/colors';
 
 interface DatePickerProps {
   currentDate: moment.Moment;
@@ -15,7 +15,7 @@ const Wrapper = styled.div`
 `;
 
 const CalendarTitle = styled(Typography.Title)`
-  color: ${$mainColor};
+  color: ${Colors.$mainColor};
 `;
 
 const StyledCalendar = styled(AntdCalendar)`

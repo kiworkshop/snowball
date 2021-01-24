@@ -1,7 +1,7 @@
 import React from 'react';
 import { Typography, Pagination, Empty } from 'antd';
 import styled from 'styled-components';
-import { $mainColor } from '../../constants/colors';
+import Colors from '../../constants/colors';
 import PortfolioSummaryRow from './PortfolioSummaryRow';
 
 interface PortfolioSummaryProps {
@@ -24,7 +24,7 @@ const Wrapper = styled.div`
 `;
 
 const TableTitle = styled(Typography.Title)`
-  color: ${$mainColor};
+  color: ${Colors.$mainColor};
   margin-bottom: 30px;
 `;
 
