@@ -19,7 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                     .antMatchers(
-                        "/login", "/oauth2/**",
+                        "/", "/login", "/oauth2/**",
                         "/actuator/**",
                         "/static/**",
                         "/h2-console/**")
