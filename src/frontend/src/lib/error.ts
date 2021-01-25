@@ -1,24 +1,32 @@
 import { message, Modal } from 'antd';
+import routes from '../routes';
 
-const errorHandler = (error: any, customHandler: CustomHandler = undefined) => {
-  if (customHandler) {
-    customHandler(error);
-  }
+const errorMap: $Error.ErrorMap = {
+  400: () => message.error('잘못된 요청입니다.'),
+  401: () => {
+    message.error('로그인 세션이 만료되었습니다.');
+    window.location.replace(routes.login());
+  },
+  403: () => message.error('권한이 없습니다.'),
+  404: () => message.error('존재하지 않는 경로에 대한 요청입니다.'),
+  500: () => message.error('서버 오류입니다.'),
+};
 
+const errorHandler = (
+  error: any,
+  customHandler: $Error.CustomHandler = undefined
+) => {
   if (error.response && error.response.status) {
     const statusCode = error.response.status;
 
-    if (statusCode === 400 || statusCode === 404) {
-      return message.error('잘못된 요청입니다.');
+    if (customHandler && customHandler[statusCode]) {
+      customHandler[statusCode].call();
+      return;
     }
 
-    if (statusCode === 401) {
-      message.error('로그인 세션이 만료되었습니다.');
-      return window.location.replace('/login');
-    }
-
-    if (statusCode === 403) {
-      return message.error('권한이 없습니다.');
+    if (errorMap[statusCode]) {
+      errorMap[statusCode].call();
+      return;
     }
   }
 
@@ -32,7 +40,5 @@ const errorHandler = (error: any, customHandler: CustomHandler = undefined) => {
     },
   });
 };
-
-type CustomHandler = ((error: any) => void) | undefined;
 
 export default errorHandler;
