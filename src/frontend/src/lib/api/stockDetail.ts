@@ -1,4 +1,9 @@
-import axiosClient from '../axiosClient';
+import axios from 'axios';
 
-export const getSingleStockDetail = (companyName: string) =>
-  axiosClient.get('/stockdetail', { params: { companyName } });
+const axiosClient = axios.create({
+  baseURL: 'http://develop.snowball.live/stockdetail',
+});
+
+export const getSingleStockDetail = (companyName: string) => {
+  return axiosClient.get('', { params: { companyName } });
+};

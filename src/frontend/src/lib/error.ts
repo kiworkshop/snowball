@@ -1,5 +1,6 @@
 import { message, Modal } from 'antd';
 import routes from '../routes';
+import { $Error } from '../types/error';
 
 const errorMap: $Error.ErrorMap = {
   400: () => message.error('잘못된 요청입니다.'),
