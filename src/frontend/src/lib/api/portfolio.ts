@@ -1,7 +1,12 @@
-import axiosClient from '../axiosClient';
+import axios from 'axios';
 import { PortfolioSummary } from '../../store/modules/portfolio';
 
-export const getPortfolioSummaries = (id: number, page: number) =>
-  axiosClient.get<PortfolioSummary[]>(`/portfolio-summary/${id}`, {
+const axiosClient = axios.create({
+  baseURL: 'http://develop.snowball.live/portfolio-summary',
+});
+
+export const getPortfolioSummaries = (id: number, page: number) => {
+  return axiosClient.get<PortfolioSummary[]>(`/${id}`, {
     params: { page },
   });
+};

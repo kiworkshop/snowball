@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import routes from '../../routes';
 import { Profile } from '../../store/modules/user';
-import { MAX_MEDIUM } from '../../constants/screen';
+import Screen from '../../constants/screen';
 import logo from '../../static/images/logo.png';
 import Container from './Container';
 
@@ -26,7 +26,7 @@ const Header = styled(Layout.Header)`
   width: 100%;
   z-index: 1000;
 
-  @media (max-width: ${MAX_MEDIUM}px) {
+  @media (max-width: ${Screen.MAX_MEDIUM}px) {
     display: none;
   }
 `;

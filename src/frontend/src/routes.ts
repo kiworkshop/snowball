@@ -1,6 +1,6 @@
 export default {
   home: () => '/',
-  login: () => '/login',
+  login: () => '/user/login',
   note: {
     detail: (id: number) => `/note/${id}`,
     create: () => '/create/note',

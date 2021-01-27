@@ -3,7 +3,7 @@ import { Popconfirm, Table, Typography } from 'antd';
 import { CloseCircleOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { addCommaToNumber } from '../../lib/number';
-import { $red } from '../../constants/colors';
+import Colors from '../../constants/colors';
 
 interface StockTransactionDataSource {
   index: number;
@@ -29,7 +29,7 @@ const StockTransactionTableWrapper = styled.div`
 `;
 
 const CloseIcon = styled(CloseCircleOutlined)`
-  color: ${$red};
+  color: ${Colors.$red};
 `;
 
 const StockTransactionTable: React.FC<StockTransactionTableProps> = ({

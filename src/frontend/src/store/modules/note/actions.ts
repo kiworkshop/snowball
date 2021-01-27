@@ -1,8 +1,7 @@
 import { action, createAsyncAction } from 'typesafe-actions';
 import { AxiosError } from 'axios';
-
 import { ChangedPartsOfForm } from './types';
-import { Notes, Note, Form } from '../../../lib/api/note';
+import { $Note } from '../../../types/note';
 
 /* ACTION CONSTANT */
 export const INITIALIZE_FORM = 'note/INITIALIZE_FORM' as const;
@@ -52,25 +51,25 @@ export const getNotesAsync = createAsyncAction(
   GET_NOTES_REQUEST,
   GET_NOTES_SUCCESS,
   GET_NOTES_FAILURE
-)<{ page: number; size: number }, Notes, AxiosError>();
+)<{ page: number; size: number }, $Note.Notes, AxiosError>();
 
 export const getNoteAsync = createAsyncAction(
   GET_NOTE_REQUEST,
   GET_NOTE_SUCCESS,
   GET_NOTE_FAILURE
-)<number, Note, AxiosError>();
+)<number, $Note.Note, AxiosError>();
 
 export const createNoteAsync = createAsyncAction(
   CREATE_NOTE_REQUEST,
   CREATE_NOTE_SUCCESS,
   CREATE_NOTE_FAILURE
-)<Form, undefined, AxiosError>();
+)<$Note.Form, undefined, AxiosError>();
 
 export const updateNoteAsync = createAsyncAction(
   UPDATE_NOTE_REQUEST,
   UPDATE_NOTE_SUCCESS,
   UPDATE_NOTE_FAILURE
-)<{ id: number; form: Form }, undefined, AxiosError>();
+)<{ id: number; form: $Note.Form }, undefined, AxiosError>();
 
 export const deleteNoteAsync = createAsyncAction(
   DELETE_NOTE_REQUEST,

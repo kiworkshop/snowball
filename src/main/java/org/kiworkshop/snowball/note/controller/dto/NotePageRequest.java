@@ -10,8 +10,8 @@ import javax.validation.constraints.PositiveOrZero;
 @NoArgsConstructor
 public class NotePageRequest {
 
-    private static final int MAX_PAGE = 10;
-    private static final int MAX_SIZE = 10;
+    private static final int MAX_PAGE = 11;
+    private static final int MAX_SIZE = 11;
 
     @PositiveOrZero
     private int page;

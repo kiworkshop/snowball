@@ -6,7 +6,7 @@ import AuthApp from './AuthApp';
 function App() {
   return (
     <Switch>
-      <Route path="/login" component={LoginPage} exact />
+      <Route path="/user/login" component={LoginPage} exact />
       <Route path="/" component={AuthApp} />
     </Switch>
   );

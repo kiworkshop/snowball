@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { MAX_MEDIUM } from '../../constants/screen';
+import Screen from '../../constants/screen';
 import Container from './Container';
 
 interface AuthAppContainerProps {
@@ -10,7 +10,7 @@ interface AuthAppContainerProps {
 const StyledContainer = styled(Container)`
   padding: 30px 0;
 
-  @media (max-width: ${MAX_MEDIUM}px) {
+  @media (max-width: ${Screen.MAX_MEDIUM}px) {
     padding: 30px 20px;
   }
 `;

@@ -1,4 +1,10 @@
-import axiosClient from '../axiosClient';
+import axios from 'axios';
 import { Profile } from '../../store/modules/user';
 
-export const getMe = () => axiosClient.get<Profile>('/me');
+const axiosClient = axios.create({
+  baseURL: 'http://develop.snowball.live',
+});
+
+export const getMe = () => {
+  return axiosClient.get<Profile>('/me');
+};

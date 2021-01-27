@@ -17,9 +17,9 @@ import {
   getNotesAsync,
   setForm,
 } from './actions';
-import { Note } from '../../../lib/api/note';
 import routes from '../../../routes';
 import errorHandler from '../../../lib/error';
+import { $Note } from '../../../types/note';
 
 function* getNotesSaga(action: ReturnType<typeof getNotesAsync.request>) {
   try {
@@ -64,7 +64,7 @@ function* setFormForUpdateSaga(
 ) {
   try {
     const response = yield call(noteAPI.getNote, action.payload);
-    const note: Note = response.data;
+    const note: $Note.Note = response.data;
     yield put(
       setForm({
         content: note.content,
