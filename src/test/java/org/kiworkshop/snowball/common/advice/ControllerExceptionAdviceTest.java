@@ -35,7 +35,7 @@ class ControllerExceptionAdviceTest extends ControllerTest {
         ReflectionTestUtils.setField(requestDto, "investmentDate", null);
 
         // when & then
-        mvc.perform(RestDocumentationRequestBuilders.post("/notes")
+        mvc.perform(RestDocumentationRequestBuilders.post("/api/notes")
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(requestDto)))

@@ -1,7 +1,7 @@
 package org.kiworkshop.snowball.note.controller.dto;
 
-import org.kiworkshop.snowball.note.entity.Note;
-import org.kiworkshop.snowball.stocktransaction.dto.StockTransactionResponseFixture;
+import org.kiworkshop.snowball.stocktransaction.controller.dto.StockTransactionResponseFixture;
+import org.springframework.data.domain.PageImpl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -9,13 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NoteResponseFixture {
-
-    public static List<NoteResponse> createList() {
-        List<NoteResponse> noteResponses = new ArrayList<>();
-        noteResponses.add(create());
-        noteResponses.add(create());
-        return noteResponses;
-    }
 
     public static NoteResponse create() {
         return NoteResponse.builder()
@@ -27,5 +20,17 @@ public class NoteResponseFixture {
                 .modifiedDate(LocalDateTime.now())
                 .stockTransactionResponses(StockTransactionResponseFixture.createList())
                 .build();
+    }
+
+    public static List<NoteResponse> createList() {
+        List<NoteResponse> noteResponses = new ArrayList<>();
+        noteResponses.add(create());
+        noteResponses.add(create());
+        return noteResponses;
+    }
+
+    public static PageImpl<NoteResponse> createNoteResponsePage() {
+        List<NoteResponse> noteResponses = NoteResponseFixture.createList();
+        return new PageImpl<>(noteResponses);
     }
 }

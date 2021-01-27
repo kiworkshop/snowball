@@ -4,8 +4,6 @@ import lombok.Builder;
 import lombok.Getter;
 import org.kiworkshop.snowball.common.type.TransactionType;
 import org.kiworkshop.snowball.stockdetail.controller.dto.StockDetailResponse;
-import org.kiworkshop.snowball.stockdetail.controller.dto.StockDetailResponseDto;
-import org.kiworkshop.snowball.stockdetail.entity.StockDetail;
 
 @Getter
 public class StockTransactionResponse {

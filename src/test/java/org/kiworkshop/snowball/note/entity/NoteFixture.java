@@ -3,14 +3,15 @@ package org.kiworkshop.snowball.note.entity;
 import org.kiworkshop.snowball.stocktransaction.entity.StockTransactionFixture;
 import org.kiworkshop.snowball.user.Entity.UserFixture;
 import org.kiworkshop.snowball.user.entity.User;
-import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.data.domain.PageImpl;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class NoteFixture {
 
-    public static Note create(){
+    public static Note create() {
         return Note.builder()
                 .user(UserFixture.create())
                 .title("투자노트 제목입니다.")
@@ -28,5 +29,14 @@ public class NoteFixture {
                 .investmentDate(LocalDate.now())
                 .stockTransactions(StockTransactionFixture.createList())
                 .build();
+    }
+
+    public static PageImpl<Note> createNotePage() {
+        List<Note> notes = new ArrayList<>();
+
+        notes.add(create());
+        notes.add(create());
+
+        return new PageImpl<>(notes);
     }
 }

@@ -10,6 +10,8 @@ import org.kiworkshop.snowball.note.controller.dto.NoteCreateResponse;
 import org.kiworkshop.snowball.note.controller.dto.NoteRequest;
 import org.kiworkshop.snowball.note.controller.dto.NoteRequestFixture;
 import org.kiworkshop.snowball.note.entity.NoteRepository;
+import org.kiworkshop.snowball.stockdetail.entity.StockDetailRepository;
+import org.kiworkshop.snowball.stockdetail.service.StockDetailService;
 import org.kiworkshop.snowball.stocktransaction.controller.dto.StockTransactionRequest;
 import org.kiworkshop.snowball.stocktransaction.entity.StockTransaction;
 import org.kiworkshop.snowball.stocktransaction.entity.StockTransactionRepository;
@@ -21,7 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class NoteServiceIntegrationTest extends IntegrationTest {
+class NoteServiceIntegrationTest extends IntegrationTest {
 
     @Autowired
     private NoteService noteService;
@@ -31,12 +33,12 @@ public class NoteServiceIntegrationTest extends IntegrationTest {
     private UserRepository userRepository;
     @Autowired
     private StockTransactionRepository stockTransactionRepository;
-
-    private User user;
+    @Autowired
+    private StockDetailRepository stockDetailRepository;
 
     @BeforeEach
     void setUp() {
-        user = userRepository.save(UserFixture.create());
+        userRepository.save(UserFixture.create());
         SecurityContextHolder.getContext().setAuthentication(AuthenticationFixture.create());
     }
 
