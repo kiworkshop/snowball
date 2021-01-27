@@ -10,7 +10,6 @@ public class StockDetailAssembler {
     public static StockDetailResponse getStockDetailResponse(StockDetail stockDetail) {
         return StockDetailResponse.builder()
                 .id(stockDetail.getId())
-                .companyName(stockDetail.getCompanyName())
                 .build();
     }
 }

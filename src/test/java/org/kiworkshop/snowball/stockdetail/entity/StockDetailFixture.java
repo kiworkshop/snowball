@@ -26,4 +26,9 @@ public class StockDetailFixture {
         return stockDetail;
     }
 
+    public static StockDetail createWithId(Long id) {
+        StockDetail stockDetail = create();
+        ReflectionTestUtils.setField(stockDetail, "id", id);
+        return stockDetail;
+    }
 }

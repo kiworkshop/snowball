@@ -7,11 +7,11 @@ import lombok.Getter;
 public class StockDetailResponse {
 
     private Long id;
-    private String CompanyName;
+    private String companyName;
 
     @Builder
     public StockDetailResponse(Long id, String companyName) {
         this.id = id;
-        CompanyName = companyName;
+        this.companyName = companyName;
     }
 }
