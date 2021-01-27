@@ -22,7 +22,6 @@ public class StockTransaction extends BaseTimeEntity {
     private User user;
     @ManyToOne
     private StockDetail stockDetail;
-
     @JsonBackReference
     @ManyToOne
     private Note note;
@@ -32,7 +31,8 @@ public class StockTransaction extends BaseTimeEntity {
     private TransactionType transactionType;
 
     @Builder
-    public StockTransaction(User user, StockDetail stockDetail, Note note, Long quantity, Long tradedPrice, TransactionType transactionType) {
+    public StockTransaction(User user, StockDetail stockDetail, Note note, Long quantity, Long tradedPrice,
+                            TransactionType transactionType) {
         this.user = user;
         this.stockDetail = stockDetail;
         this.note = note;

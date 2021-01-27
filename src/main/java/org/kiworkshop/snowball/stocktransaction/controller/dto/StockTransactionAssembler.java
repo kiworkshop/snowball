@@ -13,20 +13,15 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class StockTransactionAssembler {
 
-    public static List<StockTransaction> getStockTransactions(List<StockTransactionRequest> stockTransactionRequests, User user) {
-        return stockTransactionRequests.stream()
-                .map(stockTransactionRequest -> getStockTransaction(stockTransactionRequest, user))
-                .collect(Collectors.toList());
-    }
-
-    public static StockTransaction getStockTransaction(StockTransactionRequest stockTransactionRequest, User user) {
+    public static StockTransaction getStockTransaction(StockTransactionRequest stockTransactionRequest,
+                                                       StockDetail stockDetail, User user) {
         return StockTransaction.builder()
+                .user(user)
+                .stockDetail(stockDetail)
                 .note(stockTransactionRequest.getNote())
                 .quantity(stockTransactionRequest.getQuantity())
-                .stockDetail(stockTransactionRequest.getStockDetail())
                 .tradedPrice(stockTransactionRequest.getTradedPrice())
                 .transactionType(stockTransactionRequest.getTransactionType())
-                .user(user)
                 .build();
     }
 

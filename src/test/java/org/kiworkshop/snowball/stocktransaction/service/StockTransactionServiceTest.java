@@ -4,9 +4,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kiworkshop.snowball.auth.IAuthenticationFacade;
 import org.kiworkshop.snowball.common.type.TransactionType;
+import org.kiworkshop.snowball.stockdetail.entity.StockDetailFixture;
+import org.kiworkshop.snowball.stockdetail.service.StockDetailService;
 import org.kiworkshop.snowball.stocktransaction.entity.StockTransactionFixture;
 import org.kiworkshop.snowball.stocktransaction.controller.dto.StockTransactionRequest;
-import org.kiworkshop.snowball.stocktransaction.dto.StockTransactionRequestFixture;
+import org.kiworkshop.snowball.stocktransaction.controller.dto.StockTransactionRequestFixture;
 import org.kiworkshop.snowball.stocktransaction.controller.dto.StockTransactionCreateResponse;
 import org.kiworkshop.snowball.stocktransaction.entity.StockTransaction;
 import org.kiworkshop.snowball.stocktransaction.entity.StockTransactionRepository;
@@ -27,12 +29,14 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 class StockTransactionServiceTest {
 
-    @Mock
-    private StockTransactionRepository stockTransactionRepository;
     @InjectMocks
     private StockTransactionService dut;
     @Mock
-    IAuthenticationFacade authenticationFacade;
+    private StockTransactionRepository stockTransactionRepository;
+    @Mock
+    private StockDetailService stockDetailService;
+    @Mock
+    private IAuthenticationFacade authenticationFacade;
 
     @Test
     void getStockTransaction() {
@@ -41,7 +45,7 @@ class StockTransactionServiceTest {
         given(stockTransactionRepository.findById(anyLong())).willReturn(Optional.of(ret));
 
         //when
-        StockTransaction stockTransaction = dut.get(1L);
+        StockTransaction stockTransaction = dut.getStockTransaction(1L);
 
         //then
         assertThat(stockTransaction).isEqualToComparingFieldByField(ret);
@@ -54,11 +58,12 @@ class StockTransactionServiceTest {
         StockTransactionRequest stockTransactionRequest = StockTransactionRequestFixture.create();
         StockTransaction stockTransaction = StockTransactionFixture.create(TransactionType.BUY);
 
-        given(stockTransactionRepository.save(any())).willReturn(stockTransaction);
         given(authenticationFacade.getUser()).willReturn(UserFixture.create());
+        given(stockDetailService.getStockDetail(anyLong())).willReturn(StockDetailFixture.create());
+        given(stockTransactionRepository.save(any(StockTransaction.class))).willReturn(stockTransaction);
 
         //when
-        StockTransactionCreateResponse stockTransactionCreateResponse = dut.create(stockTransactionRequest);
+        StockTransactionCreateResponse stockTransactionCreateResponse = dut.createStockTransaction(stockTransactionRequest);
 
         //then
         assertThat(stockTransactionCreateResponse.getId()).isEqualTo(stockTransaction.getId());
@@ -76,7 +81,7 @@ class StockTransactionServiceTest {
         given(authenticationFacade.getUser()).willReturn(UserFixture.create());
 
         // when
-        dut.update(stockTransactionId, requestDto);
+        dut.updateStockTransaction(stockTransactionId, requestDto);
 
         // then
         assertThat(stockTransaction.getQuantity()).isEqualTo(requestDto.getQuantity());
@@ -86,7 +91,7 @@ class StockTransactionServiceTest {
     @Test
     void deleteStockTransaction() {
         //when
-        dut.delete(1L);
+        dut.deleteStockTransaction(1L);
 
         //then
         then(stockTransactionRepository).should().deleteById(anyLong());

@@ -1,4 +1,4 @@
-package org.kiworkshop.snowball.stocktransaction.dto;
+package org.kiworkshop.snowball.stocktransaction.controller.dto;
 
 import org.kiworkshop.snowball.common.type.TransactionType;
 import org.kiworkshop.snowball.stockdetail.controller.dto.StockDetailResponseFixture;
