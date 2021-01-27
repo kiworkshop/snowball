@@ -11,7 +11,7 @@ public class StockTransactionRequestFixture {
 
     public static StockTransactionRequest create() {
         return StockTransactionRequest.builder()
-                .stockDetail(StockDetailFixture.create())
+                .stockDetailId(2L)
                 .quantity((long) (Math.random() * 100))
                 .tradedPrice(1000L)
                 .transactionType(TransactionType.BUY)

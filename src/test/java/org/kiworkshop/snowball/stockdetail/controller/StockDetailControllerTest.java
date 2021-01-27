@@ -51,7 +51,7 @@ class StockDetailControllerTest extends ControllerTest {
                         ),
                         responseFields(
                                 fieldWithPath("id").type(JsonFieldType.NUMBER).description("주식상세정보 id"),
-                                fieldWithPath("companyName").type(JsonFieldType.STRING).description("주식상세정보 id")
+                                fieldWithPath("companyName").type(JsonFieldType.STRING).description("주식상세정보 회사명")
                         )
                         )
                 );
