@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Button, Drawer, Layout, Menu } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
 import { Profile } from '../../store/modules/user';
-import { MAX_SMALL, MIN_MEDIUM } from '../../constants/screen';
+import Screen from '../../constants/screen';
 import routes from '../../routes';
 import Container from './Container';
 
@@ -27,7 +27,7 @@ const Header = styled(Layout.Header)`
   width: 100%;
   z-index: 1000;
 
-  @media (min-width: ${MIN_MEDIUM}px) {
+  @media (min-width: ${Screen.MIN_MEDIUM}px) {
     display: none;
   }
 `;
@@ -38,13 +38,13 @@ const InnerWrapper = styled(Container)`
   height: 100%;
   justify-content: space-between;
 
-  @media (max-width: ${MAX_SMALL}px) {
+  @media (max-width: ${Screen.MAX_SMALL}px) {
     padding: 0 20px;
   }
 `;
 
 const MenuDrawer = styled(Drawer)`
-  @media (min-width: ${MIN_MEDIUM}px) {
+  @media (min-width: ${Screen.MIN_MEDIUM}px) {
     display: none;
   }
 `;
@@ -54,7 +54,7 @@ const MobileAndTabletMenu = styled(Menu)`
 `;
 
 const DrawerTrigger = styled(Button)`
-  @media (min-width: ${MIN_MEDIUM}px) {
+  @media (min-width: ${Screen.MIN_MEDIUM}px) {
     display: none;
   }
 `;

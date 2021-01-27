@@ -1,5 +1,9 @@
-export const $mainColor = '#25476A';
-export const $subColor  = '#00a8cc';
-export const $black     = '#000000';
-export const $white     = '#ffffff';
-export const $red       = '#f5222d';
+class Colors {
+  $mainColor = '#25476A';
+  $subColor = '#00a8cc';
+  $black = '#000000';
+  $white = '#ffffff';
+  $red = '#f5222d';
+}
+
+export default new Colors();

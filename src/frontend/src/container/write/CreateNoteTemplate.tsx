@@ -8,7 +8,7 @@ import {
   initializeForm,
   setForm,
 } from '../../store/modules/note';
-import { $white } from '../../constants/colors';
+import Colors from '../../constants/colors';
 import EditorContainer from './EditorContainer';
 import CalendarContainer from './CalendarContainer';
 import StockTransactionContainer from './StockTransactionContainer';
@@ -51,7 +51,7 @@ const CreateNoteTemplate = () => {
   return (
     <>
       {isDateSelected && (
-        <div style={{ background: $white, padding: '30px' }}>
+        <div style={{ background: Colors.$white, padding: '30px' }}>
           <PageHeader
             title="날짜 수정하기"
             subTitle={investmentDate}
