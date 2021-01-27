@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.PositiveOrZero;
 
 @Getter
 @NoArgsConstructor
@@ -13,9 +13,9 @@ public class NotePageRequest {
     private static final int MAX_PAGE = 10;
     private static final int MAX_SIZE = 10;
 
-    @NotEmpty
+    @PositiveOrZero
     private int page;
-    @NotEmpty
+    @PositiveOrZero
     private int size;
 
     @Builder

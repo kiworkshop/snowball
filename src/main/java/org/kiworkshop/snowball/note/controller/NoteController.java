@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@RequestMapping("/api")
 @RequiredArgsConstructor
 @RestController
 public class NoteController {
@@ -24,18 +25,20 @@ public class NoteController {
         return noteService.createNote(noteRequest);
     }
 
-    @GetMapping("/notes")
-    public Page<NoteResponse> getNotes(@Valid @RequestBody NotePageRequest notePageRequest) {
-        // limit + timeout
-        PageRequest pageRequest = PageRequest.of(notePageRequest.getPage(), notePageRequest.getSize(),
-                Sort.by("createdDate").descending());
-
-        return noteService.getNotes(pageRequest);
-    }
-
     @GetMapping("/notes/{id}")
     public NoteResponse getNote(@PathVariable Long id) {
         return noteService.getNote(id);
+    }
+
+    @GetMapping("/notes")
+    public Page<NoteResponse> getNotes(@Valid @RequestBody NotePageRequest notePageRequest) {
+        // limit + timeout
+        PageRequest pageRequest = PageRequest.of(
+                notePageRequest.getPage(),
+                notePageRequest.getSize(),
+                Sort.by("createdDate").descending());
+
+        return noteService.getNotes(pageRequest);
     }
 
     @PutMapping("/notes/{id}")

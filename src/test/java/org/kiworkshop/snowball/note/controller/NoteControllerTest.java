@@ -1,32 +1,22 @@
 package org.kiworkshop.snowball.note.controller;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.kiworkshop.snowball.ControllerTest;
 import org.kiworkshop.snowball.auth.SecurityConfig;
-import org.kiworkshop.snowball.auth.dto.SessionUser;
 import org.kiworkshop.snowball.common.exception.DomainServiceException;
 import org.kiworkshop.snowball.note.controller.dto.*;
 import org.kiworkshop.snowball.note.service.NoteService;
-import org.kiworkshop.snowball.stocktransaction.entity.StockTransactionFixture;
 import org.kiworkshop.snowball.user.Entity.UserFixture;
-import org.kiworkshop.snowball.user.entity.User;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpSession;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.test.context.support.WithMockUser;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import static org.kiworkshop.snowball.util.ApiDocumentUtils.getDocumentRequest;
@@ -38,7 +28,8 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.snippet.Attributes.key;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -51,25 +42,24 @@ class NoteControllerTest extends ControllerTest {
     @MockBean
     private NoteService noteService;
 
-    // TODO: 2021-01-14(014) stockdetail을 dto로 받을지 결정하기! 
     @WithMockUser(roles = "USER")
     @Test
     void createNoteTest() throws Exception {
         // given
-        NoteRequest requestDto = NoteRequestFixture.create();
-        NoteCreateResponse responseDto = NoteCreateResponse.builder()
+        NoteRequest noteRequest = NoteRequestFixture.create();
+        NoteCreateResponse noteResponse = NoteCreateResponse.builder()
                 .id(1L)
                 .build();
 
-        given(noteService.createNote(any(NoteRequest.class))).willReturn(responseDto);
+        given(noteService.createNote(any(NoteRequest.class))).willReturn(noteResponse);
 
         // when & then
-        mvc.perform(RestDocumentationRequestBuilders.post("/notes")
+        mvc.perform(RestDocumentationRequestBuilders.post("/api/notes")
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(requestDto)))
+                .content(objectMapper.writeValueAsBytes(noteRequest)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(responseDto.getId()))
+                .andExpect(jsonPath("$.id").value(noteResponse.getId()))
                 .andDo(document("note/create-note",
                         getDocumentRequest(),
                         getDocumentResponse(),
@@ -79,7 +69,7 @@ class NoteControllerTest extends ControllerTest {
                                 fieldWithPath("investmentDate").type(JsonFieldType.STRING).description("투자한 날짜"),
                                 subsectionWithPath("stockTransactionRequests")
                                         .type(JsonFieldType.ARRAY).description("주식 거래내역 목록"),
-                                subsectionWithPath("stockTransactionRequests[].stockDetail.id")
+                                subsectionWithPath("stockTransactionRequests[].stockDetailId")
                                         .type(JsonFieldType.NUMBER).description("주식 상세정보 id"),
                                 subsectionWithPath("stockTransactionRequests[].quantity")
                                         .type(JsonFieldType.NUMBER).description("주식 거래내역 수량"),
@@ -94,29 +84,26 @@ class NoteControllerTest extends ControllerTest {
                 ));
     }
 
-    // TODO: 2021-01-14(014) getNotes 테스트 수정 
-/*
     @WithMockUser(roles = "USER")
     @Test
     void getNotesTest() throws Exception {
         // given
-        List<NoteResponse> noteResponses = NoteResponseFixture.createList();
-        Page<NoteResponse> responseDto = new PageImpl<>(noteResponses);
+        NotePageRequest notePageRequest = NotePageRequestFixture.create();
+        Page<NoteResponse> noteResponsePage = NoteResponseFixture.createNoteResponsePage();
 
-        given(noteService.getNotes(any())).willReturn(responseDto);
+        given(noteService.getNotes(any())).willReturn(noteResponsePage);
 
         // when & then
-        mvc.perform(RestDocumentationRequestBuilders.get("/notes")
-                .param("page", "1")
-                .param("size", "10")
-                .contentType(MediaType.APPLICATION_JSON))
+        mvc.perform(RestDocumentationRequestBuilders.get("/api/notes")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsBytes(notePageRequest)))
                 .andExpect(status().isOk())
                 .andDo(document("note/get-notes",
                         getDocumentRequest(),
                         getDocumentResponse(),
-                        requestParameters(
-                                parameterWithName("page").description("페이지"),
-                                parameterWithName("size").description("페이지당 노트 개수")
+                        requestFields(
+                                fieldWithPath("page").type(JsonFieldType.NUMBER).description("투자노트 페이지 인덱스 (0부터 시작)"),
+                                fieldWithPath("size").type(JsonFieldType.NUMBER).description("페이지 당 투자노트 개수")
                         ),
                         responseFields(beneathPath("content[]").withSubsectionId("content"),
                                 fieldWithPath("id").type(JsonFieldType.NUMBER).description("투자노트 id"),
@@ -125,18 +112,21 @@ class NoteControllerTest extends ControllerTest {
                                 fieldWithPath("investmentDate").type(JsonFieldType.STRING).description("투자한 날짜"),
                                 fieldWithPath("createdDate").type(JsonFieldType.STRING).description("투자노트가 생성된 날짜"),
                                 fieldWithPath("modifiedDate").type(JsonFieldType.STRING).description("투자노트가 수정된 날짜"),
-                                subsectionWithPath("stockTransactions")
+                                subsectionWithPath("stockTransactionResponses")
                                         .type(JsonFieldType.ARRAY).description("주식 거래내역 목록"),
-                                subsectionWithPath("stockTransactions[].quantity")
+                                subsectionWithPath("stockTransactionResponses[].stockDetailResponse.id")
+                                        .type(JsonFieldType.NUMBER).description("주식 상세정보 id"),
+                                subsectionWithPath("stockTransactionResponses[].stockDetailResponse.companyName")
+                                        .type(JsonFieldType.STRING).description("주식 상세정보 종목명"),
+                                subsectionWithPath("stockTransactionResponses[].quantity")
                                         .type(JsonFieldType.NUMBER).description("주식 거래내역 수량"),
-                                subsectionWithPath("stockTransactions[].tradedPrice")
+                                subsectionWithPath("stockTransactionResponses[].tradedPrice")
                                         .type(JsonFieldType.NUMBER).description("주식 거래내역 매매가격"),
-                                subsectionWithPath("stockTransactions[].transactionType")
+                                subsectionWithPath("stockTransactionResponses[].transactionType")
                                         .type(JsonFieldType.STRING).description("주식 거래내역 종류")
                         )
                 ));
     }
-*/
 
     @WithMockUser(roles = "USER")
     @Test
@@ -146,7 +136,7 @@ class NoteControllerTest extends ControllerTest {
         given(noteService.getNote(1L)).willReturn(noteResponse);
 
         // when & then
-        mvc.perform(RestDocumentationRequestBuilders.get("/notes/{id}", noteResponse.getId()))
+        mvc.perform(RestDocumentationRequestBuilders.get("/api/notes/{id}", noteResponse.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(noteResponse.getId()))
                 .andExpect(jsonPath("$.title").value(noteResponse.getTitle()))
@@ -191,7 +181,7 @@ class NoteControllerTest extends ControllerTest {
         given(userRepository.findByEmail(anyString())).willReturn(Optional.ofNullable(UserFixture.create()));
 
         // when
-        mvc.perform(RestDocumentationRequestBuilders.put("/notes/{id}", noteId)
+        mvc.perform(RestDocumentationRequestBuilders.put("/api/notes/{id}", noteId)
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody))
@@ -206,7 +196,7 @@ class NoteControllerTest extends ControllerTest {
                                 fieldWithPath("investmentDate").type(JsonFieldType.STRING).description("투자한 날짜"),
                                 subsectionWithPath("stockTransactionRequests")
                                         .type(JsonFieldType.ARRAY).description("주식 거래내역 목록"),
-                                subsectionWithPath("stockTransactionRequests[].stockDetail.id")
+                                subsectionWithPath("stockTransactionRequests[].stockDetailId")
                                         .type(JsonFieldType.NUMBER).description("주식 상세정보 id"),
                                 subsectionWithPath("stockTransactionRequests[].quantity")
                                         .type(JsonFieldType.NUMBER).description("주식 거래내역 수량"),
@@ -232,7 +222,7 @@ class NoteControllerTest extends ControllerTest {
         doNothing().when(noteService).deleteNote(noteId);
 
         // when
-        mvc.perform(RestDocumentationRequestBuilders.delete("/notes/{id}", noteId)
+        mvc.perform(RestDocumentationRequestBuilders.delete("/api/notes/{id}", noteId)
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -258,7 +248,7 @@ class NoteControllerTest extends ControllerTest {
         given(noteService.getNote(eq(noteId))).willThrow(new DomainServiceException("노트가 존재하지 않습니다."));
 
         // when & then
-        mvc.perform(RestDocumentationRequestBuilders.get("/notes/{id}", noteId))
+        mvc.perform(RestDocumentationRequestBuilders.get("/api/notes/{id}", noteId))
                 .andExpect(status().isNotFound());
     }
 }
