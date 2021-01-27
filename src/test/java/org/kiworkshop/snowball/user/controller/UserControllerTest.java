@@ -38,10 +38,8 @@ class UserControllerTest extends ControllerTest {
 
     @MockBean
     private UserService userService;
-
     @MockBean
     private CustomOAuth2UserService customOAuth2UserService;
-
     @MockBean
     private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
@@ -54,7 +52,7 @@ class UserControllerTest extends ControllerTest {
         given(userService.getUser(anyLong())).willReturn(userResponse);
 
         // when & then
-        mvc.perform(RestDocumentationRequestBuilders.get("/users/{id}", userResponse.getId()))
+        mvc.perform(RestDocumentationRequestBuilders.get("/api/users/{id}", userResponse.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(userResponse.getId()))
                 .andExpect(jsonPath("$.name").value(userResponse.getName()))
@@ -82,7 +80,7 @@ class UserControllerTest extends ControllerTest {
         given(userService.getMe()).willReturn(userResponse);
 
         // when & then
-        mvc.perform(RestDocumentationRequestBuilders.get("/me"))
+        mvc.perform(RestDocumentationRequestBuilders.get("/api/me"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(userResponse.getId()))
                 .andExpect(jsonPath("$.name").value(userResponse.getName()))
@@ -106,7 +104,7 @@ class UserControllerTest extends ControllerTest {
                 .commence(any(HttpServletRequest.class), any(HttpServletResponse.class), any(AuthenticationException.class));
 
         // when & then
-        mvc.perform(RestDocumentationRequestBuilders.get("/me"))
+        mvc.perform(RestDocumentationRequestBuilders.get("/api/me"))
                 .andExpect(status().isUnauthorized())
                 .andDo(document("user/get-me-failure",
                         getDocumentRequest(),

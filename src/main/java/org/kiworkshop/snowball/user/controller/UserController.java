@@ -1,13 +1,14 @@
 package org.kiworkshop.snowball.user.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.kiworkshop.snowball.user.controller.dto.UserCreateRequestDto;
 import org.kiworkshop.snowball.user.controller.dto.UserResponse;
 import org.kiworkshop.snowball.user.service.UserService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-
+@RequestMapping("/api")
 @RequiredArgsConstructor
 @RestController
 public class UserController {
