@@ -1,23 +1,28 @@
 import axios from 'axios';
-import { $Note } from '../../types/note';
+import { CreateNoteRequest, UpdateNoteRequest } from '../../types/request/note';
+import {
+  CreateNoteResponse,
+  GetNoteResponse,
+  GetNotesResponse,
+} from '../../types/response/note';
 
 const axiosClient = axios.create({
   baseURL: 'http://develop.snowball.live/api/notes',
 });
 
 export const getNotes = (size: number, page: number) => {
-  return axiosClient.get<$Note.Notes>(`?size=${size}&page=${page}`);
+  return axiosClient.get<GetNotesResponse>(`?size=${size}&page=${page}`);
 };
 
 export const getNote = (id: number) => {
-  return axiosClient.get<$Note.Note>(`/${id}`);
+  return axiosClient.get<GetNoteResponse>(`/${id}`);
 };
 
-export const createNote = (form: $Note.Form) => {
-  return axiosClient.post<{ id: number }>('', form);
+export const createNote = (form: CreateNoteRequest) => {
+  return axiosClient.post<CreateNoteResponse>('', form);
 };
 
-export const updateNote = (id: number, form: $Note.Form) => {
+export const updateNote = (id: number, form: UpdateNoteRequest) => {
   return axiosClient.put(`/${id}`, form);
 };
 

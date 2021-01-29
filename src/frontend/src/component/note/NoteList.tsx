@@ -2,12 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import { Collapse, Button, Typography, Tag, Empty } from 'antd';
 import { RightOutlined } from '@ant-design/icons';
-import { Notes } from '../../store/modules/note';
 import { addCommaToNumber } from '../../lib/number';
 import Colors from '../../constants/colors';
+import { Note } from '../../types/state/note';
 
 interface NoteListProps {
-  notes: Notes;
+  notes: Array<Note>;
   onClickMoreInfoButton: (id: number) => () => void;
 }
 
@@ -81,8 +81,8 @@ const NoteList: React.FC<NoteListProps> = ({
               >
                 <TransactionList>
                   {note.stockTransactions.length > 0 ? (
-                    note.stockTransactions.map((stockTransaction) => (
-                      <li key={stockTransaction.id}>
+                    note.stockTransactions.map((stockTransaction, index) => (
+                      <li key={index}>
                         {stockTransaction.transactionType === 'BUY' ? (
                           <Tag color="processing">매수</Tag>
                         ) : (

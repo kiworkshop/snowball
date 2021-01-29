@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Space, Typography, Button } from 'antd';
-import { Note as NoteType } from '../../store/modules/note';
 import StockTransactionTable from './StockTransactionTable';
+import { Note } from '../../types/state/note';
 
 interface NoteProps {
-  note: NoteType;
+  note: Note;
   onClickUpdateButton: () => void;
   onClickDeleteButton: () => void;
   loading: boolean;

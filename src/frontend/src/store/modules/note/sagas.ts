@@ -1,4 +1,3 @@
-import moment from 'moment';
 import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
 import * as history from '../../../lib/history';
 import * as noteAPI from '../../../lib/api/note';
@@ -6,20 +5,16 @@ import {
   GET_NOTES_REQUEST,
   GET_NOTE_REQUEST,
   CREATE_NOTE_REQUEST,
-  SET_FORM_FOR_UPDATE_REQUEST,
   UPDATE_NOTE_REQUEST,
   DELETE_NOTE_REQUEST,
   getNoteAsync,
   createNoteAsync,
-  setFormForUpdateAsync,
   updateNoteAsync,
   deleteNoteAsync,
   getNotesAsync,
-  setForm,
 } from './actions';
 import routes from '../../../routes';
 import errorHandler from '../../../lib/error';
-import { $Note } from '../../../types/note';
 
 function* getNotesSaga(action: ReturnType<typeof getNotesAsync.request>) {
   try {
@@ -47,7 +42,7 @@ function* createNoteSaga(action: ReturnType<typeof createNoteAsync.request>) {
     const form = action.payload;
 
     if (!form.title) {
-      form.title = `${form.investmentDate?.format('YYYY-MM-DD')} 투자노트`;
+      form.title = `${form.investmentDate} 투자노트`;
     }
 
     const response = yield call(noteAPI.createNote, form);
@@ -59,42 +54,12 @@ function* createNoteSaga(action: ReturnType<typeof createNoteAsync.request>) {
   }
 }
 
-function* setFormForUpdateSaga(
-  action: ReturnType<typeof setFormForUpdateAsync.request>
-) {
-  try {
-    const response = yield call(noteAPI.getNote, action.payload);
-    const note: $Note.Note = response.data;
-    yield put(
-      setForm({
-        content: note.content,
-        investmentDate: moment(note.investmentDate),
-        stockTransactions: note.stockTransactions.map((stockTransaction) => ({
-          companyName: stockTransaction.stockDetail.companyName,
-          transactionType: stockTransaction.transactionType,
-          quantity: stockTransaction.quantity,
-          tradedPrice: stockTransaction.tradedPrice,
-          user: null,
-          note: null,
-          stockDetail: {
-            id: stockTransaction.stockDetail.id,
-          },
-        })),
-      })
-    );
-    yield put(setFormForUpdateAsync.success());
-  } catch (e) {
-    errorHandler(e);
-    yield put(setFormForUpdateAsync.failure(e));
-  }
-}
-
 function* updateNoteSaga(action: ReturnType<typeof updateNoteAsync.request>) {
   try {
     const { id, form } = action.payload;
 
     if (!form.title) {
-      form.title = `${form.investmentDate?.format('YYYY-MM-DD')} 투자노트`;
+      form.title = `${form.investmentDate} 투자노트`;
     }
 
     yield call(noteAPI.updateNote, id, form);
@@ -120,7 +85,6 @@ export function* noteSaga() {
   yield takeEvery(GET_NOTES_REQUEST, getNotesSaga);
   yield takeEvery(GET_NOTE_REQUEST, getNoteSaga);
   yield takeLatest(CREATE_NOTE_REQUEST, createNoteSaga);
-  yield takeEvery(SET_FORM_FOR_UPDATE_REQUEST, setFormForUpdateSaga);
   yield takeLatest(UPDATE_NOTE_REQUEST, updateNoteSaga);
   yield takeLatest(DELETE_NOTE_REQUEST, deleteNoteSaga);
 }

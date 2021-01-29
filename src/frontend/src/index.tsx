@@ -14,7 +14,7 @@ import init from './lib/init';
 const store = configureStore();
 runSaga(rootSaga);
 
-init(store);
+// init(store);
 
 listen(scrollToTop);
 

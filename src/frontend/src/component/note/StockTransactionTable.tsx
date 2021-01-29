@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, Typography } from 'antd';
 import { addCommaToNumber } from '../../lib/number';
-import { Note } from '../../store/modules/note';
+import { Note } from '../../types/state/note';
 
 interface StockTransactionTableProps {
   type: 'BUY' | 'SELL';
