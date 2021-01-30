@@ -1,9 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import moment from 'moment';
 import { RootState } from '../../store/modules';
 import { getNoteAsync, updateNoteAsync } from '../../store/modules/note';
-import { Note } from '../../types/note';
+import { Note } from '../../types/state/note';
 import UpdateNoteTemplate from '../../component/write/UpdateNoteTemplate';
 
 interface UpdateNoteTemplateContainerProps {
