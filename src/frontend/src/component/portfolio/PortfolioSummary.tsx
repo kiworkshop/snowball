@@ -61,14 +61,7 @@ const TableHeader = styled.thead`
   }
 `;
 
-const PaginationWrapper = styled.div`
-  margin-top: 20px;
-  text-align: right;
-`;
-
-const PortfolioSummary: React.FC<PortfolioSummaryProps> = ({
-  portfolios,
-}) => {
+const PortfolioSummary: React.FC<PortfolioSummaryProps> = ({ portfolios }) => {
   return (
     <Wrapper>
       <TableTitle level={3}>포트폴리오 요약</TableTitle>
