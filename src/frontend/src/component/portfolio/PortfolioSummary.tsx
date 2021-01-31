@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, Pagination, Empty } from 'antd';
+import { Typography, Empty } from 'antd';
 import styled from 'styled-components';
 import Colors from '../../constants/colors';
 import PortfolioSummaryRow from './PortfolioSummaryRow';
@@ -12,8 +12,6 @@ interface PortfolioSummaryProps {
     earningsRate: number;
     targetEarningsRate: number;
   }>;
-  page: number;
-  onPageChange: (page: number) => void;
 }
 
 const Wrapper = styled.div`
@@ -70,8 +68,6 @@ const PaginationWrapper = styled.div`
 
 const PortfolioSummary: React.FC<PortfolioSummaryProps> = ({
   portfolios,
-  page,
-  onPageChange,
 }) => {
   return (
     <Wrapper>
@@ -97,15 +93,6 @@ const PortfolioSummary: React.FC<PortfolioSummaryProps> = ({
       </Table>
 
       {portfolios.length === 0 && <Empty style={{ padding: '50px 0' }} />}
-
-      <PaginationWrapper>
-        <Pagination
-          total={portfolios.length}
-          onChange={onPageChange}
-          current={page}
-          simple
-        />
-      </PaginationWrapper>
     </Wrapper>
   );
 };
