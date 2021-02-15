@@ -1,35 +1,32 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { Modal } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 import routes from '../../routes';
 import { RootState } from '../../store/modules';
-import { deleteNoteAsync, getNoteAsync } from '../../store/modules/note';
+import { deleteNoteAsync } from '../../store/modules/note';
+import * as history from '../../lib/history';
+import { Note } from '../../types/state/note';
 import NoteDetail from '../../component/note/NoteDetail';
 
 interface NoteContainerProps {
   id: number;
+  note: Note;
 }
 
-const NoteDetailContainer: React.FC<NoteContainerProps> = ({ id }) => {
-  const history = useHistory();
+const NoteDetailContainer: React.FC<NoteContainerProps> = ({ id, note }) => {
   const dispatch = useDispatch();
-  const { note, loading, error } = useSelector(
-    (state: RootState) => state.note
-  );
+  const { loading, error } = useSelector((state: RootState) => state.note);
 
-  const getNote = useCallback(
-    (id: number) => dispatch(getNoteAsync.request(id)),
-    [dispatch]
-  );
   const deleteNote = useCallback(
     (id: number) => dispatch(deleteNoteAsync.request(id)),
     [dispatch]
   );
+
   const onClickUpdateButton = useCallback(
     (id: number) => () => history.push(routes.note.update(id)),
-    [history]
+    []
   );
+
   const onClickDeleteButton = useCallback(
     (id: number) => () =>
       Modal.confirm({
@@ -45,10 +42,6 @@ const NoteDetailContainer: React.FC<NoteContainerProps> = ({ id }) => {
       }),
     [deleteNote, loading.deleteNote]
   );
-
-  useEffect(() => {
-    getNote(id);
-  }, [getNote, id]);
 
   return (
     <NoteDetail

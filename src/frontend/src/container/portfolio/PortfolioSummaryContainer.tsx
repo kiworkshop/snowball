@@ -1,21 +1,18 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/modules';
 import { getPortfolioSummariesAsync } from '../../store/modules/portfolio';
 import PortfolioSummary from '../../component/portfolio/PortfolioSummary';
 
 const PortfolioSummaryContainer = () => {
-  const [page, setPage] = useState(1);
   const dispatch = useDispatch();
-  const { id } = useSelector((state: RootState) => state.user.profile);
   const { portfolioSummaries } = useSelector(
     (state: RootState) => state.portfolio
   );
 
-  const onPageChange = useCallback((page: number) => setPage(page), []);
   const getPortfolioSummaries = useCallback(
-    () => dispatch(getPortfolioSummariesAsync.request({ id: id!, page })),
-    [dispatch, id, page]
+    () => dispatch(getPortfolioSummariesAsync.request()),
+    [dispatch]
   );
 
   useEffect(() => {
@@ -24,8 +21,6 @@ const PortfolioSummaryContainer = () => {
 
   return (
     <PortfolioSummary
-      page={page}
-      onPageChange={onPageChange}
       portfolios={portfolioSummaries}
     />
   );

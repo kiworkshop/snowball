@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, Pagination, Empty } from 'antd';
+import { Typography, Empty } from 'antd';
 import styled from 'styled-components';
 import Colors from '../../constants/colors';
 import PortfolioSummaryRow from './PortfolioSummaryRow';
@@ -12,8 +12,6 @@ interface PortfolioSummaryProps {
     earningsRate: number;
     targetEarningsRate: number;
   }>;
-  page: number;
-  onPageChange: (page: number) => void;
 }
 
 const Wrapper = styled.div`
@@ -63,16 +61,7 @@ const TableHeader = styled.thead`
   }
 `;
 
-const PaginationWrapper = styled.div`
-  margin-top: 20px;
-  text-align: right;
-`;
-
-const PortfolioSummary: React.FC<PortfolioSummaryProps> = ({
-  portfolios,
-  page,
-  onPageChange,
-}) => {
+const PortfolioSummary: React.FC<PortfolioSummaryProps> = ({ portfolios }) => {
   return (
     <Wrapper>
       <TableTitle level={3}>포트폴리오 요약</TableTitle>
@@ -97,15 +86,6 @@ const PortfolioSummary: React.FC<PortfolioSummaryProps> = ({
       </Table>
 
       {portfolios.length === 0 && <Empty style={{ padding: '50px 0' }} />}
-
-      <PaginationWrapper>
-        <Pagination
-          total={portfolios.length}
-          onChange={onPageChange}
-          current={page}
-          simple
-        />
-      </PaginationWrapper>
     </Wrapper>
   );
 };

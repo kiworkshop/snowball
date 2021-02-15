@@ -31,11 +31,10 @@ public class NoteController {
     }
 
     @GetMapping("/notes")
-    public Page<NoteResponse> getNotes(@Valid @RequestBody NotePageRequest notePageRequest) {
+    public Page<NoteResponse> getNotes(@RequestParam int page, @RequestParam int size) {
         // limit + timeout
         PageRequest pageRequest = PageRequest.of(
-                notePageRequest.getPage(),
-                notePageRequest.getSize(),
+                page, size,
                 Sort.by("createdDate").descending());
 
         return noteService.getNotes(pageRequest);

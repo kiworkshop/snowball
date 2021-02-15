@@ -1,27 +1,19 @@
-import React, { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../store/modules';
-import { setForm } from '../../store/modules/note';
+import React from 'react';
 import Editor from '../../component/write/Editor';
 
 interface EditorContainerProps {
+  form: { title: string; content: string; investmentDate: string };
+  onChange: (content: string) => void;
   onSave: () => void;
   loading: boolean;
 }
 
-
 const EditorContainer: React.FC<EditorContainerProps> = ({
+  form,
+  onChange,
   onSave,
   loading,
 }) => {
-  const dispatch = useDispatch();
-  const { form } = useSelector((state: RootState) => state.note);
-
-  const onChange = useCallback(
-    (content: string) => dispatch(setForm({ content })),
-    [dispatch]
-  );
-
   return (
     <Editor
       formData={form}

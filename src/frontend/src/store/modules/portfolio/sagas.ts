@@ -6,12 +6,9 @@ import {
 } from './actions';
 import errorHandler from '../../../lib/error';
 
-function* getPortfolioSummariesSaga(
-  action: ReturnType<typeof getPortfolioSummariesAsync.request>
-) {
+function* getPortfolioSummariesSaga() {
   try {
-    const { id, page } = action.payload;
-    const response = yield call(PortfolioAPI.getPortfolioSummaries, id, page);
+    const response = yield call(PortfolioAPI.getPortfolioSummaries);
     yield put(getPortfolioSummariesAsync.success(response.data));
   } catch (e) {
     errorHandler(e);

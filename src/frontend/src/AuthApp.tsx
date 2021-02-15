@@ -1,10 +1,10 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { browserHistory } from './lib/history';
 import { getSelectedMenu } from './lib/nav';
-import Layout from './component/base/Layout';
-import NavContainer from './container/base/NavContainer';
-import AuthAppWrapper from './component/base/AuthAppWrapper';
+import { RootState } from './store/modules';
+import routes from './routes';
 import {
   CreateNotePage,
   MainPage,
@@ -12,8 +12,9 @@ import {
   Page404,
   UpdateNotePage,
 } from './pages';
-import { useSelector } from 'react-redux';
-import { RootState } from './store/modules';
+import Layout from './component/base/Layout';
+import NavContainer from './container/base/NavContainer';
+import AuthAppWrapper from './component/base/AuthAppWrapper';
 
 const AuthApp = () => {
   const { isInit, loading } = useSelector((state: RootState) => state.user);
@@ -25,7 +26,7 @@ const AuthApp = () => {
   }
 
   if (!isInit) {
-    return <Redirect to="/login" />;
+    return <Redirect to={routes.login()} />;
   }
 
   return (

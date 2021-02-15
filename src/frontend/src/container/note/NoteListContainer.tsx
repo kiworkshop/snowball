@@ -15,6 +15,7 @@ const NoteListContainer = () => {
     () => dispatch(getNotesAsync.request({ page: 0, size: 10 })),
     [dispatch]
   );
+
   const onClickMoreInfoButton = useCallback(
     (noteId: number) => () => history.push(routes.note.detail(noteId)),
     [history]

@@ -1,8 +1,8 @@
 import React from 'react';
-import CreateNoteTemplate from '../container/write/CreateNoteTemplate';
+import CreateNoteTemplateContainer from '../container/write/CreateNoteTemplateContainer';
 
 const CreateNotePage = () => {
-  return <CreateNoteTemplate />;
+  return <CreateNoteTemplateContainer />;
 };
 
 export default CreateNotePage;

@@ -1,8 +1,13 @@
 import { message, Modal } from 'antd';
 import routes from '../routes';
-import { $Error } from '../types/error';
 
-const errorMap: $Error.ErrorMap = {
+type ErrorMap = {
+  [statusCode: number]: any;
+};
+
+type CustomHandler = ErrorMap | undefined;
+
+const errorMap: ErrorMap = {
   400: () => message.error('잘못된 요청입니다.'),
   401: () => {
     message.error('로그인 세션이 만료되었습니다.');
@@ -13,10 +18,7 @@ const errorMap: $Error.ErrorMap = {
   500: () => message.error('서버 오류입니다.'),
 };
 
-const errorHandler = (
-  error: any,
-  customHandler: $Error.CustomHandler = undefined
-) => {
+const errorHandler = (error: any, customHandler: CustomHandler = undefined) => {
   if (error.response && error.response.status) {
     const statusCode = error.response.status;
 

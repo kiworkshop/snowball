@@ -1,9 +1,21 @@
 import React from 'react';
+import styled from 'styled-components';
 import { Popconfirm, Table, Typography } from 'antd';
 import { CloseCircleOutlined } from '@ant-design/icons';
-import styled from 'styled-components';
-import { addCommaToNumber } from '../../lib/number';
 import Colors from '../../constants/colors';
+import { addCommaToNumber } from '../../lib/number';
+
+const StockTransactionTableWrapper = styled.div`
+  overflow-x: scroll;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+const CloseIcon = styled(CloseCircleOutlined)`
+  color: ${Colors.$red};
+`;
 
 interface StockTransactionDataSource {
   index: number;
@@ -19,18 +31,6 @@ interface StockTransactionTableProps {
   dataSource: Array<StockTransactionDataSource>;
   onDelete: (index: number) => () => void;
 }
-
-const StockTransactionTableWrapper = styled.div`
-  overflow-x: scroll;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`;
-
-const CloseIcon = styled(CloseCircleOutlined)`
-  color: ${Colors.$red};
-`;
 
 const StockTransactionTable: React.FC<StockTransactionTableProps> = ({
   type,

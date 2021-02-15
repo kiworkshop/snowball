@@ -13,4 +13,4 @@ export const getPortfolioSummariesAsync = createAsyncAction(
   GET_PORTFOLIO_SUMMARIES_REQUEST,
   GET_PORTFOLIO_SUMMARIES_SUCCESS,
   GET_PORTFOLIO_SUMMARIES_FAILURE
-)<{ id: number; page: number }, PortfolioSummary[], AxiosError>();
+)<undefined, PortfolioSummary[], AxiosError>();

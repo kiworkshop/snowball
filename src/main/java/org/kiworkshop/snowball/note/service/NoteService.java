@@ -33,9 +33,11 @@ public class NoteService {
         User user = authenticationFacade.getUser();
         Note note = NoteAssembler.getNote(noteRequest, user);
 
-        List<StockTransaction> stockTransactions = stockTransactionService.createStockTransactions(
-                noteRequest.getStockTransactionRequests());
-        note.addStockTransactions(stockTransactions);
+        if(noteRequest.getStockTransactionRequests() != null) {
+            List<StockTransaction> stockTransactions = stockTransactionService.createStockTransactions(
+                    noteRequest.getStockTransactionRequests());
+            note.addStockTransactions(stockTransactions);
+        }
 
         Note saved = noteRepository.save(note);
 

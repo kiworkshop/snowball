@@ -1,59 +1,49 @@
 import { createReducer } from 'typesafe-actions';
 import moment from 'moment';
-
-import { NoteAction, NoteState } from './types';
+import { NoteState } from '../../../types/state/note';
+import { NoteAction } from '../../../types/action/note';
 import * as actions from './actions';
+import { GetNoteResponse } from '../../../types/response/note';
 
 const initialState: NoteState = {
-  note: {
-    id: null,
-    title: '',
-    content: '',
-    investmentDate: null,
-    createdDate: null,
-    modifiedDate: null,
-    stockTransactions: [],
-  },
+  note: {},
   notes: [],
-  form: {
-    title: '',
-    content: '',
-    investmentDate: null,
-    stockTransactions: [],
+  loading: {
+    getNotes: false,
+    getNote: false,
+    createNote: false,
+    updateNote: false,
+    deleteNote: false,
   },
-  loading: {},
-  error: {},
+  error: {
+    getNotes: null,
+    getNote: null,
+    createNote: null,
+    updateNote: null,
+    deleteNote: null,
+  },
+};
+
+const parseNote = (note: GetNoteResponse) => {
+  return {
+    id: note.id,
+    title: note.title,
+    content: note.content,
+    investmentDate: moment(note.investmentDate),
+    createdDate: moment(note.createdDate),
+    modifiedDate: moment(note.modifiedDate || note.createdDate),
+    stockTransactions: note.stockTransactionResponses.map((res) => ({
+      transactionType: res.transactionType,
+      quantity: res.quantity,
+      tradedPrice: res.tradedPrice,
+      stockDetail: {
+        ...res.stockDetailResponse,
+      },
+    })),
+  };
 };
 
 const note = createReducer<NoteState, NoteAction>(initialState, {
-  [actions.INITIALIZE_FORM]: (state) => ({
-    ...state,
-    form: {
-      title: '',
-      content: '',
-      investmentDate: null,
-      stockTransactions: [],
-    },
-  }),
-  [actions.INITIALIZE_NOTE]: (state) => ({
-    ...state,
-    note: {
-      id: null,
-      title: '',
-      content: '',
-      investmentDate: null,
-      createdDate: null,
-      modifiedDate: null,
-      stockTransactions: [],
-    },
-  }),
-  [actions.SET_FORM]: (state, action) => ({
-    ...state,
-    form: {
-      ...state.form,
-      ...action.payload,
-    },
-  }),
   [actions.GET_NOTES_REQUEST]: (state) => ({
     ...state,
     loading: {
@@ -63,23 +53,7 @@ const note = createReducer<NoteState, NoteAction>(initialState, {
   }),
   [actions.GET_NOTES_SUCCESS]: (state, action) => ({
     ...state,
-    notes: action.payload.content.map((note) => ({
-      ...note,
-      investmentDate: moment(note.investmentDate),
-      createdDate: moment(note.createdDate),
-      modifiedDate: moment(note.modifiedDate),
-      stockTransactions: note.stockTransactions.map((stockTransaction) => ({
-        ...stockTransaction,
-        createdDate: moment(stockTransaction.createdDate),
-        modifiedDate: moment(stockTransaction.modifiedDate),
-        stockDetail: {
-          ...stockTransaction.stockDetail,
-          createdDate: moment(stockTransaction.stockDetail.createdDate),
-          modifiedDate: moment(stockTransaction.stockDetail.modifiedDate),
-          listingDate: moment(stockTransaction.stockDetail.listingDate),
-        },
-      })),
-    })),
+    notes: action.payload.content.map(parseNote),
     loading: {
       ...state.loading,
       getNotes: false,
@@ -114,23 +88,8 @@ const note = createReducer<NoteState, NoteAction>(initialState, {
   [actions.GET_NOTE_SUCCESS]: (state, action) => ({
     ...state,
     note: {
-      ...action.payload,
-      investmentDate: moment(action.payload.investmentDate),
-      createdDate: moment(action.payload.createdDate),
-      modifiedDate: moment(action.payload.modifiedDate),
-      stockTransactions: action.payload.stockTransactions.map(
-        (stockTransaction) => ({
-          ...stockTransaction,
-          createdDate: moment(stockTransaction.createdDate),
-          modifiedDate: moment(stockTransaction.modifiedDate),
-          stockDetail: {
-            ...stockTransaction.stockDetail,
-            createdDate: moment(stockTransaction.stockDetail.createdDate),
-            modifiedDate: moment(stockTransaction.stockDetail.modifiedDate),
-            listingDate: moment(stockTransaction.stockDetail.listingDate),
-          },
-        })
-      ),
+      ...state.note,
+      [action.payload.id]: parseNote(action.payload),
     },
     loading: {
       ...state.loading,
@@ -183,39 +142,6 @@ const note = createReducer<NoteState, NoteAction>(initialState, {
     error: {
       ...state.error,
       createNote: action.payload,
-    },
-  }),
-  [actions.SET_FORM_FOR_UPDATE_REQUEST]: (state) => ({
-    ...state,
-    loading: {
-      ...state.loading,
-      setFormForUpdate: true,
-    },
-    error: {
-      ...state.error,
-      setFormForUpdate: null,
-    },
-  }),
-  [actions.SET_FORM_FOR_UPDATE_SUCCESS]: (state) => ({
-    ...state,
-    loading: {
-      ...state.loading,
-      setFormForUpdate: false,
-    },
-    error: {
-      ...state.error,
-      setFormForUpdate: null,
-    },
-  }),
-  [actions.SET_FORM_FOR_UPDATE_FAILURE]: (state, action) => ({
-    ...state,
-    loading: {
-      ...state.loading,
-      setFormForUpdate: false,
-    },
-    error: {
-      ...state.error,
-      setFormForUpdate: action.payload,
     },
   }),
   [actions.UPDATE_NOTE_REQUEST]: (state) => ({
