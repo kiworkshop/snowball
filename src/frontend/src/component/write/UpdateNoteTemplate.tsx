@@ -2,13 +2,13 @@ import React from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
 import { DatePicker, Input } from 'antd';
-import Colors from '../../constants/colors';
+import { BLACK, WHITE } from '../../constants/colors';
 import EditorContainer from '../../container/write/EditorContainer';
 import StockTransactionAddButtonContainer from '../../container/write/StockTransactionAddButtonContainer';
 import StockTransactionTableContainer from '../../container/write/StockTransactionTableContainer';
 
 const UpdateNoteTemplateBlock = styled.div`
-  background: ${Colors.$white};
+  background: ${WHITE};
   padding: 30px;
 `;
 
@@ -25,7 +25,7 @@ const DatePickerBlock = styled.div`
 `;
 
 const DatePickerTitle = styled.h3`
-  color: ${Colors.$black};
+  color: ${BLACK};
   font-size: 0.9rem;
   margin: 0 15px 0 0;
 `;

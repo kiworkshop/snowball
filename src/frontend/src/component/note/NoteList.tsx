@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { Collapse, Button, Typography, Tag, Empty } from 'antd';
 import { RightOutlined } from '@ant-design/icons';
 import { addCommaToNumber } from '../../lib/number';
-import Colors from '../../constants/colors';
 import { Note } from '../../types/state/note';
+import { MAIN_COLOR } from '../../constants/colors';
 
 interface NoteListProps {
   notes: Array<Note>;
@@ -18,7 +18,7 @@ const NoteListWrapper = styled.div`
 `;
 
 const NoteListTitle = styled(Typography.Title)`
-  color: ${Colors.$mainColor};
+  color: ${MAIN_COLOR};
   margin-bottom: 30px;
 `;
 

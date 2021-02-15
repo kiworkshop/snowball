@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Button, Drawer, Layout, Menu } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
 import { Profile } from '../../store/modules/user';
-import Screen from '../../constants/screen';
+import * as Screen from '../../constants/screen';
 import routes from '../../routes';
 import Container from './Container';
 

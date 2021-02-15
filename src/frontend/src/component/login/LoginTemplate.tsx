@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'antd';
 import styled from 'styled-components';
-import Screen from '../../constants/screen';
+import * as Screen from '../../constants/screen';
 import brandLogo from '../../static/images/logo.png';
 import googleLogo from '../../static/images/google.png';
 import Container from '../base/Container';
