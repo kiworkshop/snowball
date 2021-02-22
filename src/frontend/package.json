@@ -5,6 +5,7 @@
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
     "@craco/craco": "^5.7.0",
+    "@reduxjs/toolkit": "^1.5.0",
     "antd": "^4.6.6",
     "axios": "^0.20.0",
     "craco-less": "^1.17.0",
