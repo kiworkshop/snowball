@@ -1,8 +1,9 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { RootState } from '../../store/modules';
 import { createNoteAsync } from '../../store/modules/note';
+import { initializeStockTransaction } from '../../store/modules/stockTransaction';
 import CreateNoteTemplate from '../../component/write/CreateNoteTemplate';
 
 const CreateNoteTemplateContainer = () => {
@@ -63,6 +64,12 @@ const CreateNoteTemplateContainer = () => {
       ),
     [dispatch, form, stockTransactions]
   );
+
+  useEffect(() => {
+    return function cleanup() {
+      dispatch(initializeStockTransaction());
+    };
+  }, [dispatch]);
 
   return (
     <CreateNoteTemplate
