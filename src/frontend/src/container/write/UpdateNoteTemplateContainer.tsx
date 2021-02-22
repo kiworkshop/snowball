@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/modules';
 import { getNoteAsync, updateNoteAsync } from '../../store/modules/note';
 import { Note } from '../../types/state/note';
+import { initializeStockTransaction } from '../../store/modules/stockTransaction';
 import UpdateNoteTemplate from '../../component/write/UpdateNoteTemplate';
 
 interface UpdateNoteTemplateContainerProps {
@@ -87,6 +88,12 @@ const UpdateNoteTemplateContainer: React.FC<UpdateNoteTemplateContainerProps> = 
       });
     }
   }, [dispatch, id, note]);
+
+  useEffect(() => {
+    return function cleanup() {
+      dispatch(initializeStockTransaction());
+    };
+  }, [dispatch]);
 
   return (
     <UpdateNoteTemplate
