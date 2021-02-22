@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import routes from '../../routes';
 import { Profile } from '../../store/modules/user';
-import Screen from '../../constants/screen';
+import * as Screen from '../../constants/screen';
 import logo from '../../static/images/logo.png';
 import Container from './Container';
 

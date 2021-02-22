@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { Popconfirm, Table, Typography } from 'antd';
 import { CloseCircleOutlined } from '@ant-design/icons';
-import Colors from '../../constants/colors';
 import { addCommaToNumber } from '../../lib/number';
+import { RED } from '../../constants/colors';
 
 const StockTransactionTableWrapper = styled.div`
   overflow-x: scroll;
@@ -14,7 +14,7 @@ const StockTransactionTableWrapper = styled.div`
 `;
 
 const CloseIcon = styled(CloseCircleOutlined)`
-  color: ${Colors.$red};
+  color: ${RED};
 `;
 
 interface StockTransactionDataSource {

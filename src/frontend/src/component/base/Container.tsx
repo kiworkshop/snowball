@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Screen from '../../constants/screen';
+import * as Screen from '../../constants/screen';
 
 interface ContainerProps {
   children: React.ReactNode;

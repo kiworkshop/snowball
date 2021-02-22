@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { Button, Form, Input, InputNumber } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 import styled from 'styled-components';
-import Colors from '../../constants/colors';
+import { BLACK } from '../../constants/colors';
 
 interface StockTransactionFormProps {
   formInstance: FormInstance<any>;
@@ -12,7 +12,7 @@ interface StockTransactionFormProps {
 }
 
 const TransactionAmountInput = styled(Input)`
-  color: ${Colors.$black};
+  color: ${BLACK};
   text-align: right;
   width: 100%;
 `;
