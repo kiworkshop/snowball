@@ -20,7 +20,7 @@ const initialState: NoteState = {
 const noteRequest = useRequest<NoteState>();
 const noteFailure = useFailure<NoteState>();
 
-export const noteSlice = createSlice({
+const noteSlice = createSlice({
   name: 'note',
   initialState,
   reducers: {
@@ -69,3 +69,5 @@ export const noteSlice = createSlice({
     },
   },
 });
+
+export default noteSlice;

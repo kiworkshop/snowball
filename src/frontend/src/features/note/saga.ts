@@ -1,6 +1,6 @@
 import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
 import { PayloadAction } from '@reduxjs/toolkit';
-import { noteSlice } from './noteSlice';
+import noteSlice from './noteSlice';
 import * as NoteAPI from '../../lib/api/note';
 import * as history from '../../lib/history';
 import errorHandler from '../../lib/error';

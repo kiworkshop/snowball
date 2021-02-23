@@ -2,16 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import { rootSaga, runSaga, store } from './store';
 import { browserHistory, listen } from './lib/history';
-import { rootSaga } from './store/modules';
-import configureStore, { runSaga } from './store/configureStore';
 import { scrollToTop } from './lib/scroll';
-import DevTools from './container/DevTools';
-import App from './App';
-import './index.less';
 import init from './lib/init';
+import App from './App';
+import DevTools from './container/DevTools';
+import './index.less';
 
-const store = configureStore();
 runSaga(rootSaga);
 
 init(store);
