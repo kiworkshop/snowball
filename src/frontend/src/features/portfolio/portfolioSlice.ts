@@ -8,17 +8,15 @@ const initialState: PortfolioState = {
   error: {},
 };
 
-const portfolioRequest = useRequest<PortfolioState>();
-const portfolioFailure = useFailure<PortfolioState>();
+const request = useRequest<PortfolioState>();
+const failure = useFailure<PortfolioState>();
 
-export const portfolioSlice = createSlice({
+const portfolioSlice = createSlice({
   name: 'portfolio',
   initialState,
   reducers: {
-    getPortfolioSummariesRequest: portfolioRequest<undefined>(
-      'getPortfolioSummaries'
-    ),
-    getPortfolioSummariesFailure: portfolioFailure('getPortfolioSummaries'),
+    getPortfolioSummariesRequest: request<undefined>('getPortfolioSummaries'),
+    getPortfolioSummariesFailure: failure('getPortfolioSummaries'),
     getPortfolioSummariesSuccess: (
       state,
       action: PayloadAction<GetPortfolioSummariesSuccessPayload>

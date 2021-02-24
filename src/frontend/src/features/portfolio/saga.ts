@@ -1,7 +1,7 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
-import portfolioSlice from './portfolioSlice';
 import * as PortfolioAPI from '../../lib/api/portfolio';
 import errorHandler from '../../lib/error';
+import portfolioSlice from './portfolioSlice';
 
 const actions = portfolioSlice.actions;
 

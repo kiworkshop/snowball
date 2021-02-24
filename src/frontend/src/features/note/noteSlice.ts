@@ -17,8 +17,8 @@ const initialState: NoteState = {
   error: {},
 };
 
-const noteRequest = useRequest<NoteState>();
-const noteFailure = useFailure<NoteState>();
+const request = useRequest<NoteState>();
+const failure = useFailure<NoteState>();
 
 const noteSlice = createSlice({
   name: 'note',
@@ -27,20 +27,20 @@ const noteSlice = createSlice({
     /**
      * request
      */
-    getNotesRequest: noteRequest<GetNotesRequestPayload>('getNotes'),
-    getNoteRequest: noteRequest<number>('getNote'),
-    createNoteRequest: noteRequest<CreateNoteRequestPayload>('createNote'),
-    updateNoteRequest: noteRequest<UpdateNoteRequestPayload>('updateNote'),
-    deleteNoteRequest: noteRequest<number>('deleteNote'),
+    getNotesRequest: request<GetNotesRequestPayload>('getNotes'),
+    getNoteRequest: request<number>('getNote'),
+    createNoteRequest: request<CreateNoteRequestPayload>('createNote'),
+    updateNoteRequest: request<UpdateNoteRequestPayload>('updateNote'),
+    deleteNoteRequest: request<number>('deleteNote'),
 
     /**
      * failure
      */
-    getNotesFailure: noteFailure('getNotes'),
-    getNoteFailure: noteFailure('getNote'),
-    createNoteFailure: noteFailure('createNote'),
-    updateNoteFailure: noteFailure('updateNote'),
-    deleteNoteFailure: noteFailure('deleteNote'),
+    getNotesFailure: failure('getNotes'),
+    getNoteFailure: failure('getNote'),
+    createNoteFailure: failure('createNote'),
+    updateNoteFailure: failure('updateNote'),
+    deleteNoteFailure: failure('deleteNote'),
 
     /**
      * success

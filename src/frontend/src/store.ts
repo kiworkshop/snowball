@@ -5,6 +5,7 @@ import { all } from 'redux-saga/effects';
 import DevTools from './container/DevTools';
 import noteSlice, { noteSaga } from './features/note';
 import portfolioSlice, { portfolioSaga } from './features/portfolio';
+import stockTransactionSlice from './features/stockTransaction';
 
 const sagaMiddleware = createSagaMiddleware();
 const enhancer =
@@ -17,6 +18,7 @@ export const store = configureStore({
   reducer: {
     note: noteSlice.reducer,
     portfolio: portfolioSlice.reducer,
+    stockTransaction: stockTransactionSlice.reducer,
   },
   enhancers: [enhancer],
 });
