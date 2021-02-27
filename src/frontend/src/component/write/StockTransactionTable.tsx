@@ -29,14 +29,10 @@ interface StockTransactionDataSource {
 interface StockTransactionTableProps {
   type: 'BUY' | 'SELL';
   dataSource: Array<StockTransactionDataSource>;
-  onDelete: (index: number) => () => void;
+  onDelete: (index: number) => void;
 }
 
-const StockTransactionTable: React.FC<StockTransactionTableProps> = ({
-  type,
-  dataSource,
-  onDelete,
-}) => {
+const StockTransactionTable: React.FC<StockTransactionTableProps> = ({ type, dataSource, onDelete }) => {
   const columns = [
     { title: '종목', dataIndex: 'companyName', key: 'companyName' },
     { title: '수량(주)', dataIndex: 'quantity', key: 'quantity' },
@@ -50,10 +46,7 @@ const StockTransactionTable: React.FC<StockTransactionTableProps> = ({
       title: '',
       dataIndex: 'delete',
       render: (_: any, item: StockTransactionDataSource) => (
-        <Popconfirm
-          title="정말 삭제하시겠습니까?"
-          onConfirm={onDelete(item.index)}
-        >
+        <Popconfirm title="정말 삭제하시겠습니까?" onConfirm={() => onDelete(item.index)}>
           <CloseIcon />
         </Popconfirm>
       ),

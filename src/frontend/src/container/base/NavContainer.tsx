@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { RootState } from '../../store/modules';
-import { logout } from '../../store/modules/user';
+import { useAppDispatch, useAppSelector } from '../../hooks/store';
+import * as history from '../../lib/history';
+import { userSelector } from '../../lib/selector';
+import userSlice from '../../features/user';
 import Nav from '../../component/base/Nav';
 import MobileNav from '../../component/base/MobileNav';
 
@@ -11,31 +11,42 @@ interface NavContainerProps {
 }
 
 const NavContainer: React.FC<NavContainerProps> = ({ selectedMenu }) => {
-  const history = useHistory();
-  const dispatch = useDispatch();
-  const profile = useSelector((state: RootState) => state.user.profile);
-
+  /**
+   * component state
+   */
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
 
-  const onLogout = useCallback(
-    () => window.confirm('로그아웃 하시겠습니까?') && dispatch(logout()),
-    [dispatch]
-  );
-  const onClickNavLink = useCallback(
-    (link: string) => () => history.push(link),
-    [history]
-  );
-  const showDrawer = useCallback(() => setIsDrawerVisible(true), []);
-  const hideDrawer = useCallback(() => setIsDrawerVisible(false), []);
+  /**
+   * redux store
+   */
+  const dispatch = useAppDispatch();
+  const { profile } = useAppSelector(userSelector);
+  const userActions = userSlice.actions;
+
+  /**
+   * functions
+   */
+  const onLogout = useCallback(() => {
+    if (window.confirm('로그아웃 하시겠습니까?')) {
+      dispatch(userActions.logout());
+    }
+  }, [dispatch, userActions]);
+
+  const onClickNavLink = useCallback((link: string) => {
+    history.push(link);
+  }, []);
+
+  const showDrawer = useCallback(() => {
+    setIsDrawerVisible(true);
+  }, []);
+
+  const hideDrawer = useCallback(() => {
+    setIsDrawerVisible(false);
+  }, []);
 
   return (
     <>
-      <Nav
-        profile={profile}
-        onLogout={onLogout}
-        onClickNavLink={onClickNavLink}
-        selectedMenu={selectedMenu}
-      />
+      <Nav profile={profile} onLogout={onLogout} onClickNavLink={onClickNavLink} selectedMenu={selectedMenu} />
 
       <MobileNav
         profile={profile}

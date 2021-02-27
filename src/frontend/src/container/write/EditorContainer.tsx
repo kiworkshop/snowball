@@ -8,20 +8,8 @@ interface EditorContainerProps {
   loading: boolean;
 }
 
-const EditorContainer: React.FC<EditorContainerProps> = ({
-  form,
-  onChange,
-  onSave,
-  loading,
-}) => {
-  return (
-    <Editor
-      formData={form}
-      onChange={onChange}
-      onSave={onSave}
-      loading={loading}
-    />
-  );
+const EditorContainer: React.FC<EditorContainerProps> = ({ form, onChange, onSave, loading }) => {
+  return <Editor formData={form} onChange={onChange} onSave={onSave} loading={loading} />;
 };
 
 export default EditorContainer;

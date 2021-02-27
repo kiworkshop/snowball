@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { PortfolioSummary } from '../../store/modules/portfolio';
+import { PortfolioSummary } from '../../features/portfolio/type';
 
 const axiosClient = axios.create({
   baseURL: 'http://develop.snowball.live/api/portfolio-summary',

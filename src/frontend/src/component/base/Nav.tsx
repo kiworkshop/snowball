@@ -4,16 +4,16 @@ import { DownOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import routes from '../../routes';
-import { Profile } from '../../store/modules/user';
 import * as Screen from '../../constants/screen';
 import logo from '../../static/images/logo.png';
 import Container from './Container';
+import { Profile } from '../../features/user/type';
 
 interface NavProps {
   profile: Profile;
   selectedMenu?: Array<string>;
   onLogout: () => void;
-  onClickNavLink: (link: string) => () => void;
+  onClickNavLink: (link: string) => void;
 }
 
 const Header = styled(Layout.Header)`
@@ -41,12 +41,7 @@ const NavMenu = styled(Menu)`
   border-bottom: none;
 `;
 
-const Nav: React.FC<NavProps> = ({
-  profile,
-  onLogout,
-  onClickNavLink,
-  selectedMenu,
-}) => {
+const Nav: React.FC<NavProps> = ({ profile, onLogout, onClickNavLink, selectedMenu }) => {
   const ProfileMenus = (
     <Menu>
       <Menu.Item key="0" onClick={onLogout}>
@@ -63,14 +58,11 @@ const Nav: React.FC<NavProps> = ({
         </Link>
 
         <NavMenu mode="horizontal" selectedKeys={selectedMenu}>
-          <Menu.Item key="home" onClick={onClickNavLink(routes.home())}>
+          <Menu.Item key="home" onClick={() => onClickNavLink(routes.home())}>
             홈
           </Menu.Item>
 
-          <Menu.Item
-            key="createNote"
-            onClick={onClickNavLink(routes.note.create())}
-          >
+          <Menu.Item key="createNote" onClick={() => onClickNavLink(routes.note.create())}>
             투자노트 작성
           </Menu.Item>
 

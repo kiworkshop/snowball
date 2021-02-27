@@ -1,21 +1,22 @@
 import React, { useCallback, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../store/modules';
+import { useAppDispatch, useAppSelector } from '../../hooks/store';
+import stockTransactionSlice from '../../features/stockTransaction';
 import { addCommaToNumber } from '../../lib/number';
-import { deleteStockTransaction } from '../../store/modules/stockTransaction';
+import { stockTransactionSelector } from '../../lib/selector';
 import StockTransactionTable from '../../component/write/StockTransactionTable';
 
 interface StockTransactionTableContainerProps {
   type: 'BUY' | 'SELL';
 }
 
-const StockTransactionTableContainer: React.FC<StockTransactionTableContainerProps> = ({
-  type,
-}) => {
-  const dispatch = useDispatch();
-  const stockTransactions = useSelector(
-    (state: RootState) => state.stockTransaction[type]
-  );
+const StockTransactionTableContainer: React.FC<StockTransactionTableContainerProps> = ({ type }) => {
+  /**
+   * redux store
+   */
+  const dispatch = useAppDispatch();
+  const stockTransactionState = useAppSelector(stockTransactionSelector);
+  const stockTransactions = stockTransactionState[type];
+  const stockTransactionActions = stockTransactionSlice.actions;
 
   const dataSource = useMemo(
     () =>
@@ -24,27 +25,22 @@ const StockTransactionTableContainer: React.FC<StockTransactionTableContainerPro
         index,
         quantity: addCommaToNumber(stockTransaction.quantity),
         tradedPrice: addCommaToNumber(stockTransaction.tradedPrice),
-        transactionAmount: addCommaToNumber(
-          stockTransaction.quantity * stockTransaction.tradedPrice
-        ),
+        transactionAmount: addCommaToNumber(stockTransaction.quantity * stockTransaction.tradedPrice),
       })),
     [stockTransactions]
   );
 
+  /**
+   * functions
+   */
   const onDelete = useCallback(
-    (index: number) => () => {
-      dispatch(deleteStockTransaction({ index, type }));
+    (index: number) => {
+      dispatch(stockTransactionActions.delete({ index, type }));
     },
-    [dispatch, type]
+    [dispatch, stockTransactionActions, type]
   );
 
-  return (
-    <StockTransactionTable
-      type={type}
-      dataSource={dataSource}
-      onDelete={onDelete}
-    />
-  );
+  return <StockTransactionTable type={type} dataSource={dataSource} onDelete={onDelete} />;
 };
 
 export default StockTransactionTableContainer;

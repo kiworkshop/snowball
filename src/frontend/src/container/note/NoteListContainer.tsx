@@ -1,33 +1,35 @@
 import React, { useCallback, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/store';
+import * as history from '../../lib/history';
 import routes from '../../routes';
-import { RootState } from '../../store/modules';
-import { getNotesAsync } from '../../store/modules/note';
+import noteSlice from '../../features/note';
+import { noteSelector } from '../../lib/selector';
 import NoteList from '../../component/note/NoteList';
 
 const NoteListContainer = () => {
-  const history = useHistory();
-  const dispatch = useDispatch();
-  const { notes } = useSelector((state: RootState) => state.note);
+  /**
+   * redux store
+   */
+  const dispatch = useAppDispatch();
+  const { notes } = useAppSelector(noteSelector);
+  const noteActions = noteSlice.actions;
 
-  const getNotesOfUser = useCallback(
-    () => dispatch(getNotesAsync.request({ page: 0, size: 10 })),
-    [dispatch]
-  );
+  /**
+   * functions
+   */
+  const getMyNotes = useCallback(() => {
+    dispatch(noteActions.getNotesRequest({ page: 0, size: 10 }));
+  }, [dispatch, noteActions]);
 
-  const onClickMoreInfoButton = useCallback(
-    (noteId: number) => () => history.push(routes.note.detail(noteId)),
-    [history]
-  );
+  const onClickMoreInfoButton = useCallback((noteId: number) => {
+    history.push(routes.note.detail(noteId));
+  }, []);
 
   useEffect(() => {
-    getNotesOfUser();
-  }, [getNotesOfUser]);
+    getMyNotes();
+  }, [getMyNotes]);
 
-  return (
-    <NoteList notes={notes} onClickMoreInfoButton={onClickMoreInfoButton} />
-  );
+  return <NoteList notes={notes} onClickMoreInfoButton={onClickMoreInfoButton} />;
 };
 
 export default NoteListContainer;

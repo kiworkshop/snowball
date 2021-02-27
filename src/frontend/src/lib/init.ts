@@ -1,8 +1,8 @@
 import { Store } from 'redux';
-import { getMeAsync } from '../store/modules/user';
+import userSlice from '../features/user';
 
 const init = (store: Store) => {
-  store.dispatch(getMeAsync.request());
+  store.dispatch(userSlice.actions.getMeRequest());
 };
 
 export default init;

@@ -3,10 +3,9 @@ import routes from '../../routes';
 import LoginTemplate from '../../component/login/LoginTemplate';
 
 const LoginTemplateContainer = () => {
-  const onClickGoogleLoginButton = useCallback(
-    () => (window.location.href = routes.oauth2.google),
-    []
-  );
+  const onClickGoogleLoginButton = useCallback(() => {
+    window.location.href = routes.oauth2.google;
+  }, []);
 
   return <LoginTemplate onClickGoogleLoginButton={onClickGoogleLoginButton} />;
 };

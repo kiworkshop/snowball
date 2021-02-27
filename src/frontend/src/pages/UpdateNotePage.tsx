@@ -1,36 +1,36 @@
 import React, { useEffect } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../store/modules';
-import { getNoteAsync } from '../store/modules/note';
+import { useAppDispatch, useAppSelector } from '../hooks/store';
+import noteSlice from '../features/note';
+import { noteSelector } from '../lib/selector';
 import UpdateNoteTemplateContainer from '../container/write/UpdateNoteTemplateContainer';
 
 interface MatchProps {
   id: string;
 }
 
-const UpdateNotePage: React.FC<RouteComponentProps<MatchProps>> = ({
-  match,
-}) => {
-  const id = Number(match.params.id);
-  const noteEntity = useSelector((state: RootState) => state.note.note);
-  const note = noteEntity[id];
+const UpdateNotePage: React.FC<RouteComponentProps<MatchProps>> = ({ match }) => {
+  const noteId = Number(match.params.id);
 
-  const dispatch = useDispatch();
+  /**
+   * redux store
+   */
+  const dispatch = useAppDispatch();
+  const { note: noteEntity } = useAppSelector(noteSelector);
+  const note = noteEntity[noteId];
+  const noteActions = noteSlice.actions;
 
   useEffect(() => {
     if (!note) {
-      dispatch(getNoteAsync.request(id));
+      dispatch(noteActions.getNoteRequest(noteId));
     }
-  }, [dispatch, note, id]);
+  }, [dispatch, noteActions, note, noteId]);
 
   if (!note) {
     return null;
   }
 
-  return (
-    <UpdateNoteTemplateContainer id={Number(match.params.id)} note={note} />
-  );
+  return <UpdateNoteTemplateContainer id={noteId} note={note} />;
 };
 
 export default UpdateNotePage;

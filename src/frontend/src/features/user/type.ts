@@ -1,10 +1,5 @@
-import { ActionType } from 'typesafe-actions';
-import * as actions from './actions';
-
-export type UserAction = ActionType<typeof actions>;
-
 export interface UserState {
-  isInit: boolean;
+  isLoggedIn: boolean;
   profile: Profile;
   loading: {
     [action: string]: boolean;
