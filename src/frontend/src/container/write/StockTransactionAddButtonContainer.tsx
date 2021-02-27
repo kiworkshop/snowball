@@ -1,22 +1,30 @@
 import React, { useCallback, useState } from 'react';
 import { Form, message } from 'antd';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../hooks/store';
+import stockTransactionSlice from '../../features/stockTransaction';
 import { getSingleStockDetail } from '../../lib/api/stockDetail';
-import { addStockTransaction } from '../../store/modules/stockTransaction';
 import StockTransactionAddButton from '../../component/write/StockTransactionAddButton';
 
 interface StockTransactionAddButtonContainerProps {
   type: 'BUY' | 'SELL';
 }
 
-const StockTransactionAddButtonContainer: React.FC<StockTransactionAddButtonContainerProps> = ({
-  type,
-}) => {
+const StockTransactionAddButtonContainer: React.FC<StockTransactionAddButtonContainerProps> = ({ type }) => {
+  /**
+   * component state
+   */
   const [formInstance] = Form.useForm();
   const [transactionAmount, setTransactionAmount] = useState(0);
 
-  const dispatch = useDispatch();
+  /**
+   * redux store
+   */
+  const dispatch = useAppDispatch();
+  const stockTransactionActions = stockTransactionSlice.actions;
 
+  /**
+   * functions
+   */
   const onSubmit = useCallback(
     async (values: any) => {
       try {
@@ -24,7 +32,7 @@ const StockTransactionAddButtonContainer: React.FC<StockTransactionAddButtonCont
         const stockDetailId = response.data.id;
 
         dispatch(
-          addStockTransaction({
+          stockTransactionActions.add({
             type,
             stockTransaction: {
               ...values,
@@ -40,7 +48,7 @@ const StockTransactionAddButtonContainer: React.FC<StockTransactionAddButtonCont
         message.error('올바른 종목명을 입력해 주세요.');
       }
     },
-    [dispatch, formInstance, setTransactionAmount, type]
+    [dispatch, stockTransactionActions, formInstance, setTransactionAmount, type]
   );
 
   return (

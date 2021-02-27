@@ -8,7 +8,7 @@ import { MAIN_COLOR } from '../../constants/colors';
 
 interface NoteListProps {
   notes: Array<Note>;
-  onClickMoreInfoButton: (id: number) => () => void;
+  onClickMoreInfoButton: (id: number) => void;
 }
 
 const NoteListWrapper = styled.div`
@@ -113,7 +113,7 @@ const NoteList: React.FC<NoteListProps> = ({
                 <MoreInfoButton
                   type="text"
                   size="small"
-                  onClick={onClickMoreInfoButton(note.id!)}
+                  onClick={() => onClickMoreInfoButton(note.id)}
                 >
                   더보기 <RightOutlined />
                 </MoreInfoButton>

@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../store/modules';
-import { getNoteAsync, updateNoteAsync } from '../../store/modules/note';
+import { useAppDispatch, useAppSelector } from '../../hooks/store';
+import noteSlice from '../../features/note';
+import stockTransactionSlice from '../../features/stockTransaction';
+import { noteSelector, stockTransactionSelector } from '../../lib/selector';
 import { Note } from '../../types/state/note';
-import { initializeStockTransaction } from '../../store/modules/stockTransaction';
 import UpdateNoteTemplate from '../../component/write/UpdateNoteTemplate';
 
 interface UpdateNoteTemplateContainerProps {
@@ -11,10 +11,10 @@ interface UpdateNoteTemplateContainerProps {
   note: Note;
 }
 
-const UpdateNoteTemplateContainer: React.FC<UpdateNoteTemplateContainerProps> = ({
-  id,
-  note,
-}) => {
+const UpdateNoteTemplateContainer: React.FC<UpdateNoteTemplateContainerProps> = ({ id, note }) => {
+  /**
+   * component state
+   */
   const [form, setForm] = useState({
     title: note.title,
     content: note.content,
@@ -48,20 +48,23 @@ const UpdateNoteTemplateContainer: React.FC<UpdateNoteTemplateContainerProps> = 
     [form, setForm]
   );
 
-  const { loading } = useSelector((state: RootState) => state.note);
-  const stockTransactionsState = useSelector(
-    (state: RootState) => state.stockTransaction
-  );
+  /**
+   * redux store
+   */
+  const dispatch = useAppDispatch();
+  const { loading } = useAppSelector(noteSelector);
+  const { BUY, SELL } = useAppSelector(stockTransactionSelector);
+  const stockTransactions = BUY.concat(SELL);
+  const noteActions = noteSlice.actions;
+  const stockTransactionActions = stockTransactionSlice.actions;
 
-  const stockTransactions = stockTransactionsState.BUY.concat(
-    stockTransactionsState.SELL
-  );
-
-  const dispatch = useDispatch();
+  /**
+   * functions
+   */
   const onSave = useCallback(
     () =>
       dispatch(
-        updateNoteAsync.request({
+        noteActions.updateNoteRequest({
           id,
           form: {
             ...form,
@@ -74,26 +77,23 @@ const UpdateNoteTemplateContainer: React.FC<UpdateNoteTemplateContainerProps> = 
           },
         })
       ),
-    [dispatch, form, stockTransactions, id]
+    [dispatch, noteActions, form, stockTransactions, id]
   );
 
+  // 노트 상태 캐싱
   useEffect(() => {
-    if (!note) {
-      dispatch(getNoteAsync.request(id));
-    } else {
-      setForm({
-        title: note.title,
-        content: note.content,
-        investmentDate: note.investmentDate.format('YYYY-MM-DD'),
-      });
-    }
-  }, [dispatch, id, note]);
+    setForm({
+      title: note.title,
+      content: note.content,
+      investmentDate: note.investmentDate.format('YYYY-MM-DD'),
+    });
+  }, [id, note]);
 
   useEffect(() => {
     return function cleanup() {
-      dispatch(initializeStockTransaction());
+      dispatch(stockTransactionActions.initialize());
     };
-  }, [dispatch]);
+  }, [dispatch, stockTransactionActions]);
 
   return (
     <UpdateNoteTemplate

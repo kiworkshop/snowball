@@ -14,7 +14,7 @@ interface MobileNavProps {
   onLogout: () => void;
   showDrawer: () => void;
   hideDrawer: () => void;
-  onClickNavLink: (link: string) => () => void;
+  onClickNavLink: (link: string) => void;
 }
 
 const Header = styled(Layout.Header)`
@@ -71,27 +71,15 @@ const MobileNav: React.FC<MobileNavProps> = ({
   return (
     <Header>
       <InnerWrapper>
-        <DrawerTrigger
-          size="large"
-          icon={<MenuOutlined />}
-          onClick={showDrawer}
-        />
+        <DrawerTrigger size="large" icon={<MenuOutlined />} onClick={showDrawer} />
 
-        <MenuDrawer
-          title={`${profile.name} 님`}
-          visible={isDrawerVisible}
-          placement="right"
-          onClose={hideDrawer}
-        >
+        <MenuDrawer title={`${profile.name} 님`} visible={isDrawerVisible} placement="right" onClose={hideDrawer}>
           <MobileAndTabletMenu mode="vertical" selectedKeys={selectedMenu}>
-            <Menu.Item key="home" onClick={onClickNavLink(routes.home())}>
+            <Menu.Item key="home" onClick={() => onClickNavLink(routes.home())}>
               홈
             </Menu.Item>
 
-            <Menu.Item
-              key="createNote"
-              onClick={onClickNavLink(routes.note.create())}
-            >
+            <Menu.Item key="createNote" onClick={() => onClickNavLink(routes.note.create())}>
               투자노트 작성
             </Menu.Item>
 

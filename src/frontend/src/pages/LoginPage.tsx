@@ -1,13 +1,13 @@
 import React from 'react';
-import LoginTemplateContainer from '../container/login/LoginTemplateContainer';
-import { useSelector } from 'react-redux';
-import { RootState } from '../store/modules';
 import { Redirect } from 'react-router-dom';
+import { useAppSelector } from '../hooks/store';
+import { userSelector } from '../lib/selector';
+import LoginTemplateContainer from '../container/login/LoginTemplateContainer';
 
 const LoginPage = () => {
-  const { isInit } = useSelector((state: RootState) => state.user);
+  const { isLoggedIn } = useAppSelector(userSelector);
 
-  if (isInit) {
+  if (isLoggedIn) {
     return <Redirect to="/" />;
   }
 

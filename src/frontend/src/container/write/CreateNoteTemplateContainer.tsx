@@ -1,12 +1,15 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
-import { RootState } from '../../store/modules';
-import { createNoteAsync } from '../../store/modules/note';
-import { initializeStockTransaction } from '../../store/modules/stockTransaction';
+import { useAppDispatch, useAppSelector } from '../../hooks/store';
+import { noteSelector, stockTransactionSelector } from '../../lib/selector';
+import noteSlice from '../../features/note';
+import stockTransactionSlice from '../../features/stockTransaction';
 import CreateNoteTemplate from '../../component/write/CreateNoteTemplate';
 
 const CreateNoteTemplateContainer = () => {
+  /**
+   * component state
+   */
   const [form, setForm] = useState({
     title: '',
     content: '',
@@ -40,36 +43,38 @@ const CreateNoteTemplateContainer = () => {
     [form, setForm]
   );
 
-  const { loading } = useSelector((state: RootState) => state.note);
-  const stockTransactionsState = useSelector(
-    (state: RootState) => state.stockTransaction
-  );
-  const stockTransactions = stockTransactionsState.BUY.concat(
-    stockTransactionsState.SELL
-  );
+  /**
+   * redux store
+   */
+  const dispatch = useAppDispatch();
+  const { loading } = useAppSelector(noteSelector);
+  const { BUY, SELL } = useAppSelector(stockTransactionSelector);
+  const noteActions = noteSlice.actions;
+  const stockTransactionActions = stockTransactionSlice.actions;
+  const stockTransactions = BUY.concat(SELL);
 
-  const dispatch = useDispatch();
-  const onSave = useCallback(
-    () =>
-      dispatch(
-        createNoteAsync.request({
-          ...form,
-          stockTransactions: stockTransactions.map((stockTransaction) => ({
-            stockDetailId: stockTransaction.stockDetailId,
-            quantity: stockTransaction.quantity,
-            tradedPrice: stockTransaction.tradedPrice,
-            transactionType: stockTransaction.transactionType,
-          })),
-        })
-      ),
-    [dispatch, form, stockTransactions]
-  );
+  /**
+   * functions
+   */
+  const onSave = useCallback(() => {
+    dispatch(
+      noteActions.createNoteRequest({
+        ...form,
+        stockTransactions: stockTransactions.map((stockTransaction) => ({
+          stockDetailId: stockTransaction.stockDetailId,
+          quantity: stockTransaction.quantity,
+          tradedPrice: stockTransaction.tradedPrice,
+          transactionType: stockTransaction.transactionType,
+        })),
+      })
+    );
+  }, [dispatch, noteActions, form, stockTransactions]);
 
   useEffect(() => {
     return function cleanup() {
-      dispatch(initializeStockTransaction());
+      dispatch(stockTransactionActions.initialize());
     };
-  }, [dispatch]);
+  }, [dispatch, stockTransactionActions]);
 
   return (
     <CreateNoteTemplate
