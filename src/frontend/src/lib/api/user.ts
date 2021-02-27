@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Profile } from '../../store/modules/user';
+import { Profile } from '../../features/user/type';
 
 const axiosClient = axios.create({
   baseURL: 'http://develop.snowball.live/api',

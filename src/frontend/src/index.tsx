@@ -7,7 +7,6 @@ import { browserHistory, listen } from './lib/history';
 import { scrollToTop } from './lib/scroll';
 import init from './lib/init';
 import App from './App';
-import DevTools from './container/DevTools';
 import './index.less';
 
 runSaga(rootSaga);
@@ -20,7 +19,6 @@ ReactDOM.render(
   <Router history={browserHistory}>
     <Provider store={store}>
       <App />
-      {process.env.NODE_ENV === 'development' && <DevTools />}
     </Provider>
   </Router>,
   document.getElementById('root')

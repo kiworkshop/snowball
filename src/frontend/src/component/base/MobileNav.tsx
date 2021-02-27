@@ -2,10 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { Button, Drawer, Layout, Menu } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
-import { Profile } from '../../store/modules/user';
 import * as Screen from '../../constants/screen';
 import routes from '../../routes';
 import Container from './Container';
+import { Profile } from '../../features/user/type';
 
 interface MobileNavProps {
   profile: Profile;
