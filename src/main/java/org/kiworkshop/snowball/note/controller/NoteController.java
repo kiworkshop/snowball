@@ -1,17 +1,15 @@
 package org.kiworkshop.snowball.note.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.kiworkshop.snowball.note.controller.dto.NoteCreateResponse;
-import org.kiworkshop.snowball.note.controller.dto.NotePageRequest;
-import org.kiworkshop.snowball.note.controller.dto.NoteRequest;
-import org.kiworkshop.snowball.note.controller.dto.NoteResponse;
+import org.kiworkshop.snowball.note.controller.dto.*;
 import org.kiworkshop.snowball.note.service.NoteService;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -32,12 +30,13 @@ public class NoteController {
 
     @GetMapping("/notes")
     public Page<NoteResponse> getNotes(@RequestParam int page, @RequestParam int size) {
-        // limit + timeout
-        PageRequest pageRequest = PageRequest.of(
-                page, size,
-                Sort.by("createdDate").descending());
+        // TODO: 2021-03-01(001) limit + timeout
+        return noteService.getNotes(new NotePageRequest(page, size));
+    }
 
-        return noteService.getNotes(pageRequest);
+    @PostMapping("/notes/month")
+    public Map<LocalDate, List<NoteResponse>> getNotesByMonth(YearMonthRequest yearMonthRequest) {
+        return noteService.getNotesByMonth(yearMonthRequest);
     }
 
     @PutMapping("/notes/{id}")

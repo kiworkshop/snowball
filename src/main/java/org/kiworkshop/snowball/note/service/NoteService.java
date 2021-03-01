@@ -3,13 +3,9 @@ package org.kiworkshop.snowball.note.service;
 import lombok.RequiredArgsConstructor;
 import org.kiworkshop.snowball.auth.IAuthenticationFacade;
 import org.kiworkshop.snowball.common.exception.DomainServiceException;
-import org.kiworkshop.snowball.note.controller.dto.NoteAssembler;
-import org.kiworkshop.snowball.note.controller.dto.NoteCreateResponse;
-import org.kiworkshop.snowball.note.controller.dto.NoteRequest;
-import org.kiworkshop.snowball.note.controller.dto.NoteResponse;
+import org.kiworkshop.snowball.note.controller.dto.*;
 import org.kiworkshop.snowball.note.entity.Note;
 import org.kiworkshop.snowball.note.entity.NoteRepository;
-import org.kiworkshop.snowball.stocktransaction.controller.dto.StockTransactionAssembler;
 import org.kiworkshop.snowball.stocktransaction.entity.StockTransaction;
 import org.kiworkshop.snowball.stocktransaction.service.StockTransactionService;
 import org.kiworkshop.snowball.user.entity.User;
@@ -18,7 +14,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.YearMonth;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
@@ -33,7 +35,7 @@ public class NoteService {
         User user = authenticationFacade.getUser();
         Note note = NoteAssembler.getNote(noteRequest, user);
 
-        if(noteRequest.getStockTransactionRequests() != null) {
+        if (noteRequest.getStockTransactionRequests() != null) {
             List<StockTransaction> stockTransactions = stockTransactionService.createStockTransactions(
                     noteRequest.getStockTransactionRequests());
             note.addStockTransactions(stockTransactions);
@@ -59,9 +61,9 @@ public class NoteService {
                 new DomainServiceException("노트가 존재하지 않습니다."));
     }
 
-    // TODO: 2021-01-22(022) 해당 유저의 노트만 get해오기
     public Page<NoteResponse> getNotes(Pageable pageable) {
-        Page<Note> notePage = noteRepository.findAll(pageable);
+        User user = authenticationFacade.getUser();
+        Page<Note> notePage = noteRepository.findAllByUserId(pageable, user.getId());
         return notePage.map(NoteAssembler::getNoteResponse);
     }
 
@@ -81,5 +83,41 @@ public class NoteService {
     public void deleteNote(Long id) {
         noteRepository.deleteById(id);
     }
-}
 
+    // TODO: 2021-03-01(001) 리팩토링 필요
+    public Map<LocalDate, List<NoteResponse>> getNotesByMonth(YearMonthRequest yearMonthRequest) {
+        User user = authenticationFacade.getUser();
+        YearMonth yearMonth = yearMonthRequest.getYearMonth();
+        int year = yearMonth.getYear();
+        Month month = yearMonth.getMonth();
+
+        List<Note> notesByMonth = getNotesByMonthAndUserId(user, year, month);
+        Map<LocalDate, List<NoteResponse>> notesByDay = getNotesByDay(notesByMonth);
+        return notesByDay;
+    }
+
+    public List<Note> getNotesByMonthAndUserId(User user, int year, Month month) {
+        return noteRepository.findByUserIdAndInvestmentDateBetween(
+                user.getId(),
+                LocalDate.of(year, month, LocalDate.MIN.getDayOfMonth()),
+                LocalDate.of(year, month, month.minLength())); // TODO: 2021-02-25(025) 윤년 체크
+    }
+
+    public Map<LocalDate, List<NoteResponse>> getNotesByDay(List<Note> notes) {
+        Map<LocalDate, List<NoteResponse>> notesByDay = new HashMap<>();
+        for (Note note : notes) {
+            LocalDate investmentDate = note.getInvestmentDate();
+            List<NoteResponse> noteResponses = new ArrayList<>();
+            if (notesByDay.containsKey(investmentDate)) {
+                noteResponses = notesByDay.get(investmentDate);
+                if (noteResponses.size() > 3) {
+                    continue;
+                }
+            }
+            noteResponses.add(NoteAssembler.getNoteResponse(note));
+            notesByDay.put(investmentDate, noteResponses);
+        }
+
+        return notesByDay;
+    }
+}
