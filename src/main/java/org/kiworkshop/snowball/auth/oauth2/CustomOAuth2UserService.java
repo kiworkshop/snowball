@@ -2,7 +2,6 @@ package org.kiworkshop.snowball.auth.oauth2;
 
 import lombok.RequiredArgsConstructor;
 import org.kiworkshop.snowball.auth.dto.OAuthAttributes;
-import org.kiworkshop.snowball.auth.dto.SessionUser;
 import org.kiworkshop.snowball.user.entity.User;
 import org.kiworkshop.snowball.user.entity.UserRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,7 +13,6 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
 import java.util.Collections;
 
 @RequiredArgsConstructor
@@ -45,7 +43,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
     private User saveOrUpdate(OAuthAttributes attributes) {
         User user = userRepository.findByEmail(attributes.getEmail())
-                .map(entity -> entity.update(attributes.getName(),attributes.getPictureUrl()))
+                .map(entity -> entity.update(attributes.getName(), attributes.getPictureUrl()))
                 .orElse(attributes.toEntity());
 
         return userRepository.save(user);

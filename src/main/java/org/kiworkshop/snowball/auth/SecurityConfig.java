@@ -34,13 +34,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .logout()
                     .logoutSuccessUrl("/")
+                    .clearAuthentication(true)
                     .deleteCookies("JSESSIONID")
                     .invalidateHttpSession(true)
                 .and()
                     .oauth2Login()
-                    .loginPage("/login")
                     .defaultSuccessUrl("/")
                     .userInfoEndpoint()
-                    .userService(customOAuth2UserService);
+                        .userService(customOAuth2UserService);
     }
 }
