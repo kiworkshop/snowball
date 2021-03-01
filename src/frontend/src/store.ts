@@ -17,7 +17,7 @@ export const store = configureStore({
     user: userSlice.reducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(sagaMiddleware),
-  devTools: process.env.NODE_ENV !== 'production',
+  devTools: true,
 });
 
 export type RootState = ReturnType<typeof store.getState>;
