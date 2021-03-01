@@ -31,12 +31,16 @@ public class NoteFixture {
                 .build();
     }
 
-    public static PageImpl<Note> createNotePage() {
+    public static List<Note> createList() {
         List<Note> notes = new ArrayList<>();
 
         notes.add(create());
         notes.add(create());
 
-        return new PageImpl<>(notes);
+        return notes;
+    }
+
+    public static PageImpl<Note> createNotePage() {
+        return new PageImpl<>(createList());
     }
 }

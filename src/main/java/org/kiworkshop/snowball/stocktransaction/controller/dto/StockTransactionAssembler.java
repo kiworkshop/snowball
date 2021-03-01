@@ -7,6 +7,7 @@ import org.kiworkshop.snowball.stockdetail.entity.StockDetail;
 import org.kiworkshop.snowball.stocktransaction.entity.StockTransaction;
 import org.kiworkshop.snowball.user.entity.User;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,6 +31,9 @@ public class StockTransactionAssembler {
     }
 
     public static List<StockTransactionResponse> getStockTransactionResponses(List<StockTransaction> stockTransactions) {
+        if (stockTransactions == null) {
+            return new ArrayList<>();
+        }
         return stockTransactions.stream()
                 .map(StockTransactionAssembler::getStockTransactionResponse)
                 .collect(Collectors.toList());

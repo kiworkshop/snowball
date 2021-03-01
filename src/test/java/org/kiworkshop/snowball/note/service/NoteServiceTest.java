@@ -15,6 +15,7 @@ import org.kiworkshop.snowball.stocktransaction.entity.StockTransactionFixture;
 import org.kiworkshop.snowball.stocktransaction.entity.StockTransactionRepository;
 import org.kiworkshop.snowball.stocktransaction.service.StockTransactionService;
 import org.kiworkshop.snowball.user.Entity.UserFixture;
+import org.kiworkshop.snowball.user.entity.User;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -23,9 +24,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 import static org.mockito.ArgumentMatchers.*;
@@ -104,10 +110,13 @@ class NoteServiceTest {
     @Test
     void getNotesTest() {
         // given
-        PageRequest notePageRequest = NotePageRequestFixture.createPageRequest();
+        User user = UserFixture.create();
+        ReflectionTestUtils.setField(user, "id", 1L);
+        given(authenticationFacade.getUser()).willReturn(user);
         Page<Note> notePage = NoteFixture.createNotePage();
+        given(noteRepository.findAllByUserId(any(Pageable.class), anyLong())).willReturn(notePage);
 
-        given(noteRepository.findAll(any(Pageable.class))).willReturn(notePage);
+        NotePageRequest notePageRequest = NotePageRequestFixture.create(0, 2);
 
         // when
         Page<NoteResponse> notePageResponse = dut.getNotes(notePageRequest);
@@ -169,5 +178,41 @@ class NoteServiceTest {
         thenThrownBy(() -> dut.getNote(1L))
                 .isInstanceOf(DomainServiceException.class)
                 .hasMessage("노트가 존재하지 않습니다.");
+    }
+
+    @Test
+    void getNotesByMonthAndUserIdTest() {
+        // given
+        User user = UserFixture.create();
+        ReflectionTestUtils.setField(user, "id", 1L);
+        int year = 2021;
+        Month month = Month.FEBRUARY;
+        List<Note> notes = NoteFixture.createList();
+        given(noteRepository.findByUserIdAndInvestmentDateBetween(anyLong(), any(LocalDate.class), any(LocalDate.class)))
+                .willReturn(notes);
+
+        // when
+        List<Note> notesByMonth = dut.getNotesByMonthAndUserId(user, year, month);
+
+        // then
+        assertThat(notesByMonth.size()).isEqualTo(notes.size());
+    }
+
+    @Test
+    void getNotesByDayTest() {
+        // given
+        LocalDate investmentDate = LocalDate.of(2021, 2, 25);
+        Note note1 = Note.builder().investmentDate(investmentDate).build();
+        Note note2 = Note.builder().investmentDate(LocalDate.of(2021, 2, 28)).build();
+        List<Note> notes = new ArrayList<>();
+        notes.add(note1);
+        notes.add(note2);
+
+        // when
+        Map<LocalDate, List<NoteResponse>> notesByDay = dut.getNotesByDay(notes);
+
+        // then
+        assertThat(notesByDay.keySet().size()).isEqualTo(2);
+        assertThat(notesByDay.get(investmentDate)).isNotEmpty();
     }
 }
