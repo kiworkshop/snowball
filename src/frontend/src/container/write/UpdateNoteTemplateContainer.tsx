@@ -68,6 +68,7 @@ const UpdateNoteTemplateContainer: React.FC<UpdateNoteTemplateContainerProps> = 
           id,
           form: {
             ...form,
+            title: form.title || `${form.investmentDate} 투자노트`,
             stockTransactions: stockTransactions.map((stockTransaction) => ({
               stockDetailId: stockTransaction.stockDetailId,
               quantity: stockTransaction.quantity,
@@ -93,7 +94,8 @@ const UpdateNoteTemplateContainer: React.FC<UpdateNoteTemplateContainerProps> = 
     return function cleanup() {
       dispatch(stockTransactionActions.initialize());
     };
-  }, [dispatch, stockTransactionActions]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <UpdateNoteTemplate

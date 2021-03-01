@@ -60,6 +60,7 @@ const CreateNoteTemplateContainer = () => {
     dispatch(
       noteActions.createNoteRequest({
         ...form,
+        title: form.title || `${form.investmentDate} 투자노트`,
         stockTransactions: stockTransactions.map((stockTransaction) => ({
           stockDetailId: stockTransaction.stockDetailId,
           quantity: stockTransaction.quantity,
@@ -74,7 +75,8 @@ const CreateNoteTemplateContainer = () => {
     return function cleanup() {
       dispatch(stockTransactionActions.initialize());
     };
-  }, [dispatch, stockTransactionActions]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <CreateNoteTemplate
