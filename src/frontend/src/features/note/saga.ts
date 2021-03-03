@@ -1,15 +1,12 @@
 import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
 import { PayloadAction } from '@reduxjs/toolkit';
+import { Modal } from 'antd';
 import noteSlice from './noteSlice';
 import * as NoteAPI from '../../lib/api/note';
 import * as history from '../../lib/history';
 import errorHandler from '../../lib/error';
 import routes from '../../routes';
-import {
-  CreateNoteRequestPayload,
-  GetNotesRequestPayload,
-  UpdateNoteRequestPayload,
-} from './type';
+import { CreateNoteRequestPayload, GetNotesRequestPayload, UpdateNoteRequestPayload } from './type';
 
 const actions = noteSlice.actions;
 
@@ -61,6 +58,12 @@ function* deleteNoteSaga(action: PayloadAction<number>) {
   try {
     yield call(NoteAPI.deleteNote, action.payload);
     yield put(actions.deleteNoteSuccess());
+    yield Modal.success({
+      content: '노트가 삭제되었습니다.',
+      onOk: () => {
+        window.location.replace(routes.home);
+      },
+    });
   } catch (e) {
     errorHandler(e);
     yield put(actions.deleteNoteFailure(e));

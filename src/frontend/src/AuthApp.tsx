@@ -1,25 +1,37 @@
-import React from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
-import { useAppSelector } from './hooks/store';
+import React, { useEffect, useState } from 'react';
+import { Route, Switch } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from './hooks/store';
 import { userSelector } from './lib/selector';
 import { browserHistory } from './lib/history';
 import { getSelectedMenu } from './lib/nav';
-import routes from './routes';
+import userSlice from './features/user';
 import Layout from './component/base/Layout';
 import NavContainer from './container/base/NavContainer';
 import AuthAppWrapper from './component/base/AuthAppWrapper';
 import { CreateNotePage, MainPage, NoteDetailPage, Page404, UpdateNotePage } from './pages';
 
 const AuthApp = () => {
-  const { isLoggedIn, loading } = useAppSelector(userSelector);
+  /**
+   * redux store
+   */
+  const dispatch = useAppDispatch();
+  const { loading } = useAppSelector(userSelector);
+  const userActions = userSlice.actions;
+
+  const [isInit, setIsInit] = useState(false);
   const selectedMenu = [getSelectedMenu(browserHistory.location.pathname)];
 
-  if (loading.getMe) {
-    return null;
-  }
+  useEffect(() => {
+    dispatch(userActions.getMeRequest());
+    setIsInit(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  if (!isLoggedIn) {
-    return <Redirect to={routes.login()} />;
+  /**
+   * TODO: 로딩 중 화면 UI 만들어서 렌더링 하기
+   */
+  if (!isInit || loading) {
+    return null;
   }
 
   return (

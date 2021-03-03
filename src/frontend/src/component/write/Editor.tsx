@@ -19,12 +19,7 @@ const StyledEditor = styled(ReactQuill)`
   }
 `;
 
-const Editor: React.FC<EditorProps> = ({
-  formData,
-  onChange,
-  onSave,
-  loading,
-}) => {
+const Editor: React.FC<EditorProps> = ({ formData, onChange, onSave, loading }) => {
   const toolbarOptions = [
     ['bold', 'italic', 'underline', 'strike'],
     ['blockquote', 'code-block'],
@@ -47,14 +42,9 @@ const Editor: React.FC<EditorProps> = ({
 
   return (
     <>
-      <StyledEditor
-        theme="snow"
-        value={formData.content}
-        onChange={onChange}
-        modules={{ toolbar: toolbarOptions }}
-      />
+      <StyledEditor theme="snow" value={formData.content} onChange={onChange} modules={{ toolbar: toolbarOptions }} />
 
-      <Spin tip="저장중..." spinning={loading}>
+      <Spin tip="저장중..." spinning={!!loading}>
         <Button size="large" block onClick={onSave}>
           저장하기
         </Button>

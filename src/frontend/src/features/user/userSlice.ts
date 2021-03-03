@@ -1,35 +1,35 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { useFailure, useRequest } from '../../hooks/store';
 import { Profile, UserState } from './type';
+import { AxiosError } from 'axios';
 
 const initialState: UserState = {
-  isLoggedIn: false,
   profile: {
     id: null,
     name: '',
     pictureUrl: '',
   },
-  loading: {},
-  error: {},
+  loading: false,
+  error: null,
 };
-
-const request = useRequest<UserState>();
-const failure = useFailure<UserState>();
 
 const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    getMeRequest: request<undefined>('getMe'),
-    getMeFailure: failure('getMe'),
+    getMeRequest: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    getMeFailure: (state, action: PayloadAction<AxiosError>) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
     getMeSuccess: (state, action: PayloadAction<Profile>) => {
-      state.isLoggedIn = true;
       state.profile = action.payload;
-      state.loading.getMe = false;
-      state.error.getMe = null;
+      state.loading = false;
+      state.error = null;
     },
     logout: (state) => {
-      state.isLoggedIn = false;
       state.profile = {
         id: null,
         name: '',

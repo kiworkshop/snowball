@@ -11,7 +11,7 @@ const errorMap: ErrorMap = {
   400: () => message.error('잘못된 요청입니다.'),
   401: () => {
     message.error('로그인 세션이 만료되었습니다.');
-    window.location.replace(routes.login());
+    window.location.replace(routes.login);
   },
   403: () => message.error('권한이 없습니다.'),
   404: () => message.error('존재하지 않는 경로에 대한 요청입니다.'),

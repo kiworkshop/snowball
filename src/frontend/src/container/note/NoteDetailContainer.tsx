@@ -56,6 +56,10 @@ const NoteDetailContainer: React.FC<NoteContainerProps> = ({ id }) => {
     }
   }, [dispatch, noteActions, note, id]);
 
+  if (!note[id]) {
+    return null;
+  }
+
   return (
     <NoteDetail
       note={note[id]}

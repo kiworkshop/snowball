@@ -49,13 +49,7 @@ const StockTransactionTableContainer = styled.div`
   }
 `;
 
-const NoteDetail: React.FC<NoteProps> = ({
-  note,
-  onClickUpdateButton,
-  onClickDeleteButton,
-  loading,
-  error,
-}) => {
+const NoteDetail: React.FC<NoteProps> = ({ note, onClickUpdateButton, onClickDeleteButton, loading, error }) => {
   if (loading) {
     return <div>로딩중...</div>;
   }

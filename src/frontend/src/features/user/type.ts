@@ -1,12 +1,8 @@
 export interface UserState {
   isLoggedIn: boolean;
   profile: Profile;
-  loading: {
-    [action: string]: boolean;
-  };
-  error: {
-    [action: string]: Error | null;
-  };
+  loading: boolean;
+  error: Error | null;
 }
 
 export interface Profile {
