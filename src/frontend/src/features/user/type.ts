@@ -1,4 +1,5 @@
 export interface UserState {
+  isLoggedIn: boolean;
   profile: Profile;
   loading: boolean;
   error: Error | null;
