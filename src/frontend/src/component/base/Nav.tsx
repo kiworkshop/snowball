@@ -53,16 +53,16 @@ const Nav: React.FC<NavProps> = ({ profile, onLogout, onClickNavLink, selectedMe
   return (
     <Header>
       <InnerWrapper>
-        <Link to={routes.home()}>
+        <Link to={routes.home}>
           <img src={logo} alt="logo" width="180" />
         </Link>
 
         <NavMenu mode="horizontal" selectedKeys={selectedMenu}>
-          <Menu.Item key="home" onClick={() => onClickNavLink(routes.home())}>
+          <Menu.Item key="home" onClick={() => onClickNavLink(routes.home)}>
             홈
           </Menu.Item>
 
-          <Menu.Item key="createNote" onClick={() => onClickNavLink(routes.note.create())}>
+          <Menu.Item key="createNote" onClick={() => onClickNavLink(routes.note.create)}>
             투자노트 작성
           </Menu.Item>
 

@@ -1,6 +1,5 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
-import * as userAPI from '../../lib/api/user';
-import * as history from '../../lib/history';
+import * as UserAPI from '../../lib/api/user';
 import routes from '../../routes';
 import userSlice from './userSlice';
 
@@ -8,23 +7,16 @@ const actions = userSlice.actions;
 
 function* getMeSaga() {
   try {
-    const response = yield call(userAPI.getMe);
-    if (history.browserHistory.location.pathname === routes.login()) {
-      history.push(routes.home());
-    }
+    const response = yield call(UserAPI.getMe);
     yield put(actions.getMeSuccess(response.data));
   } catch (e) {
     console.error(e);
-
-    if (history.browserHistory.location.pathname !== routes.login()) {
-      history.push(routes.login());
-    }
     yield put(actions.getMeFailure(e));
   }
 }
 
 function* logoutSaga() {
-  yield history.push(routes.login());
+  yield window.location.replace(routes.logout);
 }
 
 export function* userSaga() {

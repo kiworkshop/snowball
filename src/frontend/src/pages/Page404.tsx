@@ -29,7 +29,7 @@ const SubMessage = styled(Typography.Paragraph)`
 
 const Page404 = () => {
   const history = useHistory();
-  const onClick = useCallback(() => history.push(routes.home()), [history]);
+  const onClick = useCallback(() => history.push(routes.home), [history]);
 
   return (
     <PageContainer>
@@ -37,9 +37,7 @@ const Page404 = () => {
         <SnowmanImg src={snowmanImage} />
         <div>
           <MainMessage>404 Not Found</MainMessage>
-          <SubMessage>
-            페이지를 찾을 수 없습니다. 올바른 주소를 입력해주세요.
-          </SubMessage>
+          <SubMessage>페이지를 찾을 수 없습니다. 올바른 주소를 입력해주세요.</SubMessage>
           <Button size="large" onClick={onClick}>
             홈으로
           </Button>

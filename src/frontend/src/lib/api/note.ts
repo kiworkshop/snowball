@@ -1,14 +1,10 @@
 import axios from 'axios';
 import { CreateNoteRequest, UpdateNoteRequest } from '../../types/request/note';
-import {
-  CreateNoteResponse,
-  GetNoteResponse,
-  GetNotesResponse,
-} from '../../types/response/note';
+import { CreateNoteResponse, GetNoteResponse, GetNotesResponse } from '../../types/response/note';
 
 const axiosClient = axios.create({
-  baseURL: 'http://develop.snowball.live/api/notes',
-  // baseURL: 'http://localhost:8080/api/notes'
+  // baseURL: 'http://develop.snowball.live/api/notes',
+  baseURL: 'http://localhost:8080/api/notes',
 });
 
 export const getNotes = (size: number, page: number) => {

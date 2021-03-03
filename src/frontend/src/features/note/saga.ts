@@ -61,7 +61,7 @@ function* deleteNoteSaga(action: PayloadAction<number>) {
     yield Modal.success({
       content: '노트가 삭제되었습니다.',
       onOk: () => {
-        window.location.replace(routes.home());
+        window.location.replace(routes.home);
       },
     });
   } catch (e) {
