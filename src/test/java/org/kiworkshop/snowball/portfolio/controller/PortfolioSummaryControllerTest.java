@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.kiworkshop.snowball.ControllerTest;
 import org.kiworkshop.snowball.auth.SecurityConfig;
-import org.kiworkshop.snowball.auth.dto.SessionUser;
 import org.kiworkshop.snowball.portfolio.controller.dto.PortfolioStockResponseDtoFixture;
 import org.kiworkshop.snowball.portfolio.service.PortfolioSummaryService;
 import org.kiworkshop.snowball.user.Entity.UserFixture;
