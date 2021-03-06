@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { Collapse, Button, Typography, Tag, Empty } from 'antd';
 import { RightOutlined } from '@ant-design/icons';
 import { addCommaToNumber } from '../../lib/number';
-import { Note } from '../../types/state/note';
 import { MAIN_COLOR } from '../../constants/colors';
+import { Note } from '../../types/domain/note';
 
 interface NoteListProps {
   notes: Array<Note>;
@@ -53,10 +53,7 @@ const EmptyNoteList = styled(Empty)`
   padding: 50px 0;
 `;
 
-const NoteList: React.FC<NoteListProps> = ({
-  notes,
-  onClickMoreInfoButton,
-}) => {
+const NoteList: React.FC<NoteListProps> = ({ notes, onClickMoreInfoButton }) => {
   return (
     <NoteListWrapper>
       <NoteListTitle level={3}>투자노트 목록</NoteListTitle>
@@ -64,11 +61,7 @@ const NoteList: React.FC<NoteListProps> = ({
       {notes.length > 0 ? (
         <Collapse ghost>
           {notes
-            .sort(
-              (note1, note2) =>
-                note2.investmentDate!.valueOf() -
-                note1.investmentDate!.valueOf()
-            )
+            .sort((note1, note2) => note2.investmentDate!.valueOf() - note1.investmentDate!.valueOf())
             .map((note) => (
               <Collapse.Panel
                 key={note.id!}
@@ -89,19 +82,10 @@ const NoteList: React.FC<NoteListProps> = ({
                           <Tag color="error">매도</Tag>
                         )}
                         <Tag>{stockTransaction.stockDetail.companyName}</Tag>
-                        <Tag>
-                          {addCommaToNumber(stockTransaction.quantity)}주
-                        </Tag>
-                        <Tag>
-                          {addCommaToNumber(stockTransaction.tradedPrice)}원
-                        </Tag>
+                        <Tag>{addCommaToNumber(stockTransaction.quantity)}주</Tag>
+                        <Tag>{addCommaToNumber(stockTransaction.tradedPrice)}원</Tag>
                         <Tag color="success">
-                          총{' '}
-                          {addCommaToNumber(
-                            stockTransaction.quantity *
-                              stockTransaction.tradedPrice
-                          )}
-                          원
+                          총 {addCommaToNumber(stockTransaction.quantity * stockTransaction.tradedPrice)}원
                         </Tag>
                       </li>
                     ))
@@ -110,11 +94,7 @@ const NoteList: React.FC<NoteListProps> = ({
                   )}
                 </TransactionList>
 
-                <MoreInfoButton
-                  type="text"
-                  size="small"
-                  onClick={() => onClickMoreInfoButton(note.id)}
-                >
+                <MoreInfoButton type="text" size="small" onClick={() => onClickMoreInfoButton(note.id)}>
                   더보기 <RightOutlined />
                 </MoreInfoButton>
               </Collapse.Panel>

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Profile, UserState } from './type';
 import { AxiosError } from 'axios';
+import { UserState, UserPayload } from '../../types/store/user';
 
 const initialState: UserState = {
   profile: {
@@ -24,7 +24,7 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-    getMeSuccess: (state, action: PayloadAction<Profile>) => {
+    getMeSuccess: (state, action: PayloadAction<UserPayload.GetMe.Success>) => {
       state.profile = action.payload;
       state.loading = false;
       state.error = null;

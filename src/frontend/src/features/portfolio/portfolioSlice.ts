@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { useFailure, useRequest } from '../../hooks/store';
-import { GetPortfolioSummariesSuccessPayload, PortfolioState } from './type';
+import { PortfolioPayload, PortfolioState } from '../../types/store/portfolio';
 
 const initialState: PortfolioState = {
   portfolioSummaries: [],
@@ -15,12 +15,9 @@ const portfolioSlice = createSlice({
   name: 'portfolio',
   initialState,
   reducers: {
-    getPortfolioSummariesRequest: request<undefined>('getPortfolioSummaries'),
+    getPortfolioSummariesRequest: request<PortfolioPayload.GetPortfolioSummaries.Request>('getPortfolioSummaries'),
     getPortfolioSummariesFailure: failure('getPortfolioSummaries'),
-    getPortfolioSummariesSuccess: (
-      state,
-      action: PayloadAction<GetPortfolioSummariesSuccessPayload>
-    ) => {
+    getPortfolioSummariesSuccess: (state, action: PayloadAction<PortfolioPayload.GetPortfolioSummaries.Success>) => {
       state.portfolioSummaries = action.payload;
       state.loading.getPortfolioSummaries = false;
     },

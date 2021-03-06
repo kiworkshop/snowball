@@ -5,6 +5,7 @@ import { noteSelector, stockTransactionSelector } from '../../lib/selector';
 import noteSlice from '../../features/note';
 import stockTransactionSlice from '../../features/stockTransaction';
 import CreateNoteTemplate from '../../component/write/CreateNoteTemplate';
+import { message } from 'antd';
 
 const CreateNoteTemplateContainer = () => {
   /**
@@ -57,11 +58,17 @@ const CreateNoteTemplateContainer = () => {
    * functions
    */
   const onSave = useCallback(() => {
+    if (form.content.trim().length === 0) {
+      message.error('내용을 입력해 주세요.');
+      return;
+    }
+
     dispatch(
       noteActions.createNoteRequest({
-        ...form,
         title: form.title || `${form.investmentDate} 투자노트`,
-        stockTransactions: stockTransactions.map((stockTransaction) => ({
+        content: form.content,
+        investmentDate: form.investmentDate,
+        stockTransactionRequests: stockTransactions.map((stockTransaction) => ({
           stockDetailId: stockTransaction.stockDetailId,
           quantity: stockTransaction.quantity,
           tradedPrice: stockTransaction.tradedPrice,

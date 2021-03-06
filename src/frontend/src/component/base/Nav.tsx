@@ -7,7 +7,7 @@ import routes from '../../routes';
 import * as Screen from '../../constants/screen';
 import logo from '../../static/images/logo.png';
 import Container from './Container';
-import { Profile } from '../../features/user/type';
+import { Profile } from '../../types/domain/user';
 
 interface NavProps {
   profile: Profile;

@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import noteSlice from '../../features/note';
 import stockTransactionSlice from '../../features/stockTransaction';
 import { noteSelector, stockTransactionSelector } from '../../lib/selector';
-import { Note } from '../../types/state/note';
+import { Note } from '../../types/domain/note';
 import UpdateNoteTemplate from '../../component/write/UpdateNoteTemplate';
 
 interface UpdateNoteTemplateContainerProps {
@@ -67,9 +67,10 @@ const UpdateNoteTemplateContainer: React.FC<UpdateNoteTemplateContainerProps> = 
         noteActions.updateNoteRequest({
           id,
           form: {
-            ...form,
             title: form.title || `${form.investmentDate} 투자노트`,
-            stockTransactions: stockTransactions.map((stockTransaction) => ({
+            content: form.content,
+            investmentDate: form.investmentDate,
+            stockTransactionRequests: stockTransactions.map((stockTransaction) => ({
               stockDetailId: stockTransaction.stockDetailId,
               quantity: stockTransaction.quantity,
               tradedPrice: stockTransaction.tradedPrice,

@@ -1,7 +1,42 @@
-import { GetNoteResponse } from '../types/response/note';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 
-export const parseNote = (note: GetNoteResponse) => {
+interface RawNote {
+  id: number;
+  title: string;
+  content: string;
+  investmentDate: string;
+  createdDate: string;
+  modifiedDate: string;
+  stockTransactionResponses: Array<{
+    quantity: number;
+    tradedPrice: number;
+    transactionType: 'BUY' | 'SELL';
+    stockDetailResponse: {
+      id: number;
+      companyName: string;
+    };
+  }>;
+}
+
+interface parsedNote {
+  id: number;
+  title: string;
+  content: string;
+  investmentDate: Moment;
+  createdDate: Moment;
+  modifiedDate: Moment;
+  stockTransactions: Array<{
+    quantity: number;
+    tradedPrice: number;
+    transactionType: 'BUY' | 'SELL';
+    stockDetail: {
+      id: number;
+      companyName: string;
+    };
+  }>;
+}
+
+export const parseNote = (note: RawNote): parsedNote => {
   return {
     id: note.id,
     title: note.title,
@@ -14,7 +49,8 @@ export const parseNote = (note: GetNoteResponse) => {
       quantity: res.quantity,
       tradedPrice: res.tradedPrice,
       stockDetail: {
-        ...res.stockDetailResponse,
+        id: res.stockDetailResponse.id,
+        companyName: res.stockDetailResponse.companyName,
       },
     })),
   };

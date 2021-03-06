@@ -1,23 +1,43 @@
-export interface CreateNoteRequest {
-  title: string;
-  content: string;
-  investmentDate: string;
-  stockTransactions: Array<{
-    stockDetailId: number;
-    quantity: number;
-    tradedPrice: number;
-    transactionType: 'BUY' | 'SELL';
-  }>;
-}
+export namespace NoteRequest {
+  namespace GetNotes {
+    type size = number;
+    type page = number;
+  }
 
-export interface UpdateNoteRequest {
-  title: string;
-  content: string;
-  investmentDate: string;
-  stockTransactions: Array<{
-    stockDetailId: number;
-    quantity: number;
-    tradedPrice: number;
-    transactionType: 'BUY' | 'SELL';
-  }>;
+  namespace GetNote {
+    type id = number;
+  }
+
+  namespace Create {
+    interface Form {
+      title: string;
+      content: string;
+      investmentDate: string;
+      stockTransactionRequests: Array<{
+        stockDetailId: number;
+        quantity: number;
+        tradedPrice: number;
+        transactionType: 'BUY' | 'SELL';
+      }>;
+    }
+  }
+
+  namespace Update {
+    type id = number;
+    interface Form {
+      title: string;
+      content: string;
+      investmentDate: string;
+      stockTransactionRequests: Array<{
+        stockDetailId: number;
+        quantity: number;
+        tradedPrice: number;
+        transactionType: 'BUY' | 'SELL';
+      }>;
+    }
+  }
+
+  namespace Delete {
+    type id = number;
+  }
 }

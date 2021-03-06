@@ -37,6 +37,7 @@ const StockTransactionAddButtonContainer: React.FC<StockTransactionAddButtonCont
             stockTransaction: {
               ...values,
               stockDetailId,
+              transactionType: type,
             },
           })
         );
