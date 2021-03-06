@@ -6,11 +6,11 @@ import * as NoteAPI from '../../lib/api/note';
 import * as history from '../../lib/history';
 import errorHandler from '../../lib/error';
 import routes from '../../routes';
-import { CreateNoteRequestPayload, GetNotesRequestPayload, UpdateNoteRequestPayload } from './type';
+import { NotePayload } from '../../types/store/note';
 
 const actions = noteSlice.actions;
 
-function* getNotesSaga(action: PayloadAction<GetNotesRequestPayload>) {
+function* getNotesSaga(action: PayloadAction<NotePayload.GetNotes.Request>) {
   try {
     const { size, page } = action.payload;
     const response = yield call(NoteAPI.getNotes, size, page);
@@ -21,7 +21,7 @@ function* getNotesSaga(action: PayloadAction<GetNotesRequestPayload>) {
   }
 }
 
-function* getNoteSaga(action: PayloadAction<number>) {
+function* getNoteSaga(action: PayloadAction<NotePayload.GetNote.Request>) {
   try {
     const response = yield call(NoteAPI.getNote, action.payload);
     yield put(actions.getNoteSuccess(response.data));
@@ -31,7 +31,7 @@ function* getNoteSaga(action: PayloadAction<number>) {
   }
 }
 
-function* createNoteSaga(action: PayloadAction<CreateNoteRequestPayload>) {
+function* createNoteSaga(action: PayloadAction<NotePayload.CreateNote.Request>) {
   try {
     const response = yield call(NoteAPI.createNote, action.payload);
     yield put(actions.createNoteSuccess());
@@ -42,7 +42,7 @@ function* createNoteSaga(action: PayloadAction<CreateNoteRequestPayload>) {
   }
 }
 
-function* updateNoteSaga(action: PayloadAction<UpdateNoteRequestPayload>) {
+function* updateNoteSaga(action: PayloadAction<NotePayload.UpdateNote.Request>) {
   try {
     const { id, form } = action.payload;
     yield call(NoteAPI.updateNote, id, form);
@@ -54,7 +54,7 @@ function* updateNoteSaga(action: PayloadAction<UpdateNoteRequestPayload>) {
   }
 }
 
-function* deleteNoteSaga(action: PayloadAction<number>) {
+function* deleteNoteSaga(action: PayloadAction<NotePayload.DeleteNote.Request>) {
   try {
     yield call(NoteAPI.deleteNote, action.payload);
     yield put(actions.deleteNoteSuccess());

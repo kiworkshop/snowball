@@ -1,14 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { useFailure, useRequest } from '../../hooks/store';
 import { parseNote } from '../../lib/note';
-import {
-  NoteState,
-  GetNotesRequestPayload,
-  GetNotesSuccessPayload,
-  GetNoteSuccessPayload,
-  CreateNoteRequestPayload,
-  UpdateNoteRequestPayload,
-} from './type';
+import { NoteState, NotePayload } from '../../types/store/note';
 
 const initialState: NoteState = {
   note: {},
@@ -27,11 +20,11 @@ const noteSlice = createSlice({
     /**
      * request
      */
-    getNotesRequest: request<GetNotesRequestPayload>('getNotes'),
-    getNoteRequest: request<number>('getNote'),
-    createNoteRequest: request<CreateNoteRequestPayload>('createNote'),
-    updateNoteRequest: request<UpdateNoteRequestPayload>('updateNote'),
-    deleteNoteRequest: request<number>('deleteNote'),
+    getNotesRequest: request<NotePayload.GetNotes.Request>('getNotes'),
+    getNoteRequest: request<NotePayload.GetNote.Request>('getNote'),
+    createNoteRequest: request<NotePayload.CreateNote.Request>('createNote'),
+    updateNoteRequest: request<NotePayload.UpdateNote.Request>('updateNote'),
+    deleteNoteRequest: request<NotePayload.DeleteNote.Request>('deleteNote'),
 
     /**
      * failure
@@ -45,12 +38,12 @@ const noteSlice = createSlice({
     /**
      * success
      */
-    getNotesSuccess: (state, action: PayloadAction<GetNotesSuccessPayload>) => {
+    getNotesSuccess: (state, action: PayloadAction<NotePayload.GetNotes.Success>) => {
       state.notes = action.payload.content.map(parseNote);
       state.loading.getNotes = false;
       state.error.getNotes = null;
     },
-    getNoteSuccess: (state, action: PayloadAction<GetNoteSuccessPayload>) => {
+    getNoteSuccess: (state, action: PayloadAction<NotePayload.GetNote.Success>) => {
       state.note[action.payload.id] = parseNote(action.payload);
       state.loading.getNote = false;
       state.error.getNote = null;

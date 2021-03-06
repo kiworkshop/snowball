@@ -1,17 +1,14 @@
 import React from 'react';
 import { Table, Typography } from 'antd';
 import { addCommaToNumber } from '../../lib/number';
-import { Note } from '../../types/state/note';
+import { Note } from '../../types/domain/note';
 
 interface StockTransactionTableProps {
   type: 'BUY' | 'SELL';
   note: Note;
 }
 
-const StockTransactionTable: React.FC<StockTransactionTableProps> = ({
-  type,
-  note,
-}) => {
+const StockTransactionTable: React.FC<StockTransactionTableProps> = ({ type, note }) => {
   const columns = [
     { title: '종목명', dataIndex: ['stockDetail', 'companyName'] },
     { title: '수량(주)', dataIndex: 'quantity' },
@@ -25,9 +22,7 @@ const StockTransactionTable: React.FC<StockTransactionTableProps> = ({
       ...stockTransaction,
       quantity: addCommaToNumber(stockTransaction.quantity),
       tradedPrice: addCommaToNumber(stockTransaction.tradedPrice),
-      transactionAmount: addCommaToNumber(
-        stockTransaction.quantity * stockTransaction.tradedPrice
-      ),
+      transactionAmount: addCommaToNumber(stockTransaction.quantity * stockTransaction.tradedPrice),
     }));
 
   return (

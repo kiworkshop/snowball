@@ -1,9 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {
-  AddStockTransactionPayload,
-  DeleteStockTransactionPayload,
-  StockTransactionState,
-} from './type';
+import { StockTransactionState, StockTransactionPayload } from '../../types/store/stockTransaction';
 
 const initialState: StockTransactionState = {
   BUY: [],
@@ -18,10 +14,10 @@ const stockTransactionSlice = createSlice({
       state.BUY = [];
       state.SELL = [];
     },
-    add: (state, action: PayloadAction<AddStockTransactionPayload>) => {
+    add: (state, action: PayloadAction<StockTransactionPayload.Add>) => {
       state[action.payload.type].push(action.payload.stockTransaction);
     },
-    delete: (state, action: PayloadAction<DeleteStockTransactionPayload>) => {
+    delete: (state, action: PayloadAction<StockTransactionPayload.Delete>) => {
       state[action.payload.type].splice(action.payload.index, 1);
     },
   },

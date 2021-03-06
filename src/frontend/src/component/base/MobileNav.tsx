@@ -5,7 +5,7 @@ import { MenuOutlined } from '@ant-design/icons';
 import * as Screen from '../../constants/screen';
 import routes from '../../routes';
 import Container from './Container';
-import { Profile } from '../../features/user/type';
+import { Profile } from '../../types/domain/user';
 
 interface MobileNavProps {
   profile: Profile;

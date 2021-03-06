@@ -1,11 +1,10 @@
 import axios from 'axios';
-import { Profile } from '../../features/user/type';
+import { UserResponse } from '../../types/response/user';
 
 const axiosClient = axios.create({
-  // baseURL: 'http://develop.snowball.live/api',
-  baseURL: 'http://localhost:8080/api',
+  baseURL: '/api',
 });
 
 export const getMe = () => {
-  return axiosClient.get<Profile>('/me');
+  return axiosClient.get<UserResponse.GetMe>('/me');
 };
