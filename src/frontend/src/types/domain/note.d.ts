@@ -1,13 +1,12 @@
-import moment from 'moment';
 import { StockTransaction } from './stockTransaction';
 
 export interface Note {
   id: number;
   title: string;
   content: string;
-  investmentDate: moment.Moment;
-  createdDate: moment.Moment;
-  modifiedDate: moment.Moment;
+  investmentDate: string;
+  createdDate: string;
+  modifiedDate: string;
   stockTransactions: Array<StockTransaction>;
 }
 

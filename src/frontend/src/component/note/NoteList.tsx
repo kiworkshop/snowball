@@ -61,14 +61,14 @@ const NoteList: React.FC<NoteListProps> = ({ notes, onClickMoreInfoButton }) => 
       {notes.length > 0 ? (
         <Collapse ghost>
           {notes
-            .sort((note1, note2) => note2.investmentDate!.valueOf() - note1.investmentDate!.valueOf())
+            .sort((note1, note2) => (note1.investmentDate < note2.investmentDate ? -1 : 1))
             .map((note) => (
               <Collapse.Panel
                 key={note.id!}
                 header={
                   <PanelHeader>
                     <span>{note.title}</span>
-                    <span>{note.investmentDate?.format('YYYY-MM-DD')}</span>
+                    <span>{note.investmentDate}</span>
                   </PanelHeader>
                 }
               >

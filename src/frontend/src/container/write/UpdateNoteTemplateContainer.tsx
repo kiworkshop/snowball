@@ -18,7 +18,7 @@ const UpdateNoteTemplateContainer: React.FC<UpdateNoteTemplateContainerProps> = 
   const [form, setForm] = useState({
     title: note.title,
     content: note.content,
-    investmentDate: note.investmentDate.format('YYYY-MM-DD'),
+    investmentDate: note.investmentDate,
   });
 
   const onTitleChange = useCallback(
@@ -82,13 +82,14 @@ const UpdateNoteTemplateContainer: React.FC<UpdateNoteTemplateContainerProps> = 
     [dispatch, noteActions, form, stockTransactions, id]
   );
 
-  // 노트 상태 캐싱
   useEffect(() => {
-    setForm({
-      title: note.title,
-      content: note.content,
-      investmentDate: note.investmentDate.format('YYYY-MM-DD'),
-    });
+    if (note) {
+      setForm({
+        title: note.title,
+        content: note.content,
+        investmentDate: note.investmentDate,
+      });
+    }
   }, [id, note]);
 
   useEffect(() => {

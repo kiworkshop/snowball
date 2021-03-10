@@ -1,4 +1,4 @@
-import moment, { Moment } from 'moment';
+import moment from 'moment';
 
 interface RawNote {
   id: number;
@@ -22,9 +22,9 @@ interface parsedNote {
   id: number;
   title: string;
   content: string;
-  investmentDate: Moment;
-  createdDate: Moment;
-  modifiedDate: Moment;
+  investmentDate: string;
+  createdDate: string;
+  modifiedDate: string;
   stockTransactions: Array<{
     quantity: number;
     tradedPrice: number;
@@ -41,9 +41,9 @@ export const parseNote = (note: RawNote): parsedNote => {
     id: note.id,
     title: note.title,
     content: note.content,
-    investmentDate: moment(note.investmentDate),
-    createdDate: moment(note.createdDate),
-    modifiedDate: moment(note.modifiedDate || note.createdDate),
+    investmentDate: moment(note.investmentDate).format('YYYY-MM-DD'),
+    createdDate: moment(note.createdDate).format('YYYY-MM-DD'),
+    modifiedDate: moment(note.modifiedDate || note.createdDate).format('YYYY-MM-DD'),
     stockTransactions: note.stockTransactionResponses.map((res) => ({
       transactionType: res.transactionType,
       quantity: res.quantity,
