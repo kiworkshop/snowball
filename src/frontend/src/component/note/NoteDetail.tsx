@@ -66,7 +66,6 @@ const NoteDetail: React.FC<NoteProps> = ({ note, onClickUpdateButton, onClickDel
           <Button type="text" onClick={onClickUpdateButton}>
             수정
           </Button>
-
           <Button type="text" onClick={onClickDeleteButton}>
             삭제
           </Button>
@@ -79,7 +78,6 @@ const NoteDetail: React.FC<NoteProps> = ({ note, onClickUpdateButton, onClickDel
             <Typography.Title level={5}>매수한 종목</Typography.Title>
             <StockTransactionTable type="BUY" note={note} />
           </div>
-
           <div>
             <Typography.Title level={5}>매도한 종목</Typography.Title>
             <StockTransactionTable type="SELL" note={note} />

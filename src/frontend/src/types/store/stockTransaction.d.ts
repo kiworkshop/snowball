@@ -27,4 +27,14 @@ export namespace StockTransactionPayload {
     type: 'BUY' | 'SELL';
     index: number;
   }
+
+  type SyncNote = Array<{
+    transactionType: 'BUY' | 'SELL';
+    quantity: number;
+    tradedPrice: number;
+    stockDetail: {
+      id: number;
+      companyName: string;
+    };
+  }>;
 }
