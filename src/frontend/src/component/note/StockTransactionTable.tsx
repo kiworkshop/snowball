@@ -18,8 +18,9 @@ const StockTransactionTable: React.FC<StockTransactionTableProps> = ({ type, not
 
   const stockTransactionsOfType = note.stockTransactions
     .filter((stockTransaction) => stockTransaction.transactionType === type)
-    .map((stockTransaction) => ({
+    .map((stockTransaction, index) => ({
       ...stockTransaction,
+      index,
       quantity: addCommaToNumber(stockTransaction.quantity),
       tradedPrice: addCommaToNumber(stockTransaction.tradedPrice),
       transactionAmount: addCommaToNumber(stockTransaction.quantity * stockTransaction.tradedPrice),
@@ -30,7 +31,7 @@ const StockTransactionTable: React.FC<StockTransactionTableProps> = ({ type, not
       dataSource={stockTransactionsOfType}
       columns={columns}
       pagination={false}
-      rowKey="id"
+      rowKey="index"
       style={{ marginBottom: '50px', whiteSpace: 'nowrap' }}
       summary={(data) => {
         let totalPrice = 0;
