@@ -19,7 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                     .antMatchers(
-                        "/", "/login", "/oauth2/**",
+                        "/user/login", "/oauth2/**",
                         "/actuator/**",
                         "/static/**",
                         "/h2-console/**")
@@ -29,16 +29,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .csrf().disable()
                     .headers().frameOptions().disable()
                 .and()
-                    .exceptionHandling()
-                        .authenticationEntryPoint(restAuthenticationEntryPoint)
-                .and()
                     .logout()
-                    .logoutSuccessUrl("/")
+                    .logoutSuccessUrl("/user/login")
                     .clearAuthentication(true)
                     .deleteCookies("JSESSIONID")
                     .invalidateHttpSession(true)
                 .and()
                     .oauth2Login()
+                    .loginPage("/user/login")
                     .defaultSuccessUrl("/")
                     .userInfoEndpoint()
                         .userService(customOAuth2UserService);
