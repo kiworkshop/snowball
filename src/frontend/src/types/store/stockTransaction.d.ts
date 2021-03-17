@@ -1,4 +1,4 @@
-interface StockTransaction {
+export interface StockTransactionOfState {
   stockDetailId: number;
   companyName: string;
   quantity: number;
@@ -7,8 +7,8 @@ interface StockTransaction {
 }
 
 export interface StockTransactionState {
-  BUY: Array<StockTransaction>;
-  SELL: Array<StockTransaction>;
+  BUY: Array<StockTransactionOfState>;
+  SELL: Array<StockTransactionOfState>;
 }
 
 export namespace StockTransactionPayload {

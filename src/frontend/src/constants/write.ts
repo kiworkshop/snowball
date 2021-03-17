@@ -1,0 +1,2 @@
+export const CREATE_NOTE_TYPE = 'CREATE_NOTE_TYPE';
+export const UPDATE_NOTE_TYPE = 'UPDATE_NOTE_TYPE';

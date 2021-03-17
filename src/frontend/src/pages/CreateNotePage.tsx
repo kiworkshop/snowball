@@ -1,8 +1,9 @@
 import React from 'react';
-import CreateNoteTemplateContainer from '../container/write/CreateNoteTemplateContainer';
+import { CREATE_NOTE_TYPE } from '../constants/write';
+import WriteTemplate from '../container/write/WriteTemplate';
 
 const CreateNotePage = () => {
-  return <CreateNoteTemplateContainer />;
+  return <WriteTemplate type={CREATE_NOTE_TYPE} />;
 };
 
 export default CreateNotePage;
