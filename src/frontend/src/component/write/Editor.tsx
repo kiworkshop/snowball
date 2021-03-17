@@ -5,7 +5,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
 interface EditorProps {
-  formData: { title: string; content: string; investmentDate: string };
+  content: string;
   onChange: (content: string) => void;
   onSave: () => void;
   loading: boolean;
@@ -19,7 +19,7 @@ const StyledEditor = styled(ReactQuill)`
   }
 `;
 
-const Editor: React.FC<EditorProps> = ({ formData, onChange, onSave, loading }) => {
+const Editor: React.FC<EditorProps> = ({ content, onChange, onSave, loading }) => {
   const toolbarOptions = [
     ['bold', 'italic', 'underline', 'strike'],
     ['blockquote', 'code-block'],
@@ -42,9 +42,9 @@ const Editor: React.FC<EditorProps> = ({ formData, onChange, onSave, loading }) 
 
   return (
     <>
-      <StyledEditor theme="snow" value={formData.content} onChange={onChange} modules={{ toolbar: toolbarOptions }} />
+      <StyledEditor theme="snow" value={content} onChange={onChange} modules={{ toolbar: toolbarOptions }} />
 
-      <Spin tip="저장중..." spinning={!!loading}>
+      <Spin tip="저장중..." spinning={Boolean(loading)}>
         <Button size="large" block onClick={onSave}>
           저장하기
         </Button>

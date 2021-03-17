@@ -4,7 +4,8 @@ import { useAppDispatch, useAppSelector } from '../hooks/store';
 import noteSlice from '../features/note';
 import stockTransactionSlice from '../features/stockTransaction';
 import { noteSelector } from '../lib/selector';
-import UpdateNoteTemplateContainer from '../container/write/UpdateNoteTemplateContainer';
+import { UPDATE_NOTE_TYPE } from '../constants/write';
+import WriteTemplate from '../container/write/WriteTemplate';
 
 interface MatchProps {
   id: string;
@@ -34,7 +35,7 @@ const UpdateNotePage: React.FC<RouteComponentProps<MatchProps>> = ({ match }) =>
     return null;
   }
 
-  return <UpdateNoteTemplateContainer id={noteId} note={note} />;
+  return <WriteTemplate type={UPDATE_NOTE_TYPE} note={note} />;
 };
 
 export default UpdateNotePage;
