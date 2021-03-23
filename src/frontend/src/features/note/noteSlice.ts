@@ -175,7 +175,27 @@ const noteSlice = createSlice({
       state.loading.updateNote = true;
       state.error.updateNote = null;
     },
-    updateNoteSuccess: (state) => {
+    updateNoteSuccess: (
+      state,
+      action: PayloadAction<{
+        id: number;
+        title: string;
+        content: string;
+        investmentDate: string;
+        createdDate: string;
+        modifiedDate: string;
+        stockTransactionResponses: Array<{
+          quantity: number;
+          tradedPrice: number;
+          transactionType: 'BUY' | 'SELL';
+          stockDetailResponse: {
+            id: number;
+            companyName: string;
+          };
+        }>;
+      }>
+    ) => {
+      state.note[action.payload.id] = parseNote(action.payload);
       state.isWritingSucceeded = true;
       state.loading.updateNote = false;
       state.error.updateNote = null;
