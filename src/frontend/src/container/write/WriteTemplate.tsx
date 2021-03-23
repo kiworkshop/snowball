@@ -104,6 +104,14 @@ const WriteTemplate: React.FC<WriteTemplateProps> = ({ type, note }) => {
     }
   }, [isEditing, dispatch, noteActions, title, content, investmentDate, stockTransactions, profile.name, note, type]);
 
+  window.onbeforeunload = (e: BeforeUnloadEvent) => {
+    // 글이 작성 중일 경우
+    if (isEditing()) {
+      e.preventDefault();
+      e.returnValue = '';
+    }
+  };
+
   /**
    * 컴포넌트 언마운트 시 거래내역 초기화
    */
@@ -113,6 +121,7 @@ const WriteTemplate: React.FC<WriteTemplateProps> = ({ type, note }) => {
     return () => {
       dispatch(stockTransactionActions.initialize());
       dispatch(noteActions.initialize());
+      window.onbeforeunload = null;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -126,14 +135,6 @@ const WriteTemplate: React.FC<WriteTemplateProps> = ({ type, note }) => {
 
     return () => unblock();
   }, [isEditing]);
-
-  window.onbeforeunload = (e: BeforeUnloadEvent) => {
-    // 글이 작성 중일 경우
-    if (isEditing()) {
-      e.preventDefault();
-      e.returnValue = '';
-    }
-  };
 
   return (
     <WriteTemplateBlock>
