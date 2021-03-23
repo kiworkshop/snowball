@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Space, Typography, Button } from 'antd';
+import { Note } from '../../types/domain';
 import StockTransactionTable from './StockTransactionTable';
-import { Note } from '../../types/domain/note';
 
 interface NoteProps {
   note: Note;

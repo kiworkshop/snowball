@@ -10,7 +10,7 @@ import { noteSelector, stockTransactionSelector, userSelector } from '../../lib/
 import { parseStockTransactionRequests } from '../../lib/stockTransaction';
 import { BLACK, WHITE } from '../../constants/colors';
 import { CREATE_NOTE_TYPE, UPDATE_NOTE_TYPE } from '../../constants/write';
-import { Note } from '../../types/domain/note';
+import { Note } from '../../types/domain';
 import Editor from '../../component/write/Editor';
 import StockTransactionTableContainer from './StockTransactionTableContainer';
 import StockTransactionAddButtonContainer from './StockTransactionAddButtonContainer';

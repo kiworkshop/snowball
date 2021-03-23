@@ -1,27 +1,37 @@
 import axios from 'axios';
-import { NoteRequest } from '../../types/request/note';
-import { NoteResponse } from '../../types/response/note';
 
 const axiosClient = axios.create({
   baseURL: '/api/notes',
 });
 
-export const getNotes = (size: NoteRequest.GetNotes.size, page: NoteRequest.GetNotes.page) => {
-  return axiosClient.get<NoteResponse.getMultiple>(`?size=${size}&page=${page}`);
+export const getNotes = (size: number, page: number) => {
+  return axiosClient.get(`?size=${size}&page=${page}`);
 };
 
-export const getNote = (id: NoteRequest.GetNote.id) => {
-  return axiosClient.get<NoteResponse.getSingle>(`/${id}`);
+export const getNote = (id: number) => {
+  return axiosClient.get(`/${id}`);
 };
 
-export const createNote = (form: NoteRequest.Create.Form) => {
-  return axiosClient.post<NoteResponse.create>('', form);
+export const createNote = (form: Form) => {
+  return axiosClient.post('', form);
 };
 
-export const updateNote = (id: NoteRequest.Update.id, form: NoteRequest.Update.Form) => {
+export const updateNote = (id: number, form: Form) => {
   return axiosClient.put(`/${id}`, form);
 };
 
-export const deleteNote = (id: NoteRequest.Delete.id) => {
+export const deleteNote = (id: number) => {
   return axiosClient.delete(`/${id}`);
 };
+
+interface Form {
+  title: string;
+  content: string;
+  investmentDate: string;
+  stockTransactionRequests: Array<{
+    stockDetailId: number;
+    quantity: number;
+    tradedPrice: number;
+    transactionType: 'BUY' | 'SELL';
+  }>;
+}
