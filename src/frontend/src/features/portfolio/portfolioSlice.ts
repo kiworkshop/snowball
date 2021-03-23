@@ -1,6 +1,19 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { useFailure, useRequest } from '../../hooks/store';
-import { PortfolioPayload, PortfolioState } from '../../types/store/portfolio';
+import { AxiosError } from 'axios';
+
+interface PortfolioSummary {
+  companyName: string;
+  averageBuyingPrice: number;
+  targetPrice: number;
+  earningsRate: number;
+  targetEarningsRate: number;
+}
+
+export interface PortfolioState {
+  portfolioSummaries: Array<PortfolioSummary>;
+  loading: { [action: string]: boolean };
+  error: { [action: string]: Error | null };
+}
 
 const initialState: PortfolioState = {
   portfolioSummaries: [],
@@ -8,18 +21,21 @@ const initialState: PortfolioState = {
   error: {},
 };
 
-const request = useRequest<PortfolioState>();
-const failure = useFailure<PortfolioState>();
-
 const portfolioSlice = createSlice({
   name: 'portfolio',
   initialState,
   reducers: {
-    getPortfolioSummariesRequest: request<PortfolioPayload.GetPortfolioSummaries.Request>('getPortfolioSummaries'),
-    getPortfolioSummariesFailure: failure('getPortfolioSummaries'),
-    getPortfolioSummariesSuccess: (state, action: PayloadAction<PortfolioPayload.GetPortfolioSummaries.Success>) => {
+    getPortfolioSummariesRequest: (state) => {
+      state.loading.getPortfolioSummaries = true;
+      state.error.getPortfolioSummaries = null;
+    },
+    getPortfolioSummariesSuccess: (state, action: PayloadAction<Array<PortfolioSummary>>) => {
       state.portfolioSummaries = action.payload;
       state.loading.getPortfolioSummaries = false;
+    },
+    getPortfolioSummariesFailure: (state, action: PayloadAction<AxiosError>) => {
+      state.loading.getPortfolioSummaries = false;
+      state.error.getPortfolioSummaries = action.payload;
     },
   },
 });
