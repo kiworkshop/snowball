@@ -79,8 +79,11 @@ function* updateNoteSaga(
   try {
     const { id, form } = action.payload;
     yield call(NoteAPI.updateNote, id, form);
-    yield put(actions.updateNoteSuccess());
-    yield history.push(routes.note.detail(id));
+    const { data: updatedNote } = yield call(NoteAPI.getNote, id);
+    yield put(actions.updateNoteSuccess(updatedNote));
+    yield setTimeout(() => {
+      history.push(routes.note.detail(id));
+    }, 0);
   } catch (e) {
     errorHandler(e);
     yield put(actions.updateNoteFailure(e));
