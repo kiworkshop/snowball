@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import { Modal } from 'antd';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
-import * as history from '../../lib/history';
+import history from '../../lib/history';
 import routes from '../../routes';
 import noteSlice from '../../features/note';
 import { noteSelector } from '../../lib/selector';

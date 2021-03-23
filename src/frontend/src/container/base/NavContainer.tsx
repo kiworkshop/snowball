@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
-import * as history from '../../lib/history';
+import history from '../../lib/history';
 import { userSelector } from '../../lib/selector';
 import userSlice from '../../features/user';
 import Nav from '../../component/base/Nav';
