@@ -1,31 +1,25 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Prompt } from 'react-router-dom';
 import styled from 'styled-components';
 import moment from 'moment';
 import { DatePicker, Input, message } from 'antd';
 import noteSlice from '../../features/note';
 import stockTransactionSlice from '../../features/stockTransaction';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
+import history from '../../lib/history';
 import { noteSelector, stockTransactionSelector, userSelector } from '../../lib/selector';
 import { parseStockTransactionRequests } from '../../lib/stockTransaction';
 import { BLACK, WHITE } from '../../constants/colors';
 import { CREATE_NOTE_TYPE, UPDATE_NOTE_TYPE } from '../../constants/write';
-import { Note } from '../../types/domain/note';
+import { Note } from '../../types/domain';
 import Editor from '../../component/write/Editor';
 import StockTransactionTableContainer from './StockTransactionTableContainer';
 import StockTransactionAddButtonContainer from './StockTransactionAddButtonContainer';
 
-/**
- * type & interface
- */
 interface WriteTemplateProps {
   type: typeof CREATE_NOTE_TYPE | typeof UPDATE_NOTE_TYPE;
   note?: Note;
 }
 
-/**
- * styled-components
- */
 const WriteTemplateBlock = styled.div`
   background: ${WHITE};
   padding: 30px;
@@ -53,56 +47,43 @@ const StockTransactionBlock = styled.div`
   margin: 20px 0;
 `;
 
-/**
- * Write Template Component
- * @param type
- * @param note
- */
 const WriteTemplate: React.FC<WriteTemplateProps> = ({ type, note }) => {
-  /**
-   * component state
-   */
   const [title, setTitle] = useState(note ? note.title : '');
   const [content, setContent] = useState(note ? note.content : '');
   const [investmentDate, setInvestmentDate] = useState(
     note ? note.investmentDate : moment(Date.now()).format('YYYY-MM-DD')
   );
-  const [isEditing, setIsEditing] = useState(false);
 
   const quillEditor = useRef<Element | null>(null);
 
-  /**
-   * redux store
-   */
   const dispatch = useAppDispatch();
   const noteActions = noteSlice.actions;
   const stockTransactionActions = stockTransactionSlice.actions;
   const { profile } = useAppSelector(userSelector);
-  const { loading } = useAppSelector(noteSelector);
+  const { loading, isWritingSucceeded } = useAppSelector(noteSelector);
   const { BUY, SELL } = useAppSelector(stockTransactionSelector);
   const stockTransactions = BUY.concat(SELL);
 
-  /**
-   * functions
-   */
+  const isEditing = useCallback(() => {
+    return (
+      !isWritingSucceeded && (quillEditor.current?.textContent?.trim().length !== 0 || stockTransactions.length !== 0)
+    );
+  }, [isWritingSucceeded, stockTransactions]);
+
   const onTitleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
   }, []);
 
-  const onContentChange = useCallback(
-    (content: string) => {
-      setContent(content);
-      setIsEditing(quillEditor.current?.textContent?.trim().length !== 0 || stockTransactions.length !== 0);
-    },
-    [stockTransactions]
-  );
+  const onContentChange = useCallback((content: string) => {
+    setContent(content);
+  }, []);
 
   const onInvestmentDateChange = useCallback((_, dateString: string) => {
     setInvestmentDate(dateString);
   }, []);
 
   const onSave = useCallback(() => {
-    if (isEditing) {
+    if (!isEditing()) {
       message.error('내용을 입력해 주세요.');
       return;
     }
@@ -129,22 +110,26 @@ const WriteTemplate: React.FC<WriteTemplateProps> = ({ type, note }) => {
   useEffect(() => {
     quillEditor.current = document.querySelector('.ql-editor');
 
-    return function cleanup() {
+    return () => {
       dispatch(stockTransactionActions.initialize());
+      dispatch(noteActions.initialize());
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (stockTransactions.length > 0 || quillEditor.current?.textContent?.trim().length !== 0) {
-      setIsEditing(true);
-    } else {
-      setIsEditing(false);
-    }
-  }, [stockTransactions]);
+    const unblock = history.block(() => {
+      if (isEditing()) {
+        return '노트 작성중입니다. 정말 나가시겠습니까?';
+      }
+    });
+
+    return () => unblock();
+  }, [isEditing]);
 
   window.onbeforeunload = (e: BeforeUnloadEvent) => {
-    if (isEditing) {
+    // 글이 작성 중일 경우
+    if (isEditing()) {
       e.preventDefault();
       e.returnValue = '';
     }
@@ -176,8 +161,6 @@ const WriteTemplate: React.FC<WriteTemplateProps> = ({ type, note }) => {
       </StockTransactionBlock>
 
       <Editor content={content} onChange={onContentChange} onSave={onSave} loading={loading.createNoteRequest} />
-
-      <Prompt when={isEditing} message="노트 작성 중입니다. 정말 나가시겠습니까?" />
     </WriteTemplateBlock>
   );
 };

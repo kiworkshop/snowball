@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from './hooks/store';
 import { userSelector } from './lib/selector';
-import { browserHistory } from './lib/history';
+import history from './lib/history';
 import { getSelectedMenu } from './lib/nav';
 import userSlice from './features/user';
 import Layout from './component/base/Layout';
@@ -19,7 +19,7 @@ const AuthApp = () => {
   const userActions = userSlice.actions;
 
   const [isInit, setIsInit] = useState(false);
-  const selectedMenu = [getSelectedMenu(browserHistory.location.pathname)];
+  const selectedMenu = [getSelectedMenu(history.location.pathname)];
 
   useEffect(() => {
     dispatch(userActions.getMeRequest());
