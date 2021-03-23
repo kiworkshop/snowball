@@ -23,6 +23,7 @@ interface Note {
 export interface NoteState {
   note: { [id: number]: Note };
   notes: Array<Note>;
+  isWritingSucceeded: boolean;
   loading: { [action: string]: boolean };
   error: { [action: string]: Error | null };
 }
@@ -30,6 +31,7 @@ export interface NoteState {
 const initialState: NoteState = {
   note: {},
   notes: [],
+  isWritingSucceeded: false,
   loading: {},
   error: {},
 };
@@ -38,6 +40,9 @@ const noteSlice = createSlice({
   name: 'note',
   initialState,
   reducers: {
+    initialize: (state) => {
+      state.isWritingSucceeded = false;
+    },
     getNotesRequest: (
       state,
       action: PayloadAction<{
@@ -92,7 +97,6 @@ const noteSlice = createSlice({
       state.loading.getNotes = false;
       state.error.getNotes = action.payload;
     },
-
     getNoteRequest: (state, action: PayloadAction<number>) => {
       state.loading.getNote = true;
       state.error.getNote = null;
@@ -125,7 +129,6 @@ const noteSlice = createSlice({
       state.loading.getNote = false;
       state.error.getNote = action.payload;
     },
-
     createNoteRequest: (
       state,
       action: PayloadAction<{
@@ -144,6 +147,7 @@ const noteSlice = createSlice({
       state.error.createNote = null;
     },
     createNoteSuccess: (state) => {
+      state.isWritingSucceeded = true;
       state.loading.createNote = false;
       state.error.createNote = null;
     },
@@ -151,7 +155,6 @@ const noteSlice = createSlice({
       state.loading.createNote = false;
       state.error.createNote = action.payload;
     },
-
     updateNoteRequest: (
       state,
       action: PayloadAction<{
@@ -173,6 +176,7 @@ const noteSlice = createSlice({
       state.error.updateNote = null;
     },
     updateNoteSuccess: (state) => {
+      state.isWritingSucceeded = true;
       state.loading.updateNote = false;
       state.error.updateNote = null;
     },
@@ -180,7 +184,6 @@ const noteSlice = createSlice({
       state.loading.updateNote = false;
       state.error.updateNote = action.payload;
     },
-
     deleteNoteRequest: (state, action: PayloadAction<number>) => {
       state.loading.deleteNote = true;
       state.error.deleteNote = null;

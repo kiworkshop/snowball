@@ -3,14 +3,18 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { Modal } from 'antd';
 import noteSlice from './noteSlice';
 import * as NoteAPI from '../../lib/api/note';
-import * as history from '../../lib/history';
+import history from '../../lib/history';
 import errorHandler from '../../lib/error';
 import routes from '../../routes';
-import { NotePayload } from '../../types/store/note';
 
 const actions = noteSlice.actions;
 
-function* getNotesSaga(action: PayloadAction<NotePayload.GetNotes.Request>) {
+function* getNotesSaga(
+  action: PayloadAction<{
+    page: number;
+    size: number;
+  }>
+) {
   try {
     const { size, page } = action.payload;
     const response = yield call(NoteAPI.getNotes, size, page);
@@ -21,7 +25,7 @@ function* getNotesSaga(action: PayloadAction<NotePayload.GetNotes.Request>) {
   }
 }
 
-function* getNoteSaga(action: PayloadAction<NotePayload.GetNote.Request>) {
+function* getNoteSaga(action: PayloadAction<number>) {
   try {
     const response = yield call(NoteAPI.getNote, action.payload);
     yield put(actions.getNoteSuccess(response.data));
@@ -31,18 +35,47 @@ function* getNoteSaga(action: PayloadAction<NotePayload.GetNote.Request>) {
   }
 }
 
-function* createNoteSaga(action: PayloadAction<NotePayload.CreateNote.Request>) {
+function* createNoteSaga(
+  action: PayloadAction<{
+    title: string;
+    content: string;
+    investmentDate: string;
+    stockTransactionRequests: Array<{
+      stockDetailId: number;
+      quantity: number;
+      tradedPrice: number;
+      transactionType: 'BUY' | 'SELL';
+    }>;
+  }>
+) {
   try {
     const response = yield call(NoteAPI.createNote, action.payload);
     yield put(actions.createNoteSuccess());
-    yield history.push(routes.note.detail(response.data.id));
+    yield setTimeout(() => {
+      history.push(routes.note.detail(response.data.id));
+    }, 0);
   } catch (e) {
     errorHandler(e);
     yield put(actions.createNoteFailure(e));
   }
 }
 
-function* updateNoteSaga(action: PayloadAction<NotePayload.UpdateNote.Request>) {
+function* updateNoteSaga(
+  action: PayloadAction<{
+    id: number;
+    form: {
+      title: string;
+      content: string;
+      investmentDate: string;
+      stockTransactionRequests: Array<{
+        stockDetailId: number;
+        quantity: number;
+        tradedPrice: number;
+        transactionType: 'BUY' | 'SELL';
+      }>;
+    };
+  }>
+) {
   try {
     const { id, form } = action.payload;
     yield call(NoteAPI.updateNote, id, form);
@@ -54,7 +87,7 @@ function* updateNoteSaga(action: PayloadAction<NotePayload.UpdateNote.Request>) 
   }
 }
 
-function* deleteNoteSaga(action: PayloadAction<NotePayload.DeleteNote.Request>) {
+function* deleteNoteSaga(action: PayloadAction<number>) {
   try {
     yield call(NoteAPI.deleteNote, action.payload);
     yield put(actions.deleteNoteSuccess());
