@@ -36,7 +36,7 @@ public class NoteService {
         User user = authenticationFacade.getUser();
         Note note = NoteAssembler.getNote(noteRequest, user);
 
-        addStockTransactionsToNote(noteRequest.getStockTransactionRequests(), note);
+        addStockTransactionsToNote(noteRequest.getStockTransactions(), note);
 
         Note saved = noteRepository.save(note);
 
@@ -76,7 +76,7 @@ public class NoteService {
         Note noteToUpdate = NoteAssembler.getNote(noteRequest, user);
 
         note.update(noteToUpdate);
-        addStockTransactionsToNote(noteRequest.getStockTransactionRequests(), note);
+        addStockTransactionsToNote(noteRequest.getStockTransactions(), note);
     }
 
     public void deleteNote(Long id) {
