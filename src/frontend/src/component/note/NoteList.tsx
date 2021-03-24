@@ -5,7 +5,7 @@ import { RightOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { addCommaToNumber } from '../../lib/number';
 import { MAIN_COLOR } from '../../constants/colors';
-import { Note } from '../../types/domain/note';
+import { Note } from '../../types/domain';
 
 interface NoteListProps {
   notes: Array<Note>;

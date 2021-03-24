@@ -3,17 +3,17 @@ import ReactDOM from 'react-dom';
 import { Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { rootSaga, runSaga, store } from './store';
-import { browserHistory, listen } from './lib/history';
+import history from './lib/history';
 import { scrollToTop } from './lib/scroll';
 import App from './App';
 import './index.less';
 
 runSaga(rootSaga);
 
-listen(scrollToTop);
+history.listen(scrollToTop);
 
 ReactDOM.render(
-  <Router history={browserHistory}>
+  <Router history={history}>
     <Provider store={store}>
       <App />
     </Provider>

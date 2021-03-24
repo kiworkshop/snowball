@@ -1,5 +1,4 @@
-import { StockTransaction } from '../types/domain/stockTransaction';
-import { StockTransactionOfState } from '../types/store/stockTransaction';
+import { StockTransaction } from '../types/domain';
 
 export const filterStockTransaction = (type: 'BUY' | 'SELL') => (stockTransaction: StockTransaction) => {
   return stockTransaction.transactionType === type;
@@ -15,7 +14,13 @@ export const parseStockTransaction = (stockTransaction: StockTransaction) => {
   };
 };
 
-export const parseStockTransactionRequests = (stockTransaction: StockTransactionOfState) => {
+export const parseStockTransactionRequests = (stockTransaction: {
+  stockDetailId: number;
+  companyName: string;
+  quantity: number;
+  tradedPrice: number;
+  transactionType: 'BUY' | 'SELL';
+}) => {
   return {
     stockDetailId: stockTransaction.stockDetailId,
     quantity: stockTransaction.quantity,

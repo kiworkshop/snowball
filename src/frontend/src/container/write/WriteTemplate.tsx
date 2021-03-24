@@ -5,26 +5,21 @@ import { DatePicker, Input, message } from 'antd';
 import noteSlice from '../../features/note';
 import stockTransactionSlice from '../../features/stockTransaction';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
+import history from '../../lib/history';
 import { noteSelector, stockTransactionSelector, userSelector } from '../../lib/selector';
 import { parseStockTransactionRequests } from '../../lib/stockTransaction';
 import { BLACK, WHITE } from '../../constants/colors';
 import { CREATE_NOTE_TYPE, UPDATE_NOTE_TYPE } from '../../constants/write';
-import { Note } from '../../types/domain/note';
+import { Note } from '../../types/domain';
 import Editor from '../../component/write/Editor';
 import StockTransactionTableContainer from './StockTransactionTableContainer';
 import StockTransactionAddButtonContainer from './StockTransactionAddButtonContainer';
 
-/**
- * type & interface
- */
 interface WriteTemplateProps {
   type: typeof CREATE_NOTE_TYPE | typeof UPDATE_NOTE_TYPE;
   note?: Note;
 }
 
-/**
- * styled-components
- */
 const WriteTemplateBlock = styled.div`
   background: ${WHITE};
   padding: 30px;
@@ -52,37 +47,29 @@ const StockTransactionBlock = styled.div`
   margin: 20px 0;
 `;
 
-/**
- * Write Template Component
- * @param type
- * @param note
- */
 const WriteTemplate: React.FC<WriteTemplateProps> = ({ type, note }) => {
-  /**
-   * component state
-   */
   const [title, setTitle] = useState(note ? note.title : '');
   const [content, setContent] = useState(note ? note.content : '');
   const [investmentDate, setInvestmentDate] = useState(
     note ? note.investmentDate : moment(Date.now()).format('YYYY-MM-DD')
   );
 
-  let quillEditor = useRef<Element | null>(null);
+  const quillEditor = useRef<Element | null>(null);
 
-  /**
-   * redux store
-   */
   const dispatch = useAppDispatch();
   const noteActions = noteSlice.actions;
   const stockTransactionActions = stockTransactionSlice.actions;
   const { profile } = useAppSelector(userSelector);
-  const { loading } = useAppSelector(noteSelector);
+  const { loading, isWritingSucceeded } = useAppSelector(noteSelector);
   const { BUY, SELL } = useAppSelector(stockTransactionSelector);
   const stockTransactions = BUY.concat(SELL);
 
-  /**
-   * functions
-   */
+  const isEditing = useCallback(() => {
+    return (
+      !isWritingSucceeded && (quillEditor.current?.textContent?.trim().length !== 0 || stockTransactions.length !== 0)
+    );
+  }, [isWritingSucceeded, stockTransactions]);
+
   const onTitleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
   }, []);
@@ -96,7 +83,7 @@ const WriteTemplate: React.FC<WriteTemplateProps> = ({ type, note }) => {
   }, []);
 
   const onSave = useCallback(() => {
-    if (quillEditor.current?.textContent?.trim().length === 0 && stockTransactions.length === 0) {
+    if (!isEditing()) {
       message.error('내용을 입력해 주세요.');
       return;
     }
@@ -115,7 +102,15 @@ const WriteTemplate: React.FC<WriteTemplateProps> = ({ type, note }) => {
     if (type === UPDATE_NOTE_TYPE) {
       dispatch(noteActions.updateNoteRequest({ id: note!.id, form: formPayload }));
     }
-  }, [dispatch, noteActions, title, content, investmentDate, stockTransactions, profile.name, note, type]);
+  }, [isEditing, dispatch, noteActions, title, content, investmentDate, stockTransactions, profile.name, note, type]);
+
+  window.onbeforeunload = (e: BeforeUnloadEvent) => {
+    // 글이 작성 중일 경우
+    if (isEditing()) {
+      e.preventDefault();
+      e.returnValue = '';
+    }
+  };
 
   /**
    * 컴포넌트 언마운트 시 거래내역 초기화
@@ -123,11 +118,23 @@ const WriteTemplate: React.FC<WriteTemplateProps> = ({ type, note }) => {
   useEffect(() => {
     quillEditor.current = document.querySelector('.ql-editor');
 
-    return function cleanup() {
+    return () => {
       dispatch(stockTransactionActions.initialize());
+      dispatch(noteActions.initialize());
+      window.onbeforeunload = null;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    const unblock = history.block(() => {
+      if (isEditing()) {
+        return '노트 작성중입니다. 정말 나가시겠습니까?';
+      }
+    });
+
+    return () => unblock();
+  }, [isEditing]);
 
   return (
     <WriteTemplateBlock>
