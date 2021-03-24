@@ -6,6 +6,7 @@ import org.kiworkshop.snowball.common.exception.DomainServiceException;
 import org.kiworkshop.snowball.note.controller.dto.*;
 import org.kiworkshop.snowball.note.entity.Note;
 import org.kiworkshop.snowball.note.entity.NoteRepository;
+import org.kiworkshop.snowball.stocktransaction.controller.dto.StockTransactionRequest;
 import org.kiworkshop.snowball.stocktransaction.entity.StockTransaction;
 import org.kiworkshop.snowball.stocktransaction.service.StockTransactionService;
 import org.kiworkshop.snowball.user.entity.User;
@@ -35,15 +36,16 @@ public class NoteService {
         User user = authenticationFacade.getUser();
         Note note = NoteAssembler.getNote(noteRequest, user);
 
-        if (noteRequest.getStockTransactionRequests() != null) {
-            List<StockTransaction> stockTransactions = stockTransactionService.createStockTransactions(
-                    noteRequest.getStockTransactionRequests());
-            note.addStockTransactions(stockTransactions);
-        }
+        addStockTransactionsToNote(noteRequest.getStockTransactionRequests(), note);
 
         Note saved = noteRepository.save(note);
 
         return NoteAssembler.getNoteCreateResponse(saved);
+    }
+
+    public void addStockTransactionsToNote(List<StockTransactionRequest> stockTransactionRequests, Note note) {
+        List<StockTransaction> stockTransactions = stockTransactionService.createStockTransactions(stockTransactionRequests);
+        note.addStockTransactions(stockTransactions);
     }
 
     public NoteResponse getNote(Long id) {
@@ -73,11 +75,8 @@ public class NoteService {
         Note note = getByIdAndUserId(id, user.getId());
         Note noteToUpdate = NoteAssembler.getNote(noteRequest, user);
 
-        List<StockTransaction> stockTransactions = stockTransactionService.createStockTransactions(
-                noteRequest.getStockTransactionRequests());
-        noteToUpdate.addStockTransactions(stockTransactions);
-
         note.update(noteToUpdate);
+        addStockTransactionsToNote(noteRequest.getStockTransactionRequests(), note);
     }
 
     public void deleteNote(Long id) {

@@ -6,6 +6,8 @@ import org.kiworkshop.snowball.note.entity.Note;
 import org.kiworkshop.snowball.stocktransaction.controller.dto.StockTransactionAssembler;
 import org.kiworkshop.snowball.user.entity.User;
 
+import java.util.ArrayList;
+
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class NoteAssembler {
 
@@ -15,6 +17,7 @@ public class NoteAssembler {
                 .content(noteRequest.getContent())
                 .user(user)
                 .investmentDate(noteRequest.getInvestmentDate())
+                .stockTransactions(new ArrayList<>())
                 .build();
     }
 

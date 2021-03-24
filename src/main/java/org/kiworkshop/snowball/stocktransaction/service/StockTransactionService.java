@@ -36,6 +36,10 @@ public class StockTransactionService {
     }
 
     public List<StockTransaction> createStockTransactions(List<StockTransactionRequest> stockTransactionRequests) {
+        if (stockTransactionRequests == null) {
+            return new ArrayList<>();
+        }
+
         User user = authenticationFacade.getUser();
         List<StockTransaction> stockTransactions = new ArrayList<>();
 
