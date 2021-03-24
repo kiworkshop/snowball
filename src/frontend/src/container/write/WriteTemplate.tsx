@@ -7,7 +7,6 @@ import stockTransactionSlice from '../../features/stockTransaction';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import history from '../../lib/history';
 import { noteSelector, stockTransactionSelector, userSelector } from '../../lib/selector';
-import { parseStockTransactionRequests } from '../../lib/stockTransaction';
 import { BLACK, WHITE } from '../../constants/colors';
 import { CREATE_NOTE_TYPE, UPDATE_NOTE_TYPE } from '../../constants/write';
 import { Note } from '../../types/domain';
@@ -92,7 +91,7 @@ const WriteTemplate: React.FC<WriteTemplateProps> = ({ type, note }) => {
       title: title.trim().length === 0 ? `${profile.name}님의 투자노트` : title,
       content,
       investmentDate,
-      stockTransactionRequests: stockTransactions.map(parseStockTransactionRequests),
+      stockTransactions,
     };
 
     if (type === CREATE_NOTE_TYPE) {

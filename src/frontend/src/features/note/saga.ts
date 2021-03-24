@@ -40,7 +40,7 @@ function* createNoteSaga(
     title: string;
     content: string;
     investmentDate: string;
-    stockTransactionRequests: Array<{
+    stockTransactions: Array<{
       stockDetailId: number;
       quantity: number;
       tradedPrice: number;
@@ -67,7 +67,7 @@ function* updateNoteSaga(
       title: string;
       content: string;
       investmentDate: string;
-      stockTransactionRequests: Array<{
+      stockTransactions: Array<{
         stockDetailId: number;
         quantity: number;
         tradedPrice: number;

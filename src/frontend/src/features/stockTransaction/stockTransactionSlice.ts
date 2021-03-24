@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { filterStockTransaction, parseStockTransaction } from '../../lib/stockTransaction';
+import { StockTransaction as StockTransactionDomain } from '../../types/domain';
 
 interface StockTransaction {
   stockDetailId: number;
@@ -19,6 +19,17 @@ const initialState: StockTransactionState = {
   SELL: [],
 };
 
+const filterStockTransaction = (stockTransactions: Array<StockTransactionDomain>, transactionType: 'BUY' | 'SELL') =>
+  stockTransactions.filter((stockTransaction) => stockTransaction.transactionType === transactionType);
+
+const parseStockTransaction = (stockTransaction: StockTransactionDomain): StockTransaction => ({
+  stockDetailId: stockTransaction.stockDetail.id,
+  companyName: stockTransaction.stockDetail.companyName,
+  quantity: stockTransaction.quantity,
+  tradedPrice: stockTransaction.tradedPrice,
+  transactionType: stockTransaction.transactionType,
+});
+
 const stockTransactionSlice = createSlice({
   name: 'stockTransaction',
   initialState,
@@ -31,13 +42,7 @@ const stockTransactionSlice = createSlice({
       state,
       action: PayloadAction<{
         type: 'BUY' | 'SELL';
-        stockTransaction: {
-          stockDetailId: number;
-          companyName: string;
-          quantity: number;
-          tradedPrice: number;
-          transactionType: 'BUY' | 'SELL';
-        };
+        stockTransaction: StockTransaction;
       }>
     ) => {
       state[action.payload.type].push(action.payload.stockTransaction);
@@ -51,22 +56,9 @@ const stockTransactionSlice = createSlice({
     ) => {
       state[action.payload.type].splice(action.payload.index, 1);
     },
-    syncNote: (
-      state,
-      action: PayloadAction<
-        Array<{
-          transactionType: 'BUY' | 'SELL';
-          quantity: number;
-          tradedPrice: number;
-          stockDetail: {
-            id: number;
-            companyName: string;
-          };
-        }>
-      >
-    ) => {
-      state.BUY = action.payload.filter(filterStockTransaction('BUY')).map(parseStockTransaction);
-      state.SELL = action.payload.filter(filterStockTransaction('SELL')).map(parseStockTransaction);
+    syncNote: (state, action: PayloadAction<Array<StockTransactionDomain>>) => {
+      state.BUY = filterStockTransaction(action.payload, 'BUY').map(parseStockTransaction);
+      state.SELL = filterStockTransaction(action.payload, 'SELL').map(parseStockTransaction);
     },
   },
 });

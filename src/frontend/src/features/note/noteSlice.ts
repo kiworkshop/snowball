@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
-import { parseNote } from '../../lib/note';
+import moment from 'moment';
 
 interface Note {
   id: number;
@@ -36,6 +36,15 @@ const initialState: NoteState = {
   error: {},
 };
 
+const parseNote = (note: Note): Note => {
+  return {
+    ...note,
+    investmentDate: moment(note.investmentDate).format('YYYY-MM-DD'),
+    createdDate: moment(note.createdDate).format('YYYY-MM-DD'),
+    modifiedDate: moment(note.modifiedDate || note.createdDate).format('YYYY-MM-DD'),
+  };
+};
+
 const noteSlice = createSlice({
   name: 'note',
   initialState,
@@ -63,11 +72,11 @@ const noteSlice = createSlice({
           investmentDate: string;
           createdDate: string;
           modifiedDate: string;
-          stockTransactionResponses: Array<{
+          stockTransactions: Array<{
             quantity: number;
             tradedPrice: number;
             transactionType: 'BUY' | 'SELL';
-            stockDetailResponse: {
+            stockDetail: {
               id: number;
               companyName: string;
             };
@@ -110,11 +119,11 @@ const noteSlice = createSlice({
         investmentDate: string;
         createdDate: string;
         modifiedDate: string;
-        stockTransactionResponses: Array<{
+        stockTransactions: Array<{
           quantity: number;
           tradedPrice: number;
           transactionType: 'BUY' | 'SELL';
-          stockDetailResponse: {
+          stockDetail: {
             id: number;
             companyName: string;
           };
@@ -135,7 +144,7 @@ const noteSlice = createSlice({
         title: string;
         content: string;
         investmentDate: string;
-        stockTransactionRequests: Array<{
+        stockTransactions: Array<{
           stockDetailId: number;
           quantity: number;
           tradedPrice: number;
@@ -163,7 +172,7 @@ const noteSlice = createSlice({
           title: string;
           content: string;
           investmentDate: string;
-          stockTransactionRequests: Array<{
+          stockTransactions: Array<{
             stockDetailId: number;
             quantity: number;
             tradedPrice: number;
@@ -184,11 +193,11 @@ const noteSlice = createSlice({
         investmentDate: string;
         createdDate: string;
         modifiedDate: string;
-        stockTransactionResponses: Array<{
+        stockTransactions: Array<{
           quantity: number;
           tradedPrice: number;
           transactionType: 'BUY' | 'SELL';
-          stockDetailResponse: {
+          stockDetail: {
             id: number;
             companyName: string;
           };

@@ -28,7 +28,7 @@ interface Form {
   title: string;
   content: string;
   investmentDate: string;
-  stockTransactionRequests: Array<{
+  stockTransactions: Array<{
     stockDetailId: number;
     quantity: number;
     tradedPrice: number;
