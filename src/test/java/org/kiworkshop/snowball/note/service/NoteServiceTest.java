@@ -8,7 +8,6 @@ import org.kiworkshop.snowball.note.controller.dto.*;
 import org.kiworkshop.snowball.note.entity.Note;
 import org.kiworkshop.snowball.note.entity.NoteFixture;
 import org.kiworkshop.snowball.note.entity.NoteRepository;
-import org.kiworkshop.snowball.stocktransaction.controller.dto.StockTransactionAssembler;
 import org.kiworkshop.snowball.stocktransaction.controller.dto.StockTransactionRequest;
 import org.kiworkshop.snowball.stocktransaction.entity.StockTransaction;
 import org.kiworkshop.snowball.stocktransaction.entity.StockTransactionFixture;
@@ -20,7 +19,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -31,7 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 import static org.mockito.ArgumentMatchers.*;
@@ -100,10 +97,10 @@ class NoteServiceTest {
         //then
         assertThat(responseDto.getInvestmentDate()).isEqualTo(note.getInvestmentDate());
         assertThat(responseDto.getContent()).isEqualTo(note.getContent());
-        assertThat(responseDto.getStockTransactionResponses().size()).isEqualTo(note.getStockTransactions().size());
-        assertThat(responseDto.getStockTransactionResponses().get(0).getStockDetailResponse().getId())
+        assertThat(responseDto.getStockTransactions().size()).isEqualTo(note.getStockTransactions().size());
+        assertThat(responseDto.getStockTransactions().get(0).getStockDetail().getId())
                 .isEqualTo(note.getStockTransactions().get(0).getStockDetail().getId());
-        assertThat(responseDto.getStockTransactionResponses().get(0).getTradedPrice())
+        assertThat(responseDto.getStockTransactions().get(0).getTradedPrice())
                 .isEqualTo(note.getStockTransactions().get(0).getTradedPrice());
     }
 
@@ -127,7 +124,7 @@ class NoteServiceTest {
         Note note = notePage.getContent().get(0);
         assertThat(noteResponse.getTitle()).isEqualTo(note.getTitle());
         assertThat(noteResponse.getInvestmentDate()).isEqualTo(note.getInvestmentDate());
-        assertThat(noteResponse.getStockTransactionResponses().get(0).getTradedPrice())
+        assertThat(noteResponse.getStockTransactions().get(0).getTradedPrice())
                 .isEqualTo(note.getStockTransactions().get(0).getTradedPrice());
     }
 
@@ -149,7 +146,7 @@ class NoteServiceTest {
         assertThat(note.getTitle()).isEqualTo(updateRequest.getTitle());
         assertThat(note.getInvestmentDate()).isEqualTo(updateRequest.getInvestmentDate());
         List<StockTransaction> stockTransactions = note.getStockTransactions();
-        List<StockTransactionRequest> stockTransactionRequests = updateRequest.getStockTransactionRequests();
+        List<StockTransactionRequest> stockTransactionRequests = updateRequest.getStockTransactions();
         assertThat(stockTransactions.get(0).getQuantity())
                 .isEqualTo(stockTransactionRequests.get(0).getQuantity());
         assertThat(stockTransactions.get(0).getStockDetail().getId())

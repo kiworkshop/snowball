@@ -8,14 +8,14 @@ import org.kiworkshop.snowball.stockdetail.controller.dto.StockDetailResponse;
 @Getter
 public class StockTransactionResponse {
 
-    private StockDetailResponse stockDetailResponse;
+    private StockDetailResponse stockDetail;
     private Long quantity;
     private Long tradedPrice;
     private TransactionType transactionType;
 
     @Builder
     public StockTransactionResponse(StockDetailResponse stockDetailResponse, Long quantity, Long tradedPrice, TransactionType transactionType) {
-        this.stockDetailResponse = stockDetailResponse;
+        this.stockDetail = stockDetailResponse;
         this.quantity = quantity;
         this.tradedPrice = tradedPrice;
         this.transactionType = transactionType;

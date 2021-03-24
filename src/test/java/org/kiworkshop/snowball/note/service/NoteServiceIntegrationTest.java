@@ -11,7 +11,6 @@ import org.kiworkshop.snowball.note.controller.dto.NoteRequest;
 import org.kiworkshop.snowball.note.controller.dto.NoteRequestFixture;
 import org.kiworkshop.snowball.note.entity.NoteRepository;
 import org.kiworkshop.snowball.stockdetail.entity.StockDetailRepository;
-import org.kiworkshop.snowball.stockdetail.service.StockDetailService;
 import org.kiworkshop.snowball.stocktransaction.controller.dto.StockTransactionRequest;
 import org.kiworkshop.snowball.stocktransaction.entity.StockTransaction;
 import org.kiworkshop.snowball.stocktransaction.entity.StockTransactionRepository;
@@ -63,7 +62,7 @@ class NoteServiceIntegrationTest extends IntegrationTest {
 
         //then
         StockTransaction saved = stockTransactionRepository.findAll().get(0);
-        StockTransactionRequest stockTransactionRequest = noteRequest.getStockTransactionRequests().get(0);
+        StockTransactionRequest stockTransactionRequest = noteRequest.getStockTransactions().get(0);
         assertThat(saved.getQuantity()).isEqualTo(stockTransactionRequest.getQuantity());
         assertThat(saved.getTradedPrice()).isEqualTo(stockTransactionRequest.getTradedPrice());
         assertThat(saved.getTransactionType()).isEqualTo(stockTransactionRequest.getTransactionType());

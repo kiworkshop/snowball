@@ -2,9 +2,7 @@ package org.kiworkshop.snowball.note.controller.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.kiworkshop.snowball.stocktransaction.controller.dto.StockTransactionResponse;
-import org.kiworkshop.snowball.stocktransaction.entity.StockTransaction;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,7 +15,7 @@ public class NoteResponse {
     private String title;
     private String content;
     private LocalDate investmentDate;
-    private List<StockTransactionResponse> stockTransactionResponses;
+    private List<StockTransactionResponse> stockTransactions;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
 
@@ -29,7 +27,7 @@ public class NoteResponse {
         this.title = title;
         this.content = content;
         this.investmentDate = investmentDate;
-        this.stockTransactionResponses = stockTransactionResponses;
+        this.stockTransactions = stockTransactionResponses;
         this.createdDate = createdDate;
         this.modifiedDate = modifiedDate;
     }

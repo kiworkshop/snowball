@@ -19,14 +19,14 @@ public class NoteRequest {
     private String content;
     @NotNull
     private LocalDate investmentDate;
-    private List<StockTransactionRequest> stockTransactionRequests;
+    private List<StockTransactionRequest> stockTransactions;
 
     @Builder
     public NoteRequest(String title, String content, LocalDate investmentDate, List<StockTransactionRequest> stockTransactionRequests) {
         this.title = title;
         this.content = content;
         this.investmentDate = investmentDate;
-        this.stockTransactionRequests = stockTransactionRequests;
+        this.stockTransactions = stockTransactionRequests;
     }
 }
 
