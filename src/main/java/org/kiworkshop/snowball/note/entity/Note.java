@@ -10,6 +10,7 @@ import org.kiworkshop.snowball.user.entity.User;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -24,7 +25,7 @@ public class Note extends BaseTimeEntity {
     private LocalDate investmentDate;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "note", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "note", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<StockTransaction> stockTransactions;
 
     @Builder
@@ -41,11 +42,14 @@ public class Note extends BaseTimeEntity {
         this.content = note.getContent();
         this.investmentDate = note.getInvestmentDate();
         this.user = note.getUser();
-        this.stockTransactions = note.getStockTransactions();
+        this.stockTransactions.clear();
     }
 
     public void addStockTransactions(List<StockTransaction> stockTransactions) {
-        this.stockTransactions = stockTransactions;
+        if (stockTransactions == null) {
+            return;
+        }
+        this.stockTransactions.addAll(stockTransactions);
         stockTransactions.forEach(stockTransaction -> stockTransaction.addNote(this));
     }
 }

@@ -75,9 +75,8 @@ public class NoteService {
         Note note = getByIdAndUserId(id, user.getId());
         Note noteToUpdate = NoteAssembler.getNote(noteRequest, user);
 
-        addStockTransactionsToNote(noteRequest.getStockTransactionRequests(), noteToUpdate);
-
         note.update(noteToUpdate);
+        addStockTransactionsToNote(noteRequest.getStockTransactionRequests(), note);
     }
 
     public void deleteNote(Long id) {

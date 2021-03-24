@@ -36,9 +36,12 @@ class NoteServiceIntegrationTest extends IntegrationTest {
     @Autowired
     private StockDetailRepository stockDetailRepository;
 
+    private User user;
+
     @BeforeEach
     void setUp() {
-        userRepository.save(UserFixture.create());
+        user = UserFixture.create();
+        userRepository.save(user);
         SecurityContextHolder.getContext().setAuthentication(AuthenticationFixture.create());
     }
 
@@ -66,5 +69,17 @@ class NoteServiceIntegrationTest extends IntegrationTest {
         assertThat(saved.getTransactionType()).isEqualTo(stockTransactionRequest.getTransactionType());
         assertThat(saved.getNote()).isNotNull();
         assertThat(saved.getNote().getId()).isEqualTo(noteCreateResponse.getId());
+    }
+
+    @Test
+    void noteUpdateTest() {
+        // given
+        NoteCreateResponse noteCreateResponse = noteService.createNote(NoteRequestFixture.create());
+        NoteRequest noteUpdateRequest = NoteRequestFixture.createUpdateRequest();
+
+        // when
+        noteService.updateNote(noteCreateResponse.getId(), noteUpdateRequest);
+
+        // then
     }
 }
