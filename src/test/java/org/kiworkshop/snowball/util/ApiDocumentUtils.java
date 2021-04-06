@@ -11,7 +11,7 @@ public interface ApiDocumentUtils {
         return preprocessRequest(
                 modifyUris()
                         .scheme("https")
-                        .host("docs.api.com")
+                        .host("api.snowball.com")
                         .removePort(),
                 prettyPrint());
     }
