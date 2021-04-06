@@ -44,9 +44,9 @@ class PortfolioDetailControllerTest extends ControllerTest {
                         getDocumentResponse(),
                         responseFields(
                                 subsectionWithPath("portfolioDetailStocks")
-                                        .type(JsonFieldType.ARRAY).description(""),
+                                        .type(JsonFieldType.ARRAY).description("주식 종목별 기본 정보"),
                                 subsectionWithPath("portfolioDetailStocks[].companyName")
-                                        .type(JsonFieldType.STRING).description(""),
+                                        .type(JsonFieldType.STRING).description("회사명"),
                                 subsectionWithPath("portfolioDetailStocks[].averageBuyingPrice")
                                         .type(JsonFieldType.NUMBER).description("매수평균가"),
                                 subsectionWithPath("portfolioDetailStocks[].holdingQuantity")
