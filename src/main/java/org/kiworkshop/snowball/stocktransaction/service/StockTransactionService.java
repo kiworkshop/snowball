@@ -58,6 +58,12 @@ public class StockTransactionService {
                 -> new DomainServiceException(id + "번의 StockTransaction을 찾을 수 없습니다."));
     }
 
+    public List<StockTransaction> getStockTransactions() {
+        User user = authenticationFacade.getUser();
+        Long userId = user.getId();
+        return stockTransactionRepository.findAllByUserId(userId);
+    }
+
     public void updateStockTransaction(Long id, StockTransactionRequest stockTransactionRequest) {
         User user = authenticationFacade.getUser();
         StockTransaction stockTransaction = getStockTransaction(id);

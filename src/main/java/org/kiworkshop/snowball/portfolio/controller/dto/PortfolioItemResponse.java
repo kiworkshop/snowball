@@ -6,16 +6,16 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class PortfolioStockResponse {
+public class PortfolioItemResponse {
 
     private String companyName;
-    private Long averageBuyingPrice;
-    private Long targetPrice;
-    private double earningsRate;
-    private double targetEarningsRate;
+    private Double averageBuyingPrice;
+    private Double targetPrice;
+    private Double earningsRate;
+    private Double targetEarningsRate;
 
     @Builder
-    public PortfolioStockResponse(String companyName, Long averageBuyingPrice, Long targetPrice, double earningsRate, double targetEarningsRate) {
+    public PortfolioItemResponse(String companyName, Double averageBuyingPrice, Double targetPrice, Double earningsRate, Double targetEarningsRate) {
         this.companyName = companyName;
         this.averageBuyingPrice = averageBuyingPrice;
         this.targetPrice = targetPrice;

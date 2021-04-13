@@ -8,4 +8,6 @@ import java.util.List;
 public interface StockTransactionRepository extends JpaRepository<StockTransaction, Long> {
 
     List<StockTransaction> findByUserId(@Param("user_id") Long userId);
+
+    List<StockTransaction> findAllByUserId(Long userId);
 }

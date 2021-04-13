@@ -84,7 +84,7 @@ operation::/stockdetail/get-stockdetail[snippets='http-request,request-parameter
 
 === Get a PortfolioSummary
 
-// operation::/portfolio/get-portfolio-summary[snippets='http-request,path-parameters,http-response,response-fields']
+operation::/portfolio/get-portfolio-summary[snippets='http-request,http-response,response-fields']
 
 == PortfolioDetail
 

@@ -1,7 +1,7 @@
 package org.kiworkshop.snowball.portfolio.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.kiworkshop.snowball.portfolio.controller.dto.PortfolioStockResponse;
+import org.kiworkshop.snowball.portfolio.controller.dto.PortfolioItemResponse;
 import org.kiworkshop.snowball.portfolio.service.PortfolioSummaryService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +17,7 @@ public class PortfolioSummaryController {
     private final PortfolioSummaryService portfolioSummaryService;
 
     @GetMapping("/portfolio-summary")
-    public List<PortfolioStockResponse> getPortfolioSummary() {
+    public List<PortfolioItemResponse> getPortfolioSummary() {
         return portfolioSummaryService.getPortfolioSummary();
     }
 }
