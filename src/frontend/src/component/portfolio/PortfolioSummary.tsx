@@ -1,8 +1,8 @@
 import React from 'react';
 import { Typography, Empty } from 'antd';
 import styled from 'styled-components';
+import * as Color from '../../constants/colors';
 import PortfolioSummaryRow from './PortfolioSummaryRow';
-import { MAIN_COLOR } from '../../constants/colors';
 
 interface PortfolioSummaryProps {
   portfolios: Array<{
@@ -22,7 +22,7 @@ const Wrapper = styled.div`
 `;
 
 const TableTitle = styled(Typography.Title)`
-  color: ${MAIN_COLOR};
+  color: ${Color.BLUE_2};
   margin-bottom: 30px;
 `;
 
@@ -79,9 +79,7 @@ const PortfolioSummary: React.FC<PortfolioSummaryProps> = ({ portfolios }) => {
 
         <tbody>
           {portfolios.length > 0 &&
-            portfolios.map((portfolio, index) => (
-              <PortfolioSummaryRow key={index} portfolio={portfolio} />
-            ))}
+            portfolios.map((portfolio, index) => <PortfolioSummaryRow key={index} portfolio={portfolio} />)}
         </tbody>
       </Table>
 
