@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import * as TransactionType from '../../constants/transactionType';
 import * as Type from '../../types';
 
 interface StockTransaction {
@@ -9,7 +10,7 @@ interface StockTransaction {
   transactionType: Type.TransactionType;
 }
 
-export interface StockTransactionState {
+interface StockTransactionState {
   BUY: Array<StockTransaction>;
   SELL: Array<StockTransaction>;
 }
@@ -58,9 +59,9 @@ const stockTransactionSlice = createSlice({
     ) => {
       state[action.payload.type].splice(action.payload.index, 1);
     },
-    syncNote: (state, action: PayloadAction<Array<Type.StockTransaction>>) => {
-      state.BUY = filterStockTransaction(action.payload, 'BUY').map(parseStockTransaction);
-      state.SELL = filterStockTransaction(action.payload, 'SELL').map(parseStockTransaction);
+    getStockTransactionsOfNote: (state, action: PayloadAction<Array<Type.StockTransaction>>) => {
+      state.BUY = filterStockTransaction(action.payload, TransactionType.BUY).map(parseStockTransaction);
+      state.SELL = filterStockTransaction(action.payload, TransactionType.SELL).map(parseStockTransaction);
     },
   },
 });

@@ -2,17 +2,21 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
 import { DatePicker, Input, message } from 'antd';
-import noteSlice from '../../features/note';
-import stockTransactionSlice from '../../features/stockTransaction';
-import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import history from '../../lib/history';
-import { noteSelector, stockTransactionSelector, userSelector } from '../../lib/selector';
 import { BLACK, WHITE } from '../../constants/colors';
 import { CREATE_NOTE_TYPE, UPDATE_NOTE_TYPE } from '../../constants/write';
 import * as Type from '../../types';
 import Editor from '../../component/write/Editor';
 import StockTransactionTableContainer from './StockTransactionTableContainer';
 import StockTransactionAddButtonContainer from './StockTransactionAddButtonContainer';
+import {
+  useAppDispatch,
+  useNoteAction,
+  useNoteState,
+  useStockTransactionAction,
+  useStockTransactionState,
+  useUserState,
+} from '../../hooks';
 
 interface WriteTemplateProps {
   type: typeof CREATE_NOTE_TYPE | typeof UPDATE_NOTE_TYPE;
@@ -56,18 +60,18 @@ const WriteTemplate: React.FC<WriteTemplateProps> = ({ type, note }) => {
   const quillEditor = useRef<Element | null>(null);
 
   const dispatch = useAppDispatch();
-  const noteActions = noteSlice.actions;
-  const stockTransactionActions = stockTransactionSlice.actions;
-  const { profile } = useAppSelector(userSelector);
-  const { loading, isWritingSucceeded } = useAppSelector(noteSelector);
-  const { BUY, SELL } = useAppSelector(stockTransactionSelector);
+
+  const { profile } = useUserState();
+  const { loading } = useNoteState();
+  const { BUY, SELL } = useStockTransactionState();
   const stockTransactions = BUY.concat(SELL);
 
+  const noteActions = useNoteAction();
+  const stockTransactionActions = useStockTransactionAction();
+
   const isEditing = useCallback(() => {
-    return (
-      !isWritingSucceeded && (quillEditor.current?.textContent?.trim().length !== 0 || stockTransactions.length !== 0)
-    );
-  }, [isWritingSucceeded, stockTransactions]);
+    return quillEditor.current?.textContent?.trim().length !== 0 || stockTransactions.length !== 0;
+  }, [stockTransactions]);
 
   const onTitleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -119,7 +123,6 @@ const WriteTemplate: React.FC<WriteTemplateProps> = ({ type, note }) => {
 
     return () => {
       dispatch(stockTransactionActions.initialize());
-      dispatch(noteActions.initialize());
       window.onbeforeunload = null;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

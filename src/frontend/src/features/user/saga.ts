@@ -1,17 +1,17 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
+import { AxiosResponse } from 'axios';
 import * as UserAPI from '../../lib/api/user';
 import routes from '../../routes';
-import userSlice from './userSlice';
+import { useUserAction } from '../../hooks';
 
-const actions = userSlice.actions;
+const userAction = useUserAction();
 
 function* getMeSaga() {
   try {
-    const response = yield call(UserAPI.getMe);
-    yield put(actions.getMeSuccess(response.data));
+    const response: AxiosResponse = yield call(UserAPI.getMe);
+    yield put(userAction.getMeSuccess(response.data));
   } catch (e) {
-    console.error(e);
-    yield put(actions.getMeFailure(e));
+    yield put(userAction.getMeFailure(e));
   }
 }
 
@@ -20,6 +20,6 @@ function* logoutSaga() {
 }
 
 export function* userSaga() {
-  yield takeEvery(actions.getMeRequest, getMeSaga);
-  yield takeEvery(actions.logout, logoutSaga);
+  yield takeEvery(userAction.getMeRequest, getMeSaga);
+  yield takeEvery(userAction.logout, logoutSaga);
 }

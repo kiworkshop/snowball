@@ -1,30 +1,21 @@
 import React, { useCallback, useState } from 'react';
 import { Form, message } from 'antd';
-import { useAppDispatch } from '../../hooks/store';
-import stockTransactionSlice from '../../features/stockTransaction';
+import { useAppDispatch, useStockTransactionAction } from '../../hooks';
 import { getSingleStockDetail } from '../../lib/api/stockDetail';
+import * as Type from '../../types';
 import StockTransactionAddButton from '../../component/write/StockTransactionAddButton';
 
 interface StockTransactionAddButtonContainerProps {
-  type: 'BUY' | 'SELL';
+  type: Type.TransactionType;
 }
 
 const StockTransactionAddButtonContainer: React.FC<StockTransactionAddButtonContainerProps> = ({ type }) => {
-  /**
-   * component state
-   */
   const [formInstance] = Form.useForm();
   const [transactionAmount, setTransactionAmount] = useState(0);
 
-  /**
-   * redux store
-   */
   const dispatch = useAppDispatch();
-  const stockTransactionActions = stockTransactionSlice.actions;
+  const stockTransactionActions = useStockTransactionAction();
 
-  /**
-   * functions
-   */
   const onSubmit = useCallback(
     async (values: any) => {
       try {

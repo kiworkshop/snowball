@@ -4,7 +4,7 @@ import { all } from 'redux-saga/effects';
 import noteSlice, { noteSaga } from './features/note';
 import portfolioSlice, { portfolioSaga } from './features/portfolio';
 import userSlice, { userSaga } from './features/user';
-import stockTransactionSlice from './features/stockTransaction';
+import stockTransactionSlice, { stockTransactionSaga } from './features/stockTransaction';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -24,5 +24,5 @@ export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
 export function* rootSaga() {
-  yield all([noteSaga(), portfolioSaga(), userSaga()]);
+  yield all([noteSaga(), portfolioSaga(), userSaga(), stockTransactionSaga()]);
 }

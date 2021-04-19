@@ -1,19 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import * as Type from '../../types';
 import { AxiosError } from 'axios';
 
-interface Profile {
-  id: number | null;
-  name: string;
-  pictureUrl: string;
-}
-
-export interface UserState {
-  profile: Profile;
+interface UserState {
+  isLoggedIn: boolean;
+  profile: Type.Profile;
   loading: boolean;
   error: Error | null;
 }
 
 const initialState: UserState = {
+  isLoggedIn: false,
   profile: {
     id: null,
     name: '',
@@ -28,19 +25,22 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     getMeRequest: (state) => {
+      state.isLoggedIn = false;
       state.loading = true;
       state.error = null;
     },
-    getMeSuccess: (state, action: PayloadAction<Profile>) => {
+    getMeSuccess: (state, action: PayloadAction<Type.Profile>) => {
+      state.isLoggedIn = true;
       state.profile = action.payload;
       state.loading = false;
-      state.error = null;
     },
     getMeFailure: (state, action: PayloadAction<AxiosError>) => {
+      state.isLoggedIn = false;
       state.loading = false;
       state.error = action.payload;
     },
     logout: (state) => {
+      state.isLoggedIn = false;
       state.profile = {
         id: null,
         name: '',

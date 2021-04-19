@@ -1,18 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
+import * as Type from '../../types';
 
-interface PortfolioSummary {
-  companyName: string;
-  averageBuyingPrice: number;
-  targetPrice: number;
-  earningsRate: number;
-  targetEarningsRate: number;
-}
-
-export interface PortfolioState {
-  portfolioSummaries: Array<PortfolioSummary>;
-  loading: { [action: string]: boolean };
-  error: { [action: string]: Error | null };
+interface PortfolioState {
+  portfolioSummaries: Array<Type.PortfolioSummary>;
+  loading: {
+    [action: string]: boolean;
+  };
+  error: {
+    [action: string]: Error | null;
+  };
 }
 
 const initialState: PortfolioState = {
@@ -29,7 +26,7 @@ const portfolioSlice = createSlice({
       state.loading.getPortfolioSummaries = true;
       state.error.getPortfolioSummaries = null;
     },
-    getPortfolioSummariesSuccess: (state, action: PayloadAction<Array<PortfolioSummary>>) => {
+    getPortfolioSummariesSuccess: (state, action: PayloadAction<Array<Type.PortfolioSummary>>) => {
       state.portfolioSummaries = action.payload;
       state.loading.getPortfolioSummaries = false;
     },

@@ -1,42 +1,29 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 import moment from 'moment';
+import * as Type from '../../types';
 
-interface Note {
-  id: number;
-  title: string;
-  content: string;
-  investmentDate: string;
-  createdDate: string;
-  modifiedDate: string;
-  stockTransactions: Array<{
-    transactionType: 'BUY' | 'SELL';
-    quantity: number;
-    tradedPrice: number;
-    stockDetail: {
-      id: number;
-      companyName: string;
-    };
-  }>;
-}
-
-export interface NoteState {
-  note: { [id: number]: Note };
-  notes: Array<Note>;
-  isWritingSucceeded: boolean;
-  loading: { [action: string]: boolean };
-  error: { [action: string]: Error | null };
+interface NoteState {
+  note: {
+    [id: number]: Type.Note;
+  };
+  notes: Array<Type.Note>;
+  loading: {
+    [action: string]: boolean;
+  };
+  error: {
+    [action: string]: Error | null;
+  };
 }
 
 const initialState: NoteState = {
   note: {},
   notes: [],
-  isWritingSucceeded: false,
   loading: {},
   error: {},
 };
 
-const parseNote = (note: Note): Note => {
+const parseNote = (note: Type.Note): Type.Note => {
   return {
     ...note,
     investmentDate: moment(note.investmentDate).format('YYYY-MM-DD'),
@@ -49,9 +36,6 @@ const noteSlice = createSlice({
   name: 'note',
   initialState,
   reducers: {
-    initialize: (state) => {
-      state.isWritingSucceeded = false;
-    },
     getNotesRequest: (
       state,
       action: PayloadAction<{
@@ -65,37 +49,8 @@ const noteSlice = createSlice({
     getNotesSuccess: (
       state,
       action: PayloadAction<{
-        content: Array<{
-          id: number;
-          title: string;
-          content: string;
-          investmentDate: string;
-          createdDate: string;
-          modifiedDate: string;
-          stockTransactions: Array<{
-            quantity: number;
-            tradedPrice: number;
-            transactionType: 'BUY' | 'SELL';
-            stockDetail: {
-              id: number;
-              companyName: string;
-            };
-          }>;
-        }>;
-        pageable: string;
-        totalElements: number;
+        content: Array<Type.Note>;
         totalPages: number;
-        last: boolean;
-        numberOfElements: number;
-        first: boolean;
-        sort: {
-          sorted: boolean;
-          unsorted: boolean;
-          empty: boolean;
-        };
-        number: number;
-        size: number;
-        empty: boolean;
       }>
     ) => {
       state.notes = action.payload.content.map(parseNote);
@@ -110,26 +65,7 @@ const noteSlice = createSlice({
       state.loading.getNote = true;
       state.error.getNote = null;
     },
-    getNoteSuccess: (
-      state,
-      action: PayloadAction<{
-        id: number;
-        title: string;
-        content: string;
-        investmentDate: string;
-        createdDate: string;
-        modifiedDate: string;
-        stockTransactions: Array<{
-          quantity: number;
-          tradedPrice: number;
-          transactionType: 'BUY' | 'SELL';
-          stockDetail: {
-            id: number;
-            companyName: string;
-          };
-        }>;
-      }>
-    ) => {
+    getNoteSuccess: (state, action: PayloadAction<Type.Note>) => {
       state.note[action.payload.id] = parseNote(action.payload);
       state.loading.getNote = false;
       state.error.getNote = null;
@@ -138,25 +74,11 @@ const noteSlice = createSlice({
       state.loading.getNote = false;
       state.error.getNote = action.payload;
     },
-    createNoteRequest: (
-      state,
-      action: PayloadAction<{
-        title: string;
-        content: string;
-        investmentDate: string;
-        stockTransactions: Array<{
-          stockDetailId: number;
-          quantity: number;
-          tradedPrice: number;
-          transactionType: 'BUY' | 'SELL';
-        }>;
-      }>
-    ) => {
+    createNoteRequest: (state, action: PayloadAction<Type.NoteForm>) => {
       state.loading.createNote = true;
       state.error.createNote = null;
     },
-    createNoteSuccess: (state) => {
-      state.isWritingSucceeded = true;
+    createNoteSuccess: (state, action: PayloadAction<number>) => {
       state.loading.createNote = false;
       state.error.createNote = null;
     },
@@ -164,48 +86,12 @@ const noteSlice = createSlice({
       state.loading.createNote = false;
       state.error.createNote = action.payload;
     },
-    updateNoteRequest: (
-      state,
-      action: PayloadAction<{
-        id: number;
-        form: {
-          title: string;
-          content: string;
-          investmentDate: string;
-          stockTransactions: Array<{
-            stockDetailId: number;
-            quantity: number;
-            tradedPrice: number;
-            transactionType: 'BUY' | 'SELL';
-          }>;
-        };
-      }>
-    ) => {
+    updateNoteRequest: (state, action: PayloadAction<{ id: number; form: Type.NoteForm }>) => {
       state.loading.updateNote = true;
       state.error.updateNote = null;
     },
-    updateNoteSuccess: (
-      state,
-      action: PayloadAction<{
-        id: number;
-        title: string;
-        content: string;
-        investmentDate: string;
-        createdDate: string;
-        modifiedDate: string;
-        stockTransactions: Array<{
-          quantity: number;
-          tradedPrice: number;
-          transactionType: 'BUY' | 'SELL';
-          stockDetail: {
-            id: number;
-            companyName: string;
-          };
-        }>;
-      }>
-    ) => {
+    updateNoteSuccess: (state, action: PayloadAction<Type.Note>) => {
       state.note[action.payload.id] = parseNote(action.payload);
-      state.isWritingSucceeded = true;
       state.loading.updateNote = false;
       state.error.updateNote = null;
     },

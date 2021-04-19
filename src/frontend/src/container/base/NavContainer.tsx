@@ -1,8 +1,6 @@
 import React, { useCallback, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks/store';
+import { useAppDispatch, useUserAction, useUserState } from '../../hooks';
 import history from '../../lib/history';
-import { userSelector } from '../../lib/selector';
-import userSlice from '../../features/user';
 import Nav from '../../component/base/Nav';
 import MobileNav from '../../component/base/MobileNav';
 
@@ -11,21 +9,12 @@ interface NavContainerProps {
 }
 
 const NavContainer: React.FC<NavContainerProps> = ({ selectedMenu }) => {
-  /**
-   * component state
-   */
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
 
-  /**
-   * redux store
-   */
   const dispatch = useAppDispatch();
-  const { profile } = useAppSelector(userSelector);
-  const userActions = userSlice.actions;
+  const { profile } = useUserState();
+  const userActions = useUserAction();
 
-  /**
-   * functions
-   */
   const onLogout = useCallback(() => {
     if (window.confirm('로그아웃 하시겠습니까?')) {
       dispatch(userActions.logout());
