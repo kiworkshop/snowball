@@ -1,16 +1,13 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { useAppDispatch, useUserAction, useUserState } from '../../hooks';
 import history from '../../lib/history';
 import Nav from '../../component/base/Nav';
-import MobileNav from '../../component/base/MobileNav';
 
 interface NavContainerProps {
   selectedMenu?: Array<string>;
 }
 
 const NavContainer: React.FC<NavContainerProps> = ({ selectedMenu }) => {
-  const [isDrawerVisible, setIsDrawerVisible] = useState(false);
-
   const dispatch = useAppDispatch();
   const { profile } = useUserState();
   const userActions = useUserAction();
@@ -25,29 +22,7 @@ const NavContainer: React.FC<NavContainerProps> = ({ selectedMenu }) => {
     history.push(link);
   }, []);
 
-  const showDrawer = useCallback(() => {
-    setIsDrawerVisible(true);
-  }, []);
-
-  const hideDrawer = useCallback(() => {
-    setIsDrawerVisible(false);
-  }, []);
-
-  return (
-    <>
-      <Nav profile={profile} onLogout={onLogout} onClickNavLink={onClickNavLink} selectedMenu={selectedMenu} />
-
-      <MobileNav
-        profile={profile}
-        onLogout={onLogout}
-        onClickNavLink={onClickNavLink}
-        selectedMenu={selectedMenu}
-        isDrawerVisible={isDrawerVisible}
-        showDrawer={showDrawer}
-        hideDrawer={hideDrawer}
-      />
-    </>
-  );
+  return <Nav profile={profile} onLogout={onLogout} onClickNavLink={onClickNavLink} selectedMenu={selectedMenu} />;
 };
 
 export default NavContainer;

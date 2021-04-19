@@ -11,4 +11,7 @@ export default {
   oauth2: {
     google: '/oauth2/authorization/google',
   },
+  portfolio: {
+    detail: '/portfolios',
+  },
 };
