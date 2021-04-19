@@ -5,10 +5,10 @@ import { RightOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { addCommaToNumber } from '../../lib/number';
 import { MAIN_COLOR } from '../../constants/colors';
-import { Note } from '../../types/domain';
+import * as Type from '../../types';
 
 interface NoteListProps {
-  notes: Array<Note>;
+  notes: Array<Type.Note>;
   onClickMoreInfoButton: (id: number) => void;
 }
 

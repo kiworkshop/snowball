@@ -9,14 +9,14 @@ import history from '../../lib/history';
 import { noteSelector, stockTransactionSelector, userSelector } from '../../lib/selector';
 import { BLACK, WHITE } from '../../constants/colors';
 import { CREATE_NOTE_TYPE, UPDATE_NOTE_TYPE } from '../../constants/write';
-import { Note } from '../../types/domain';
+import * as Type from '../../types';
 import Editor from '../../component/write/Editor';
 import StockTransactionTableContainer from './StockTransactionTableContainer';
 import StockTransactionAddButtonContainer from './StockTransactionAddButtonContainer';
 
 interface WriteTemplateProps {
   type: typeof CREATE_NOTE_TYPE | typeof UPDATE_NOTE_TYPE;
-  note?: Note;
+  note?: Type.Note;
 }
 
 const WriteTemplateBlock = styled.div`

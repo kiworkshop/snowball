@@ -6,11 +6,11 @@ import styled from 'styled-components';
 import routes from '../../routes';
 import * as Screen from '../../constants/screen';
 import logo from '../../static/images/logo.png';
+import * as Type from '../../types';
 import Container from './Container';
-import { Profile } from '../../types/domain';
 
 interface NavProps {
-  profile: Profile;
+  profile: Type.Profile;
   selectedMenu?: Array<string>;
   onLogout: () => void;
   onClickNavLink: (link: string) => void;

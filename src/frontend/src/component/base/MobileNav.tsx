@@ -4,11 +4,11 @@ import { Button, Drawer, Layout, Menu } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
 import * as Screen from '../../constants/screen';
 import routes from '../../routes';
+import * as Type from '../../types';
 import Container from './Container';
-import { Profile } from '../../types/domain';
 
 interface MobileNavProps {
-  profile: Profile;
+  profile: Type.Profile;
   selectedMenu?: Array<string>;
   isDrawerVisible: boolean;
   onLogout: () => void;
