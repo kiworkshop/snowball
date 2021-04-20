@@ -4,11 +4,11 @@ import { Collapse, Button, Typography, Tag, Empty } from 'antd';
 import { RightOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { addCommaToNumber } from '../../lib/number';
-import { MAIN_COLOR } from '../../constants/colors';
-import { Note } from '../../types/domain';
+import * as Color from '../../constants/colors';
+import * as Type from '../../types';
 
 interface NoteListProps {
-  notes: Array<Note>;
+  notes: Array<Type.Note>;
   onClickMoreInfoButton: (id: number) => void;
 }
 
@@ -19,7 +19,7 @@ const NoteListWrapper = styled.div`
 `;
 
 const NoteListTitle = styled(Typography.Title)`
-  color: ${MAIN_COLOR};
+  color: ${Color.BLUE_2};
   margin-bottom: 30px;
 `;
 

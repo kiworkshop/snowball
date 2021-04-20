@@ -1,11 +1,8 @@
 import React, { useEffect } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../hooks/store';
-import noteSlice from '../features/note';
-import stockTransactionSlice from '../features/stockTransaction';
-import { noteSelector } from '../lib/selector';
+import { useAppDispatch, useNoteAction, useNoteState, useWriteAction } from '../hooks';
 import { UPDATE_NOTE_TYPE } from '../constants/write';
-import WriteTemplate from '../container/write/WriteTemplate';
+import EditorContainer from '../container/editor/EditorContainer';
 
 interface MatchProps {
   id: string;
@@ -14,28 +11,22 @@ interface MatchProps {
 const UpdateNotePage: React.FC<RouteComponentProps<MatchProps>> = ({ match }) => {
   const noteId = Number(match.params.id);
 
-  /**
-   * redux store
-   */
   const dispatch = useAppDispatch();
-  const { note: noteEntity } = useAppSelector(noteSelector);
+  const { note: noteEntity } = useNoteState();
   const note = noteEntity[noteId];
-  const noteActions = noteSlice.actions;
-  const stockTransactionActions = stockTransactionSlice.actions;
+  const noteAction = useNoteAction();
+  const writeAction = useWriteAction();
 
   useEffect(() => {
-    if (!note) {
-      dispatch(noteActions.getNoteRequest(noteId));
-    } else {
-      dispatch(stockTransactionActions.syncNote(note.stockTransactions));
-    }
-  }, [dispatch, noteActions, stockTransactionActions, note, noteId]);
+    dispatch(writeAction.initialize());
+    dispatch(noteAction.getNoteRequest(noteId));
+  }, [dispatch, writeAction, noteAction, noteId]);
 
   if (!note) {
     return null;
   }
 
-  return <WriteTemplate type={UPDATE_NOTE_TYPE} note={note} />;
+  return <EditorContainer type={UPDATE_NOTE_TYPE} />;
 };
 
 export default UpdateNotePage;

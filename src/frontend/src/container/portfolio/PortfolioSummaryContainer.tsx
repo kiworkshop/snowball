@@ -1,20 +1,12 @@
 import React, { useCallback, useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks/store';
-import { portfolioSelector } from '../../lib/selector';
+import { useAppDispatch, usePortfolioAction, usePortfolioState } from '../../hooks';
 import PortfolioSummary from '../../component/portfolio/PortfolioSummary';
-import portfolioSlice from '../../features/portfolio';
 
 const PortfolioSummaryContainer = () => {
-  /**
-   * redux store
-   */
   const dispatch = useAppDispatch();
-  const { portfolioSummaries } = useAppSelector(portfolioSelector);
-  const portfolioActions = portfolioSlice.actions;
+  const { portfolioSummaries } = usePortfolioState();
+  const portfolioActions = usePortfolioAction();
 
-  /**
-   * functions
-   */
   const getPortfolioSummaries = useCallback(() => {
     dispatch(portfolioActions.getPortfolioSummariesRequest());
   }, [dispatch, portfolioActions]);

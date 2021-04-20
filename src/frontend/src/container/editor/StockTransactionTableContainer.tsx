@@ -1,22 +1,18 @@
 import React, { useCallback, useMemo } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks/store';
-import stockTransactionSlice from '../../features/stockTransaction';
 import { addCommaToNumber } from '../../lib/number';
-import { stockTransactionSelector } from '../../lib/selector';
-import StockTransactionTable from '../../component/write/StockTransactionTable';
+import { useAppDispatch, useStockTransactionAction, useStockTransactionState } from '../../hooks';
+import * as Type from '../../types';
+import StockTransactionTable from '../../component/editor/StockTransactionTable';
 
 interface StockTransactionTableContainerProps {
-  type: 'BUY' | 'SELL';
+  type: Type.TransactionType;
 }
 
 const StockTransactionTableContainer: React.FC<StockTransactionTableContainerProps> = ({ type }) => {
-  /**
-   * redux store
-   */
   const dispatch = useAppDispatch();
-  const stockTransactionState = useAppSelector(stockTransactionSelector);
+  const stockTransactionState = useStockTransactionState();
   const stockTransactions = stockTransactionState[type];
-  const stockTransactionActions = stockTransactionSlice.actions;
+  const stockTransactionActions = useStockTransactionAction();
 
   const dataSource = useMemo(
     () =>
@@ -30,9 +26,6 @@ const StockTransactionTableContainer: React.FC<StockTransactionTableContainerPro
     [stockTransactions]
   );
 
-  /**
-   * functions
-   */
   const onDelete = useCallback(
     (index: number) => {
       dispatch(stockTransactionActions.delete({ index, type }));

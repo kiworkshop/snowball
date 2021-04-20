@@ -1,27 +1,19 @@
 import React, { useCallback, useEffect } from 'react';
 import { Modal } from 'antd';
-import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import history from '../../lib/history';
 import routes from '../../routes';
-import noteSlice from '../../features/note';
-import { noteSelector } from '../../lib/selector';
 import NoteDetail from '../../component/note/NoteDetail';
+import { useAppDispatch, useNoteAction, useNoteState } from '../../hooks';
 
 interface NoteContainerProps {
   id: number;
 }
 
 const NoteDetailContainer: React.FC<NoteContainerProps> = ({ id }) => {
-  /**
-   * redux store
-   */
   const dispatch = useAppDispatch();
-  const { note, loading, error } = useAppSelector(noteSelector);
-  const noteActions = noteSlice.actions;
+  const { note, loading, error } = useNoteState();
+  const noteActions = useNoteAction();
 
-  /**
-   * functions
-   */
   const deleteNote = useCallback(
     (id: number) => {
       dispatch(noteActions.deleteNoteRequest(id));

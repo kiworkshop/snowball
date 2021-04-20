@@ -1,23 +1,19 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
+import { AxiosResponse } from 'axios';
 import * as PortfolioAPI from '../../lib/api/portfolio';
-import errorHandler from '../../lib/error';
-import portfolioSlice from './portfolioSlice';
+import { usePortfolioAction } from '../../hooks';
 
-const actions = portfolioSlice.actions;
+const portfolioAction = usePortfolioAction();
 
 function* getPortfolioSummariesSaga() {
   try {
-    const response = yield call(PortfolioAPI.getPortfolioSummaries);
-    yield put(actions.getPortfolioSummariesSuccess(response.data));
+    const response: AxiosResponse = yield call(PortfolioAPI.getPortfolioSummaries);
+    yield put(portfolioAction.getPortfolioSummariesSuccess(response.data));
   } catch (e) {
-    errorHandler(e);
-    yield put(actions.getPortfolioSummariesFailure(e));
+    yield put(portfolioAction.getPortfolioSummariesFailure(e));
   }
 }
 
 export function* portfolioSaga() {
-  yield takeEvery(
-    actions.getPortfolioSummariesRequest,
-    getPortfolioSummariesSaga
-  );
+  yield takeEvery(portfolioAction.getPortfolioSummariesRequest, getPortfolioSummariesSaga);
 }

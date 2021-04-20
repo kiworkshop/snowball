@@ -1,10 +1,10 @@
 import routes from '../routes';
 
-const pathToMenu = {
-  [routes.home]: 'home',
+const menuOfPath = {
   [routes.note.create]: 'createNote',
+  [routes.portfolio.detail]: 'myPortfolio',
 };
 
 export const getSelectedMenu = (path: string) => {
-  return pathToMenu[path] || '';
+  return menuOfPath[path] || '';
 };

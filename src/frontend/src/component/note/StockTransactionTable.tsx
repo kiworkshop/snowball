@@ -1,11 +1,11 @@
 import React from 'react';
 import { Table, Typography } from 'antd';
 import { addCommaToNumber } from '../../lib/number';
-import { Note } from '../../types/domain';
+import * as Type from '../../types';
 
 interface StockTransactionTableProps {
   type: 'BUY' | 'SELL';
-  note: Note;
+  note: Type.Note;
 }
 
 const StockTransactionTable: React.FC<StockTransactionTableProps> = ({ type, note }) => {

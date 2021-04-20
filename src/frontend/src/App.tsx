@@ -3,13 +3,13 @@ import { Route, Switch } from 'react-router-dom';
 import { LoginPage } from './pages';
 import AuthApp from './AuthApp';
 
-function App() {
+const App = () => {
   return (
     <Switch>
       <Route path="/user/login" component={LoginPage} exact />
-      <Route path="/" component={AuthApp} />
+      <AuthApp />
     </Switch>
   );
-}
+};
 
 export default App;
