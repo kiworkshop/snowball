@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
+import { useAppDispatch, useNoteAction, useNoteState, useWriteAction } from '../hooks';
 import { UPDATE_NOTE_TYPE } from '../constants/write';
-import { useAppDispatch, useNoteAction, useNoteState } from '../hooks';
-import WriteTemplate from '../container/write/WriteTemplate';
+import EditorContainer from '../container/editor/EditorContainer';
 
 interface MatchProps {
   id: string;
@@ -14,17 +14,19 @@ const UpdateNotePage: React.FC<RouteComponentProps<MatchProps>> = ({ match }) =>
   const dispatch = useAppDispatch();
   const { note: noteEntity } = useNoteState();
   const note = noteEntity[noteId];
-  const noteActions = useNoteAction();
+  const noteAction = useNoteAction();
+  const writeAction = useWriteAction();
 
   useEffect(() => {
-    dispatch(noteActions.getNoteRequest(noteId));
-  }, [dispatch, noteActions, noteId]);
+    dispatch(writeAction.initialize());
+    dispatch(noteAction.getNoteRequest(noteId));
+  }, [dispatch, writeAction, noteAction, noteId]);
 
   if (!note) {
     return null;
   }
 
-  return <WriteTemplate type={UPDATE_NOTE_TYPE} note={note} />;
+  return <EditorContainer type={UPDATE_NOTE_TYPE} />;
 };
 
 export default UpdateNotePage;

@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react';
 import { addCommaToNumber } from '../../lib/number';
 import { useAppDispatch, useStockTransactionAction, useStockTransactionState } from '../../hooks';
 import * as Type from '../../types';
-import StockTransactionTable from '../../component/write/StockTransactionTable';
+import StockTransactionTable from '../../component/editor/StockTransactionTable';
 
 interface StockTransactionTableContainerProps {
   type: Type.TransactionType;

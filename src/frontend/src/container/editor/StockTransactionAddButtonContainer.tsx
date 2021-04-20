@@ -3,7 +3,7 @@ import { Form, message } from 'antd';
 import { useAppDispatch, useStockTransactionAction } from '../../hooks';
 import { getSingleStockDetail } from '../../lib/api/stockDetail';
 import * as Type from '../../types';
-import StockTransactionAddButton from '../../component/write/StockTransactionAddButton';
+import StockTransactionAddButton from '../../component/editor/StockTransactionAddButton';
 
 interface StockTransactionAddButtonContainerProps {
   type: Type.TransactionType;
