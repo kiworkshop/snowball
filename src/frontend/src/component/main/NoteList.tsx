@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, List, Popover, Typography } from 'antd';
+import { Button, List, Pagination, Popover, Typography } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import styled from 'styled-components';
@@ -12,9 +12,11 @@ import StockTransaction from './StockTransaction';
 interface NoteListProps {
   loading: boolean;
   notes: Array<Type.Note>;
+  page: number;
+  totalPages: number;
+  onChangePage: (page: number) => void;
   onClickUpdateNoteButton: (noteId: number) => () => void;
-  onDeleteNote: (noteId: number) => () => void;
-  filterStockTransactions: (note: Type.Note) => Array<Array<Type.StockTransaction>>;
+  onClickDeleteNoteButton: (noteId: number) => () => void;
 }
 
 const Container = styled.div`
@@ -36,16 +38,14 @@ const SmallButton = styled(Button)`
   padding: 4px 5px;
 `;
 
-const StockTransactionButton = styled(Button)`
-  margin-right: 10px;
-`;
-
 const NoteList: React.VFC<NoteListProps> = ({
   loading,
   notes,
+  page,
+  totalPages,
+  onChangePage,
   onClickUpdateNoteButton,
-  onDeleteNote,
-  filterStockTransactions,
+  onClickDeleteNoteButton,
 }) => {
   return (
     <Container>
@@ -60,7 +60,7 @@ const NoteList: React.VFC<NoteListProps> = ({
               title={<Link to={routes.note.detail(note.id)}>{note.title}</Link>}
               description={moment(note.investmentDate).format('YYYY년 MM월 DD일')}
             />
-            <StockTransaction stockTransactions={note.stockTransactions} />
+            <StockTransaction stockTransactions={note.stockTransactions} investmentDate={note.investmentDate} />
             <Popover
               placement="topRight"
               trigger="click"
@@ -69,7 +69,7 @@ const NoteList: React.VFC<NoteListProps> = ({
                   <SmallButton type="link" onClick={onClickUpdateNoteButton(note.id)}>
                     수정
                   </SmallButton>
-                  <SmallButton type="link" onClick={onDeleteNote(note.id)}>
+                  <SmallButton type="link" onClick={onClickDeleteNoteButton(note.id)}>
                     삭제
                   </SmallButton>
                 </div>
@@ -79,6 +79,13 @@ const NoteList: React.VFC<NoteListProps> = ({
             </Popover>
           </List.Item>
         )}
+      />
+      <Pagination
+        current={page}
+        pageSize={10}
+        total={totalPages * 10}
+        onChange={onChangePage}
+        style={{ padding: '10px 0', textAlign: 'center' }}
       />
     </Container>
   );

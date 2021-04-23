@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Button, Modal, Table } from 'antd';
 import * as TransactionType from '../../constants/transactionType';
@@ -7,11 +7,7 @@ import { addCommaToNumber } from '../../lib/number';
 
 interface StockTransactionProps {
   stockTransactions: Array<Type.StockTransaction>;
-}
-
-interface StockTransactionModalProps {
-  isModalVisible: boolean;
-  stockTransactions: Array<Type.StockTransaction>;
+  investmentDate: string;
 }
 
 const StockTransactionButton = styled(Button)`
@@ -41,7 +37,7 @@ const columns = [
   },
 ];
 
-const StockTransaction: React.VFC<StockTransactionProps> = ({ stockTransactions }) => {
+const StockTransaction: React.VFC<StockTransactionProps> = ({ stockTransactions, investmentDate }) => {
   const transactionTypes: Array<Type.TransactionType> = [TransactionType.BUY, TransactionType.SELL];
 
   return (
@@ -52,15 +48,18 @@ const StockTransaction: React.VFC<StockTransactionProps> = ({ stockTransactions 
         if (filteredStockTransactions.length === 0) {
           return null;
         }
+
         return (
-          <>
+          <React.Fragment key={type}>
             <StockTransactionButton
               danger={type === TransactionType.SELL}
               onClick={() =>
                 Modal.info({
-                  title: type === TransactionType.BUY ? '매수내역' : '매도내역',
+                  title: type === TransactionType.BUY ? `${investmentDate} 매수내역` : `${investmentDate} 매도내역`,
                   content: (
                     <Table
+                      size="small"
+                      style={{ marginTop: '20px' }}
                       columns={columns}
                       dataSource={filteredStockTransactions.map((s, idx) => ({
                         key: idx,
@@ -69,6 +68,7 @@ const StockTransaction: React.VFC<StockTransactionProps> = ({ stockTransactions 
                         tradedPrice: addCommaToNumber(s.tradedPrice),
                         totalPrice: addCommaToNumber(s.quantity * s.tradedPrice),
                       }))}
+                      pagination={{ pageSize: 10, total: filteredStockTransactions.length }}
                     />
                   ),
                   onOk() {},
@@ -79,7 +79,7 @@ const StockTransaction: React.VFC<StockTransactionProps> = ({ stockTransactions 
               {type === TransactionType.BUY ? '매수 ' : '매도 '}
               {filteredStockTransactions.length}건
             </StockTransactionButton>
-          </>
+          </React.Fragment>
         );
       })}
     </div>
