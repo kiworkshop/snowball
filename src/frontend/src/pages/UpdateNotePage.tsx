@@ -26,7 +26,7 @@ const UpdateNotePage: React.FC<RouteComponentProps<MatchProps>> = ({ match }) =>
     return null;
   }
 
-  return <EditorContainer type={UPDATE_NOTE_TYPE} />;
+  return <EditorContainer type={UPDATE_NOTE_TYPE} note={note} />;
 };
 
 export default UpdateNotePage;

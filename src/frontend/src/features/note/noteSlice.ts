@@ -8,6 +8,7 @@ interface NoteState {
     [id: number]: Type.Note;
   };
   notes: Array<Type.Note>;
+  totalPages: number;
   loading: {
     [action: string]: boolean;
   };
@@ -19,6 +20,7 @@ interface NoteState {
 const initialState: NoteState = {
   note: {},
   notes: [],
+  totalPages: 0,
   loading: {},
   error: {},
 };
@@ -54,6 +56,7 @@ const noteSlice = createSlice({
       }>
     ) => {
       state.notes = action.payload.content.map(parseNote);
+      state.totalPages = action.payload.totalPages;
       state.loading.getNotes = false;
       state.error.getNotes = null;
     },
