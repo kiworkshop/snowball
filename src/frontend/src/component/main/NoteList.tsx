@@ -80,13 +80,15 @@ const NoteList: React.VFC<NoteListProps> = ({
           </List.Item>
         )}
       />
-      <Pagination
-        current={page}
-        pageSize={10}
-        total={totalPages * 10}
-        onChange={onChangePage}
-        style={{ padding: '10px 0', textAlign: 'center' }}
-      />
+      {notes.length > 0 && (
+        <Pagination
+          current={page}
+          pageSize={10}
+          total={totalPages * 10}
+          onChange={onChangePage}
+          style={{ padding: '10px 0', textAlign: 'center' }}
+        />
+      )}
     </Container>
   );
 };
