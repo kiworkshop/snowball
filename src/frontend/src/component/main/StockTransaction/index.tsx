@@ -1,18 +1,13 @@
 import React from 'react';
-import styled from 'styled-components';
-import { Button, Modal, Table } from 'antd';
-import * as TransactionType from '../../constants/transactionType';
-import * as Type from '../../types';
-import { addCommaToNumber } from '../../lib/number';
+import * as S from './styles';
+import * as TransactionType from '../../../constants/transactionType';
+import * as Type from '../../../types';
+import { addCommaToNumber } from '../../../lib/number';
 
 interface StockTransactionProps {
   stockTransactions: Array<Type.StockTransaction>;
   investmentDate: string;
 }
-
-const StockTransactionButton = styled(Button)`
-  margin-right: 10px;
-`;
 
 const columns = [
   {
@@ -51,15 +46,14 @@ const StockTransaction: React.VFC<StockTransactionProps> = ({ stockTransactions,
 
         return (
           <React.Fragment key={type}>
-            <StockTransactionButton
+            <S.StockTransactionButton
               danger={type === TransactionType.SELL}
               onClick={() =>
-                Modal.info({
+                S.Modal.info({
                   title: type === TransactionType.BUY ? `${investmentDate} 매수내역` : `${investmentDate} 매도내역`,
                   content: (
-                    <Table
+                    <S.Table
                       size="small"
-                      style={{ marginTop: '20px' }}
                       columns={columns}
                       dataSource={filteredStockTransactions.map((s, idx) => ({
                         key: idx,
@@ -78,7 +72,7 @@ const StockTransaction: React.VFC<StockTransactionProps> = ({ stockTransactions,
             >
               {type === TransactionType.BUY ? '매수 ' : '매도 '}
               {filteredStockTransactions.length}건
-            </StockTransactionButton>
+            </S.StockTransactionButton>
           </React.Fragment>
         );
       })}
