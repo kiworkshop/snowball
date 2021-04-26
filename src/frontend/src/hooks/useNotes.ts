@@ -7,5 +7,5 @@ const getNotes = async (size: number, page: number) => {
 };
 
 export default (size: number, page: number) => {
-  return useQuery(['notes', size, page], () => getNotes(size, page));
+  return useQuery(['notes', { size, page }], () => getNotes(size, page));
 };

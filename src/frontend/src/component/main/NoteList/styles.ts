@@ -28,4 +28,7 @@ export const SmallButton = styled(Button)`
   padding: 4px 5px;
 `;
 
-export const Pagination = styled(AntdPagination)``;
+export const Pagination = styled(AntdPagination)`
+  padding: 10px 0;
+  text-align: center;
+`;
