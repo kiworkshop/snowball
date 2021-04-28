@@ -1,6 +1,6 @@
 import React from 'react';
-import NoteListContainer from '../container/note/NoteListContainer';
-import PortfolioSummaryContainer from '../container/portfolio/PortfolioSummaryContainer';
+import NoteListContainer from '../container/main/NoteListContainer';
+import PortfolioSummaryContainer from '../container/main/PortfolioSummaryContainer';
 
 const MainPage = () => {
   return (
