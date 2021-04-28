@@ -79,6 +79,7 @@ const NoteList: React.VFC<NoteListProps> = ({
             </Popover>
           </List.Item>
         )}
+        style={{ padding: '0 10px' }}
       />
       {notes.length > 0 && (
         <Pagination
