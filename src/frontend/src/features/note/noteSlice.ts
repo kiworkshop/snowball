@@ -7,8 +7,12 @@ interface NoteState {
   note: {
     [id: number]: Type.Note;
   };
-  notes: Array<Type.Note>;
-  totalPages: number;
+  notes: {
+    content: Array<Type.Note>;
+    totalPages: number;
+    currentPage: number;
+    pageSize: number;
+  };
   loading: {
     [action: string]: boolean;
   };
@@ -19,8 +23,12 @@ interface NoteState {
 
 const initialState: NoteState = {
   note: {},
-  notes: [],
-  totalPages: 0,
+  notes: {
+    content: [],
+    totalPages: 0,
+    currentPage: 1,
+    pageSize: 10,
+  },
   loading: {},
   error: {},
 };
@@ -38,13 +46,11 @@ const noteSlice = createSlice({
   name: 'note',
   initialState,
   reducers: {
-    getNotesRequest: (
-      state,
-      action: PayloadAction<{
-        page: number;
-        size: number;
-      }>
-    ) => {
+    initializeNoteList: (state) => {
+      state.notes.currentPage = 1;
+      state.notes.pageSize = 10;
+    },
+    getNotesRequest: (state, action: PayloadAction<{ page: number; size: number }>) => {
       state.loading.getNotes = true;
       state.error.getNotes = null;
     },
@@ -55,14 +61,23 @@ const noteSlice = createSlice({
         totalPages: number;
       }>
     ) => {
-      state.notes = action.payload.content.map(parseNote);
-      state.totalPages = action.payload.totalPages;
+      state.notes = {
+        ...state.notes,
+        content: action.payload.content.map(parseNote),
+        totalPages: action.payload.totalPages,
+      };
       state.loading.getNotes = false;
       state.error.getNotes = null;
     },
     getNotesFailure: (state, action: PayloadAction<AxiosError>) => {
       state.loading.getNotes = false;
       state.error.getNotes = action.payload;
+    },
+    setPage: (state, action: PayloadAction<number>) => {
+      state.notes.currentPage = action.payload;
+    },
+    setSize: (state, action: PayloadAction<number>) => {
+      state.notes.pageSize = action.payload;
     },
     getNoteRequest: (state, action: PayloadAction<number>) => {
       state.loading.getNote = true;
@@ -113,6 +128,10 @@ const noteSlice = createSlice({
     deleteNoteFailure: (state, action: PayloadAction<AxiosError>) => {
       state.loading.deleteNote = false;
       state.error.deleteNote = action.payload;
+    },
+    deleteNoteFromListRequest: (state, action: PayloadAction<number>) => {
+      state.loading.deleteNote = true;
+      state.error.deleteNote = null;
     },
   },
 });

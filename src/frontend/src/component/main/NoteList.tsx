@@ -13,6 +13,7 @@ interface NoteListProps {
   loading: boolean;
   notes: Array<Type.Note>;
   page: number;
+  pageSize: number;
   totalPages: number;
   onChangePage: (page: number) => void;
   onClickUpdateNoteButton: (noteId: number) => () => void;
@@ -42,6 +43,7 @@ const NoteList: React.VFC<NoteListProps> = ({
   loading,
   notes,
   page,
+  pageSize,
   totalPages,
   onChangePage,
   onClickUpdateNoteButton,
@@ -84,8 +86,8 @@ const NoteList: React.VFC<NoteListProps> = ({
       {notes.length > 0 && (
         <Pagination
           current={page}
-          pageSize={10}
-          total={totalPages * 10}
+          pageSize={pageSize}
+          total={totalPages * pageSize}
           onChange={onChangePage}
           style={{ padding: '10px 0', textAlign: 'center' }}
         />
