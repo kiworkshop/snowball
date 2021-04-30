@@ -1,14 +1,12 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useAppDispatch, useNoteAction, useNoteState } from '../../hooks';
 import history from '../../lib/history';
 import routes from '../../routes';
 import NoteList from '../../component/main/NoteList';
 
 const NoteListContainer = () => {
-  const [page, setPage] = useState(1);
-
   const dispatch = useAppDispatch();
-  const { notes, loading, totalPages } = useNoteState();
+  const { notes, loading } = useNoteState();
   const noteAction = useNoteAction();
 
   const onClickUpdateNoteButton = useCallback(
@@ -21,26 +19,34 @@ const NoteListContainer = () => {
   const onClickDeleteNoteButton = useCallback(
     (noteId: number) => () => {
       if (window.confirm('정말 삭제하시겠습니까?')) {
-        dispatch(noteAction.deleteNoteRequest(noteId));
+        dispatch(noteAction.deleteNoteFromListRequest(noteId));
       }
     },
     [dispatch, noteAction]
   );
 
-  const onChangePage = useCallback((page: number) => {
-    setPage(page);
-  }, []);
+  const onChangePage = useCallback(
+    (page: number) => {
+      dispatch(noteAction.setPage(page));
+    },
+    [dispatch, noteAction]
+  );
 
   useEffect(() => {
-    dispatch(noteAction.getNotesRequest({ page: page - 1, size: 10 }));
-  }, [dispatch, noteAction, page]);
+    dispatch(noteAction.getNotesRequest({ page: notes.currentPage, size: notes.pageSize }));
+    return () => {
+      dispatch(noteAction.initializeNoteList());
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <NoteList
       loading={loading.getNotes}
-      notes={notes}
-      page={page}
-      totalPages={totalPages}
+      notes={notes.content}
+      page={notes.currentPage}
+      pageSize={notes.pageSize}
+      totalPages={notes.totalPages}
       onChangePage={onChangePage}
       onClickUpdateNoteButton={onClickUpdateNoteButton}
       onClickDeleteNoteButton={onClickDeleteNoteButton}
