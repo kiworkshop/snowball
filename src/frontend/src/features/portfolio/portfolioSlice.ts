@@ -4,6 +4,7 @@ import * as Type from '../../types';
 
 interface PortfolioState {
   portfolioSummaries: Array<Type.PortfolioSummary>;
+  portfolioDetails: Array<Type.PortfolioDetail>;
   loading: {
     [action: string]: boolean;
   };
@@ -14,6 +15,7 @@ interface PortfolioState {
 
 const initialState: PortfolioState = {
   portfolioSummaries: [],
+  portfolioDetails: [],
   loading: {},
   error: {},
 };
@@ -33,6 +35,18 @@ const portfolioSlice = createSlice({
     getPortfolioSummariesFailure: (state, action: PayloadAction<AxiosError>) => {
       state.loading.getPortfolioSummaries = false;
       state.error.getPortfolioSummaries = action.payload;
+    },
+    getPortfolioDetailRequest: (state) => {
+      state.loading.getPortfolioDetail = true;
+      state.error.getPortfolioDetail = null;
+    },
+    getPortfolioDetailSuccess: (state, action: PayloadAction<Array<Type.PortfolioDetail>>) => {
+      state.portfolioDetails = action.payload;
+      state.loading.getPortfolioDetail = false;
+    },
+    getPortfolioDetailFailure: (state, action: PayloadAction<AxiosError>) => {
+      state.loading.getPortfolioDetail = false;
+      state.error.getPortfolioDetail = action.payload;
     },
   },
 });

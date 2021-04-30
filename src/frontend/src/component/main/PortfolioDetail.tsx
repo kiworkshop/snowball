@@ -2,17 +2,12 @@ import React from 'react';
 import { Typography, Table as AntdTable } from 'antd';
 import styled from 'styled-components';
 import * as Color from '../../constants/colors';
+import * as Type from '../../types';
 import { addCommaToNumber } from '../../lib/number';
 
 interface PortfolioSummaryProps {
   loading: boolean;
-  portfolios: Array<{
-    companyName: string;
-    averageBuyingPrice: number;
-    targetPrice: number;
-    earningsRate: number;
-    targetEarningsRate: number;
-  }>;
+  portfolioDetails: Array<Type.PortfolioDetail>;
 }
 
 const Container = styled.div`
@@ -45,32 +40,28 @@ const columns = [
     key: 'averageBuyingPrice',
   },
   {
-    title: '목표가',
-    dataIndex: 'targetPrice',
-    key: 'targetPrice',
+    title: '보유수량',
+    dataIndex: 'holdingQuantity',
+    key: 'holdingQuantity',
   },
   {
-    title: '수익률',
-    dataIndex: 'earningsRate',
-    key: 'earningsRate',
-  },
-  {
-    title: '목표수익률',
-    dataIndex: 'targetEarningsRate',
-    key: 'targetEarningsRate',
+    title: '매수금액',
+    dataIndex: 'purchaseAmount',
+    key: 'purchaseAmount',
   },
 ];
 
-const PortfolioSummary: React.VFC<PortfolioSummaryProps> = ({ loading, portfolios }) => {
+const PortfolioDetail: React.VFC<PortfolioSummaryProps> = ({ loading, portfolioDetails }) => {
   return (
     <Container>
-      <Title level={3}>포트폴리오 요약</Title>
+      <Title level={3}>내 포트폴리오</Title>
       <Table
         size="small"
-        dataSource={portfolios.map((p) => ({
+        dataSource={portfolioDetails.map((p) => ({
           ...p,
           averageBuyingPrice: addCommaToNumber(p.averageBuyingPrice),
-          targetPrice: addCommaToNumber(p.targetPrice),
+          holdingQuantity: addCommaToNumber(p.holdingQuantity),
+          purchaseAmount: addCommaToNumber(p.purchaseAmount),
           key: p.companyName,
         }))}
         columns={columns}
@@ -81,4 +72,4 @@ const PortfolioSummary: React.VFC<PortfolioSummaryProps> = ({ loading, portfolio
   );
 };
 
-export default PortfolioSummary;
+export default PortfolioDetail;
