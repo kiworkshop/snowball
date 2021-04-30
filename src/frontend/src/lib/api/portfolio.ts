@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-const axiosClient = axios.create({
-  baseURL: '/api/portfolio-summary',
-});
-
 export const getPortfolioSummaries = () => {
-  return axiosClient.get('');
+  return axios.get('/api/portfolio-summary');
+};
+
+export const getPortfolioDetail = () => {
+  return axios.get('/api/portfolio-detail');
 };

@@ -75,10 +75,6 @@ const Nav: React.FC<NavProps> = ({ profile, onLogout, onClickNavLink, selectedMe
             투자노트 작성
           </NavMenuItem>
 
-          <NavMenuItem key="myPortfolio" onClick={() => onClickNavLink(routes.portfolio.detail)}>
-            내 포트폴리오
-          </NavMenuItem>
-
           <Dropdown overlay={ProfileMenus} trigger={['click']} placement="bottomRight">
             <ProfileButton>
               <ProfileImage src={profile.pictureUrl} alt="프로필 사진" />

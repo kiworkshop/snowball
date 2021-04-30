@@ -54,6 +54,13 @@ export interface PortfolioSummary {
   targetEarningsRate: number;
 }
 
+export interface PortfolioDetail {
+  companyName: string;
+  averageBuyingPrice: number;
+  holdingQuantity: number;
+  purchaseAmount: number;
+}
+
 /**
  * USER TYPE
  */

@@ -14,6 +14,16 @@ function* getPortfolioSummariesSaga() {
   }
 }
 
+function* getPortfolioDetailSaga() {
+  try {
+    const response: AxiosResponse = yield call(PortfolioAPI.getPortfolioDetail);
+    yield put(portfolioAction.getPortfolioDetailSuccess(response.data.portfolioDetailStocks || []));
+  } catch (e) {
+    yield put(portfolioAction.getPortfolioDetailFailure(e));
+  }
+}
+
 export function* portfolioSaga() {
   yield takeEvery(portfolioAction.getPortfolioSummariesRequest, getPortfolioSummariesSaga);
+  yield takeEvery(portfolioAction.getPortfolioDetailRequest, getPortfolioDetailSaga);
 }

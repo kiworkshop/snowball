@@ -1,11 +1,11 @@
 import React from 'react';
 import NoteListContainer from '../container/main/NoteListContainer';
-import PortfolioSummaryContainer from '../container/main/PortfolioSummaryContainer';
+import PortfolioDetailContainer from '../container/main/PortfolioDetailContainer';
 
 const MainPage = () => {
   return (
     <>
-      <PortfolioSummaryContainer />
+      <PortfolioDetailContainer />
       <NoteListContainer />
     </>
   );
