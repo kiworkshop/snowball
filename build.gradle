@@ -4,6 +4,7 @@ plugins {
     id 'org.asciidoctor.convert' version '1.5.9.2'
     id 'java'
     id "com.github.node-gradle.node" version "2.2.0"
+    id 'jacoco'
 }
 
 group = 'org.kiworkshop'
@@ -54,6 +55,7 @@ dependencies {
 test {
     outputs.dir snippetsDir
     useJUnitPlatform()
+    finalizedBy 'jacocoTestReport'
 }
 
 asciidoctor {
@@ -97,7 +99,33 @@ task copyWebApp(type: Copy) {
     from "src/frontend/build/"
     into 'build/resources/main/static'
 }
-
+jacocoTestReport{
+    reports{
+        xml.enabled false
+        csv.enabled false
+        html.enabled true
+    }
+    finalizedBy 'jacocoTestCoverageVerification'
+}
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.5
+            }
+        }
+        rule {
+            enabled = false
+            element = 'CLASS'
+            includes = ['org.gradle.*']
+            limit {
+                counter = 'LINE'
+                value = 'TOTALCOUNT'
+                maximum = 0.3
+            }
+        }
+    }
+}
 yarnBuild.dependsOn yarnInstall
 copyWebApp.dependsOn yarnBuild
 compileJava.dependsOn copyWebApp
