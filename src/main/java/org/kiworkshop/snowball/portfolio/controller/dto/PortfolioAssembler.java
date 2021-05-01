@@ -16,4 +16,14 @@ public class PortfolioAssembler {
                 .targetEarningsRate(portfolioItem.getTargetEarningsRate())
                 .build();
     }
+
+    public static PortfolioDetailStockResponse getPortfolioDetailStockResponse(PortfolioItem portfolioItem) {
+        // TODO: 2021/04/21 총 보유 주식 수, 총 매수 금액을 구하는 부분을 개발해야함 
+        return PortfolioDetailStockResponse.builder()
+                .companyName(portfolioItem.getCompanyName())
+                .averageBuyingPrice(portfolioItem.getAverageBuyingPrice())
+                .holdingQuantity(1)
+                .purchaseAmount( portfolioItem.getAverageBuyingPrice().intValue() * 1)
+                .build();
+    }
 }

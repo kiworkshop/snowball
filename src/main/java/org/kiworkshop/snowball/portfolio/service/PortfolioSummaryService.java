@@ -26,7 +26,7 @@ public class PortfolioSummaryService {
                 .collect(Collectors.toList());
     }
 
-    public List<PortfolioItem> createPortfolioItems(List<StockTransaction> stockTransactions) {
+    public static List<PortfolioItem> createPortfolioItems(List<StockTransaction> stockTransactions) {
         if (stockTransactions == null) {
             return new ArrayList<>();
         }
