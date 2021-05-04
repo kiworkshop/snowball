@@ -22,7 +22,7 @@ fi
 
 echo "> Now new WAS runs at ${TARGET_PORT}."
 nohup java -jar \
-    -Dspring.config.location=classpath:/application.yml,classpath:/application-real.yml,/home/ec2-user/app/application-oauth.yml,/home/ec2-user/app/application-real-db.yml \
-    -Dspring.profiles.active=real \
+    -Dspring.config.location=classpath:/application.yml,classpath:/application-dev.yml,/home/ec2-user/app/application-oauth.yml,/home/ec2-user/app/application-real-db.yml \
+    -Dspring.profiles.active=dev \
     -Dserver.port=${TARGET_PORT} /home/ec2-user/snowball/build/libs/* > /home/ec2-user/nohup.out 2>&1 &
 exit 0
