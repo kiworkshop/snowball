@@ -10,7 +10,7 @@ spring:
     url: jdbc:h2:mem:test
     username: sa
     password:
-    data: classpath*:db/h2/test.sql
+    data: classpath*:db/h2/data.sql
   jpa:
     database-platform: H2
     show-sql: true
