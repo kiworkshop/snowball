@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Space, Typography, Button } from 'antd';
+import { Typography, Button } from 'antd';
 import * as Type from '../../types';
+import * as Color from '../../constants/colors';
 import StockTransactionTable from './StockTransactionTable';
 
 interface NoteProps {
@@ -12,42 +13,31 @@ interface NoteProps {
   error: Error | null;
 }
 
-const NoteContainer = styled.div`
-  background: #fff;
+const Container = styled.div`
+  background: ${Color.WHITE};
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
   padding: 30px;
 `;
 
-const NoteHeader = styled(Space)`
-  border-bottom: 1px solid #f5f5f5;
+const Header = styled.div`
+  align-items: flex-end;
+  border-bottom: 1px solid ${Color.GRAY_1};
+  display: flex;
   justify-content: space-between;
   margin-bottom: 30px;
   width: 100%;
-
-  @media (max-width: 767px) {
-    align-items: flex-end;
-    flex-direction: column;
-  }
 `;
 
-const StockTransactionTableContainer = styled.div`
+const HeaderButtonContainer = styled.div`
   display: flex;
-  overflow-x: scroll;
-  width: 100%;
-
-  & > div {
-    padding: 0 15px;
-    width: 50%;
-  }
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-  @media (max-width: 767px) {
-    align-items: flex-start;
-    flex-direction: column;
-  }
+  margin-bottom: 0.5em;
 `;
+
+const HeaderButton = styled(Button)`
+  padding: 0 8px;
+`;
+
+const StockTransactionTableContainer = styled.div``;
 
 const NoteDetail: React.FC<NoteProps> = ({ note, onClickUpdateButton, onClickDeleteButton, loading, error }) => {
   if (loading) {
@@ -59,34 +49,34 @@ const NoteDetail: React.FC<NoteProps> = ({ note, onClickUpdateButton, onClickDel
   }
 
   return (
-    <NoteContainer>
-      <NoteHeader>
+    <Container>
+      <Header>
         <Typography.Title>{note.title}</Typography.Title>
-        <Space>
-          <Button type="text" onClick={onClickUpdateButton}>
+        <HeaderButtonContainer>
+          <HeaderButton type="text" onClick={onClickUpdateButton}>
             수정
-          </Button>
-          <Button type="text" onClick={onClickDeleteButton}>
+          </HeaderButton>
+          <HeaderButton type="text" onClick={onClickDeleteButton}>
             삭제
-          </Button>
-        </Space>
-      </NoteHeader>
+          </HeaderButton>
+        </HeaderButtonContainer>
+      </Header>
 
       {note.stockTransactions.length > 0 && (
-        <StockTransactionTableContainer>
-          <div>
+        <>
+          <StockTransactionTableContainer>
             <Typography.Title level={5}>매수한 종목</Typography.Title>
             <StockTransactionTable type="BUY" note={note} />
-          </div>
-          <div>
+          </StockTransactionTableContainer>
+          <StockTransactionTableContainer>
             <Typography.Title level={5}>매도한 종목</Typography.Title>
             <StockTransactionTable type="SELL" note={note} />
-          </div>
-        </StockTransactionTableContainer>
+          </StockTransactionTableContainer>
+        </>
       )}
 
       <div dangerouslySetInnerHTML={{ __html: note.content }} />
-    </NoteContainer>
+    </Container>
   );
 };
 
