@@ -1,5 +1,5 @@
 ALTER TABLE user convert to charset utf8;
-ALTER TABLE stock_detail convert to charset utf8;
+ALTER TABLE stock_detail convert to charset eurkr;
 ALTER TABLE stock_transaction convert to charset utf8;
 ALTER TABLE note convert to charset utf8;
 
